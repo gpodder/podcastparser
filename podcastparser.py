@@ -25,7 +25,13 @@ from xml import sax
 import re
 import os
 import time
-import urlparse
+
+try:
+    # Python 2
+    import urlparse
+except ImportError:
+    # Python 3
+    from urllib import parse as urlparse
 
 try:
     # Python 2
