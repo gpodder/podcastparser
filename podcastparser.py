@@ -8,8 +8,8 @@
 # copyright notice and this permission notice appear in all copies.
 #
 # THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-# REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
-# FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+# REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+# AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
 # INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
 # LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 # OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
@@ -47,6 +47,7 @@ except ImportError:
 import logging
 logger = logging.getLogger(__name__)
 
+
 class Target:
     WANT_TEXT = False
 
@@ -54,18 +55,26 @@ class Target:
         self.key = key
         self.filter_func = filter_func
 
-    def start(self, handler, attrs): pass
-    def end(self, handler, text): pass
+    def start(self, handler, attrs):
+        pass
+
+    def end(self, handler, text):
+        pass
+
 
 class RSS(Target):
     def start(self, handler, attrs):
         handler.set_base(attrs.get('xml:base'))
 
+
 class PodcastItem(Target):
     def end(self, handler, text):
-        handler.data['episodes'].sort(key=lambda entry: entry.get('published'), reverse=True)
+        by_published = lambda entry: entry.get('published')
+        handler.data['episodes'].sort(key=by_published, reverse=True)
         if handler.max_episodes:
-            handler.data['episodes'] = handler.data['episodes'][:handler.max_episodes]
+            episodes = handler.data['episodes'][:handler.max_episodes]
+            handler.data['episodes'] = episodes
+
 
 class PodcastAttr(Target):
     WANT_TEXT = True
@@ -73,16 +82,19 @@ class PodcastAttr(Target):
     def end(self, handler, text):
         handler.set_podcast_attr(self.key, self.filter_func(text))
 
+
 class PodcastAttrFromHref(Target):
     def start(self, handler, attrs):
         value = attrs.get('href')
         if value:
             handler.set_podcast_attr(self.key, self.filter_func(value))
 
+
 class PodcastAttrFromPaymentHref(PodcastAttrFromHref):
     def start(self, handler, attrs):
         if attrs.get('rel') == 'payment':
             PodcastAttrFromHref.start(self, handler, attrs)
+
 
 class EpisodeItem(Target):
     def start(self, handler, attrs):
@@ -91,11 +103,13 @@ class EpisodeItem(Target):
     def end(self, handler, text):
         handler.validate_episode()
 
+
 class EpisodeAttr(Target):
     WANT_TEXT = True
 
     def end(self, handler, text):
         handler.set_episode_attr(self.key, self.filter_func(text))
+
 
 class EpisodeGuid(EpisodeAttr):
     def start(self, handler, attrs):
@@ -114,16 +128,19 @@ class EpisodeGuid(EpisodeAttr):
         self.filter_func = filter_func
         EpisodeAttr.end(self, handler, text)
 
+
 class EpisodeAttrFromHref(Target):
     def start(self, handler, attrs):
         value = attrs.get('href')
         if value:
             handler.set_episode_attr(self.key, self.filter_func(value))
 
+
 class EpisodeAttrFromPaymentHref(EpisodeAttrFromHref):
     def start(self, handler, attrs):
         if attrs.get('rel') == 'payment':
             EpisodeAttrFromHref.start(self, handler, attrs)
+
 
 class Enclosure(Target):
     def __init__(self, file_size_attribute):
@@ -140,6 +157,7 @@ class Enclosure(Target):
         mime_type = parse_type(attrs.get('type'))
 
         handler.add_enclosure(url, file_size, mime_type)
+
 
 class Namespace():
     # Mapping of XML namespaces to prefixes as used in MAPPING below
@@ -231,7 +249,8 @@ class Namespace():
             namespace_uri = self.lookup(namespace)
             if namespace_uri is None:
                 # Use of "itunes:duration" without xmlns:itunes="..."
-                logger.warn('No namespace defined for "%s:%s"', namespace, name)
+                logger.warn('No namespace defined for "%s:%s"', namespace,
+                            name)
                 return '%s:%s' % (namespace, name)
 
         if namespace_uri is not None:
@@ -247,19 +266,24 @@ class Namespace():
 
         return name
 
+
 def file_basename_no_extension(filename):
     base = os.path.basename(filename)
     name, extension = os.path.splitext(base)
     return name
 
+
 def squash_whitespace(text):
     return re.sub('\s+', ' ', text.strip())
+
 
 def parse_duration(text):
     return parse_time(text.strip())
 
+
 def parse_url(text):
     return normalize_feed_url(text.strip())
+
 
 def parse_length(text):
     if text is None:
@@ -270,12 +294,14 @@ def parse_length(text):
     except ValueError:
         return -1
 
+
 def parse_type(text):
     if not text or '/' not in text:
         # Maemo bug 10036
         return 'application/octet-stream'
 
     return text
+
 
 def parse_pubdate(text):
     return parse_date(text)
@@ -295,15 +321,19 @@ MAPPING = {
     'rss/channel/item/guid': EpisodeGuid('guid'),
     'rss/channel/item/title': EpisodeAttr('title', squash_whitespace),
     'rss/channel/item/link': EpisodeAttr('link'),
-    'rss/channel/item/description': EpisodeAttr('description', squash_whitespace),
-    # Alternatives for description: itunes:summary, itunes:subtitle, content:encoded
-    'rss/channel/item/itunes:duration': EpisodeAttr('total_time', parse_duration),
+    'rss/channel/item/description': EpisodeAttr('description',
+                                                squash_whitespace),
+    # Alternatives for description: itunes:summary, itunes:subtitle,
+    # content:encoded
+    'rss/channel/item/itunes:duration': EpisodeAttr('total_time',
+                                                    parse_duration),
     'rss/channel/item/pubDate': EpisodeAttr('published', parse_pubdate),
     'rss/channel/item/atom:link': EpisodeAttrFromPaymentHref('payment_url'),
 
     'rss/channel/item/media:content': Enclosure('fileSize'),
     'rss/channel/item/enclosure': Enclosure('length'),
 }
+
 
 class PodcastHandler(sax.handler.ContentHandler):
     def __init__(self, url, max_episodes):
@@ -363,7 +393,8 @@ class PodcastHandler(sax.handler.ContentHandler):
                 self.episodes.pop()
                 return
 
-            entry['title'] = file_basename_no_extension(entry['enclosures'][0]['url'])
+            entry['title'] = file_basename_no_extension(
+                entry['enclosures'][0]['url'])
 
         if not entry.get('link') and entry.get('_guid_is_permalink'):
             entry['link'] = entry['guid']
@@ -394,7 +425,8 @@ class PodcastHandler(sax.handler.ContentHandler):
     def endElement(self, name):
         target = MAPPING.get('/'.join(self.path_stack))
         if target is not None:
-            target.end(self, ''.join(self.text) if self.text is not None else '')
+            content = ''.join(self.text) if self.text is not None else ''
+            target.end(self, content)
             self.text = None
 
         if self.namespace is not None:
@@ -414,6 +446,7 @@ def parse(url, stream, max_episodes=0):
     handler = PodcastHandler(url, max_episodes)
     sax.parse(stream, handler)
     return handler.data
+
 
 def parse_time(value):
     """Parse a time string into seconds
@@ -535,4 +568,3 @@ def parse_date(value):
 
     logger.error('Cannot parse date: %s', repr(value))
     return 0
-
