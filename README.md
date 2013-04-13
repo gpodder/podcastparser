@@ -2,3 +2,5 @@ podcastparser [![Build Status](https://travis-ci.org/gpodder/podcastparser.png)]
 =============
 
 A simple and fast podcast feed parser in Python.
+
+Documentation: https://podcastparser.rtfd.org/
