@@ -399,6 +399,14 @@ class PodcastHandler(sax.handler.ContentHandler):
 
 
 def parse(url, stream, max_episodes=0):
+    """Parse a podcast feed from the given URL and stream
+
+    :param url: the URL of the feed. Will be used to resolve relative links
+    :param stream: file-like object containing the feed content
+    :param max_episodes: maximum number of episodes to return. 0 (default)
+                         means no limit
+    :returns: a dict with the parsed contents of the feed
+    """
     handler = PodcastHandler(url, max_episodes)
     sax.parse(stream, handler)
     return handler.data
