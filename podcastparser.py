@@ -304,7 +304,22 @@ def parse_type(text):
 
 
 def parse_pubdate(text):
-    return parse_date(text)
+    """Parse a date string into a Unix timestamp
+
+    >>> parse_pubdate('Fri, 21 Nov 1997 09:55:06 -0600')
+    880127706
+    >>> parse_pubdate('')
+    0
+    """
+    if not text:
+        return 0
+
+    parsed = parsedate_tz(text)
+    if parsed is not None:
+        return int(mktime_tz(parsed))
+
+    logger.error('Cannot parse date: %s', repr(text))
+    return 0
 
 
 MAPPING = {
@@ -549,22 +564,3 @@ def normalize_feed_url(url):
 
     # urlunsplit might return "a slighty different, but equivalent URL"
     return urlparse.urlunsplit((scheme, netloc, path, query, fragment))
-
-
-def parse_date(value):
-    """Parse a date string into a Unix timestamp
-
-    >>> parse_date('Fri, 21 Nov 1997 09:55:06 -0600')
-    880127706
-    >>> parse_date('')
-    0
-    """
-    if not value:
-        return 0
-
-    parsed = parsedate_tz(value)
-    if parsed is not None:
-        return int(mktime_tz(parsed))
-
-    logger.error('Cannot parse date: %s', repr(value))
-    return 0
