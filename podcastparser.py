@@ -461,12 +461,6 @@ def normalize_feed_url(url):
     >>> normalize_feed_url('curry.com')
     'http://curry.com/'
 
-    There are even some more shortcuts for advanced users
-    and lazy typists (see the source for details).
-
-    >>> normalize_feed_url('fb:43FPodcast')
-    'http://feeds.feedburner.com/43FPodcast'
-
     It will also take care of converting the domain name to
     all-lowercase (because domains are not case sensitive):
 
@@ -481,24 +475,6 @@ def normalize_feed_url(url):
     """
     if not url or len(url) < 8:
         return None
-
-    # This is a list of prefixes that you can use to minimize the amount of
-    # keystrokes that you have to use.
-    # Feel free to suggest other useful prefixes, and I'll add them here.
-    PREFIXES = {
-            'fb:': 'http://feeds.feedburner.com/%s',
-            'yt:': 'http://www.youtube.com/rss/user/%s/videos.rss',
-            'sc:': 'http://soundcloud.com/%s',
-            'fm4od:': 'http://onapp1.orf.at/webcam/fm4/fod/%s.xspf',
-            # YouTube playlists. To get a list of playlists per-user, use:
-            # https://gdata.youtube.com/feeds/api/users/<username>/playlists
-            'ytpl:': 'http://gdata.youtube.com/feeds/api/playlists/%s',
-    }
-
-    for prefix, expansion in PREFIXES.iteritems():
-        if url.startswith(prefix):
-            url = expansion % (url[len(prefix):],)
-            break
 
     # Assume HTTP for URLs without scheme
     if not '://' in url:
