@@ -22,14 +22,17 @@
 
 from xml import sax
 
-from gpodder import util
-from gpodder import youtube
-from gpodder import vimeo
-
 import re
 import os
 import time
 import urlparse
+
+try:
+    # Python 2
+    from rfc822 import mktime_tz, parsedate_tz
+except ImportError:
+    # Python 3
+    from email.utils import mktime_tz, parsedate_tz
 
 import logging
 logger = logging.getLogger(__name__)
@@ -243,10 +246,10 @@ def squash_whitespace(text):
     return re.sub('\s+', ' ', text.strip())
 
 def parse_duration(text):
-    return util.parse_time(text.strip())
+    return parse_time(text.strip())
 
 def parse_url(text):
-    return util.normalize_feed_url(text.strip())
+    return normalize_feed_url(text.strip())
 
 def parse_length(text):
     if text is None:
@@ -265,7 +268,7 @@ def parse_type(text):
     return text
 
 def parse_pubdate(text):
-    return util.parse_date(text)
+    return parse_date(text)
 
 
 MAPPING = {
@@ -393,4 +396,149 @@ def parse(url, stream, max_episodes=0):
     handler = PodcastHandler(url, max_episodes)
     sax.parse(stream, handler)
     return handler.data
+
+def parse_time(value):
+    """Parse a time string into seconds
+
+    >>> parse_time('0')
+    0
+    >>> parse_time('128')
+    128
+    >>> parse_time('00:00')
+    0
+    >>> parse_time('00:00:00')
+    0
+    >>> parse_time('00:20')
+    20
+    >>> parse_time('00:00:20')
+    20
+    >>> parse_time('01:00:00')
+    3600
+    >>> parse_time('03:02:01')
+    10921
+    >>> parse_time('61:08')
+    3668
+    >>> parse_time('25:03:30')
+    90210
+    >>> parse_time('25:3:30')
+    90210
+    >>> parse_time('61.08')
+    3668
+    """
+    if value == '':
+        return 0
+
+    if not value:
+        raise ValueError('Invalid value: %s' % (str(value),))
+
+    m = re.match(r'(\d+)[:.](\d\d?)[:.](\d\d?)', value)
+    if m:
+        hours, minutes, seconds = m.groups()
+        return (int(hours) * 60 + int(minutes)) * 60 + int(seconds)
+
+    m = re.match(r'(\d+)[:.](\d\d?)', value)
+    if m:
+        minutes, seconds = m.groups()
+        return int(minutes) * 60 + int(seconds)
+
+    return int(value)
+
+
+def normalize_feed_url(url):
+    """
+    Converts any URL to http:// or ftp:// so that it can be
+    used with "wget". If the URL cannot be converted (invalid
+    or unknown scheme), "None" is returned.
+
+    This will also normalize feed:// and itpc:// to http://.
+
+    >>> normalize_feed_url('itpc://example.org/podcast.rss')
+    'http://example.org/podcast.rss'
+
+    If no URL scheme is defined (e.g. "curry.com"), we will
+    simply assume the user intends to add a http:// feed.
+
+    >>> normalize_feed_url('curry.com')
+    'http://curry.com/'
+
+    There are even some more shortcuts for advanced users
+    and lazy typists (see the source for details).
+
+    >>> normalize_feed_url('fb:43FPodcast')
+    'http://feeds.feedburner.com/43FPodcast'
+
+    It will also take care of converting the domain name to
+    all-lowercase (because domains are not case sensitive):
+
+    >>> normalize_feed_url('http://Example.COM/')
+    'http://example.com/'
+
+    Some other minimalistic changes are also taken care of,
+    e.g. a ? with an empty query is removed:
+
+    >>> normalize_feed_url('http://example.org/test?')
+    'http://example.org/test'
+    """
+    if not url or len(url) < 8:
+        return None
+
+    # This is a list of prefixes that you can use to minimize the amount of
+    # keystrokes that you have to use.
+    # Feel free to suggest other useful prefixes, and I'll add them here.
+    PREFIXES = {
+            'fb:': 'http://feeds.feedburner.com/%s',
+            'yt:': 'http://www.youtube.com/rss/user/%s/videos.rss',
+            'sc:': 'http://soundcloud.com/%s',
+            'fm4od:': 'http://onapp1.orf.at/webcam/fm4/fod/%s.xspf',
+            # YouTube playlists. To get a list of playlists per-user, use:
+            # https://gdata.youtube.com/feeds/api/users/<username>/playlists
+            'ytpl:': 'http://gdata.youtube.com/feeds/api/playlists/%s',
+    }
+
+    for prefix, expansion in PREFIXES.iteritems():
+        if url.startswith(prefix):
+            url = expansion % (url[len(prefix):],)
+            break
+
+    # Assume HTTP for URLs without scheme
+    if not '://' in url:
+        url = 'http://' + url
+
+    scheme, netloc, path, query, fragment = urlparse.urlsplit(url)
+
+    # Schemes and domain names are case insensitive
+    scheme, netloc = scheme.lower(), netloc.lower()
+
+    # Normalize empty paths to "/"
+    if path == '':
+        path = '/'
+
+    # feed://, itpc:// and itms:// are really http://
+    if scheme in ('feed', 'itpc', 'itms'):
+        scheme = 'http'
+
+    if scheme not in ('http', 'https', 'ftp', 'file'):
+        return None
+
+    # urlunsplit might return "a slighty different, but equivalent URL"
+    return urlparse.urlunsplit((scheme, netloc, path, query, fragment))
+
+
+def parse_date(value):
+    """Parse a date string into a Unix timestamp
+
+    >>> parse_date('Sat Dec 29 18:23:19 CET 2012')
+    1356801799
+    >>> parse_date('')
+    0
+    """
+    if not value:
+        return 0
+
+    parsed = parsedate_tz(value)
+    if parsed is not None:
+        return int(mktime_tz(parsed))
+
+    logger.error('Cannot parse date: %s', repr(value))
+    return 0
 
