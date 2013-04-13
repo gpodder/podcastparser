@@ -509,8 +509,8 @@ def normalize_feed_url(url):
 def parse_date(value):
     """Parse a date string into a Unix timestamp
 
-    >>> parse_date('Sat Dec 29 18:23:19 CET 2012')
-    1356801799
+    >>> parse_date('Fri, 21 Nov 1997 09:55:06 -0600')
+    880127706
     >>> parse_date('')
     0
     """
