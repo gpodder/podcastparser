@@ -2,3 +2,5 @@
 *.swp
 .coverage
 doc/_build
+dist
+MANIFEST

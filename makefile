@@ -4,6 +4,7 @@ test:
 
 clean:
 	find -name '*.pyc' -exec rm '{}' \;
-	rm -f .coverage
+	rm -f .coverage MANIFEST
+	rm -rf dist __pycache__
 
 .PHONY: test clean

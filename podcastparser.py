@@ -16,6 +16,14 @@
 # PERFORMANCE OF THIS SOFTWARE.
 #
 
+""" Simplified, fast RSS parser """
+
+# Will be parsed by setup.py to determine package metadata
+__author__ = 'Thomas Perl <m@thp.io>'
+__version__ = '0.1'
+__website__ = 'https://github.com/gpodder/podcastparser'
+__license__ = 'ISC License'
+
 from xml import sax
 
 import re
