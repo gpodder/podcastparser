@@ -1,6 +1,6 @@
 test:
-	nosetests --cover-erase --with-coverage --with-doctest \
-        --cover-package=podcastparser
+	nosetests --cover-erase --with-coverage \
+	 --cover-package=podcastparser test.py
 
 clean:
 	find -name '*.pyc' -exec rm '{}' \;
