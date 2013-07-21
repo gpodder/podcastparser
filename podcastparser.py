@@ -538,7 +538,13 @@ def normalize_feed_url(url):
 
     >>> normalize_feed_url('http://example.org/test?')
     'http://example.org/test'
+
+    Leading and trailing whitespace is removed
+
+    >>> normalize_feed_url(' http://example.com/podcast.rss ')
+    'http://example.com/podcast.rss'
     """
+    url = url.strip()
     if not url or len(url) < 8:
         return None
 
