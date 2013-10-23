@@ -356,14 +356,14 @@ def parse_length(text):
     -1
 
     >>> parse_length('100')
-    100L
+    100
     """
 
     if text is None:
         return -1
 
     try:
-        return long(text.strip()) or -1
+        return int(text.strip()) or -1
     except ValueError:
         return -1
 
