@@ -7,6 +7,7 @@ import podcastparser
 class ParseFeedTest(unittest.TestCase):
 
     def test_feed(self):
+        """ This test only verifies if the feed can be parsed - no contents """
         URL = 'http://example.com/feed/'
         FILE = 'tests/example-feed.xml'
         result = podcastparser.parse(URL, open(FILE))
