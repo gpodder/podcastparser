@@ -277,8 +277,53 @@ def squash_whitespace(text):
     return re.sub('\s+', ' ', text.strip())
 
 
-def parse_duration(text):
-    return parse_time(text.strip())
+def parse_time(value):
+    """Parse a time string into seconds
+
+    >>> parse_time('0')
+    0
+    >>> parse_time('128')
+    128
+    >>> parse_time('00:00')
+    0
+    >>> parse_time('00:00:00')
+    0
+    >>> parse_time('00:20')
+    20
+    >>> parse_time('00:00:20')
+    20
+    >>> parse_time('01:00:00')
+    3600
+    >>> parse_time(' 03:02:01')
+    10921
+    >>> parse_time('61:08')
+    3668
+    >>> parse_time('25:03:30 ')
+    90210
+    >>> parse_time('25:3:30')
+    90210
+    >>> parse_time('61.08')
+    3668
+    """
+    value = value.strip()
+
+    if value == '':
+        return 0
+
+    if not value:
+        raise ValueError('Invalid value: %s' % (str(value),))
+
+    m = re.match(r'(\d+)[:.](\d\d?)[:.](\d\d?)', value)
+    if m:
+        hours, minutes, seconds = m.groups()
+        return (int(hours) * 60 + int(minutes)) * 60 + int(seconds)
+
+    m = re.match(r'(\d+)[:.](\d\d?)', value)
+    if m:
+        minutes, seconds = m.groups()
+        return int(minutes) * 60 + int(seconds)
+
+    return int(value)
 
 
 def parse_url(text):
@@ -340,8 +385,7 @@ MAPPING = {
                                                 squash_whitespace),
     # Alternatives for description: itunes:summary, itunes:subtitle,
     # content:encoded
-    'rss/channel/item/itunes:duration': EpisodeAttr('total_time',
-                                                    parse_duration),
+    'rss/channel/item/itunes:duration': EpisodeAttr('total_time', parse_time),
     'rss/channel/item/pubDate': EpisodeAttr('published', parse_pubdate),
     'rss/channel/item/atom:link': EpisodeAttrFromPaymentHref('payment_url'),
 
@@ -461,53 +505,6 @@ def parse(url, stream, max_episodes=0):
     handler = PodcastHandler(url, max_episodes)
     sax.parse(stream, handler)
     return handler.data
-
-
-def parse_time(value):
-    """Parse a time string into seconds
-
-    >>> parse_time('0')
-    0
-    >>> parse_time('128')
-    128
-    >>> parse_time('00:00')
-    0
-    >>> parse_time('00:00:00')
-    0
-    >>> parse_time('00:20')
-    20
-    >>> parse_time('00:00:20')
-    20
-    >>> parse_time('01:00:00')
-    3600
-    >>> parse_time('03:02:01')
-    10921
-    >>> parse_time('61:08')
-    3668
-    >>> parse_time('25:03:30')
-    90210
-    >>> parse_time('25:3:30')
-    90210
-    >>> parse_time('61.08')
-    3668
-    """
-    if value == '':
-        return 0
-
-    if not value:
-        raise ValueError('Invalid value: %s' % (str(value),))
-
-    m = re.match(r'(\d+)[:.](\d\d?)[:.](\d\d?)', value)
-    if m:
-        hours, minutes, seconds = m.groups()
-        return (int(hours) * 60 + int(minutes)) * 60 + int(seconds)
-
-    m = re.match(r'(\d+)[:.](\d\d?)', value)
-    if m:
-        minutes, seconds = m.groups()
-        return int(minutes) * 60 + int(seconds)
-
-    return int(value)
 
 
 def normalize_feed_url(url):
