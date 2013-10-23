@@ -10,7 +10,7 @@ class ParseFeedTest(unittest.TestCase):
         URL = 'http://example.com/feed/'
         FILE = 'tests/example-feed.xml'
         result = podcastparser.parse(URL, open(FILE))
-        self.assertIsNotNone(result)
+        self.assertTrue(bool(result))
 
 
 suite = unittest.TestSuite()
