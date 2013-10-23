@@ -268,12 +268,25 @@ class Namespace():
 
 
 def file_basename_no_extension(filename):
+    """ Returns filename without extension
+
+    >>> file_basename_no_extension('/home/me/file.txt')
+    'file'
+
+    >>> file_basename_no_extension('file')
+    'file'
+    """
     base = os.path.basename(filename)
     name, extension = os.path.splitext(base)
     return name
 
 
 def squash_whitespace(text):
+    """ Combine multiple whitespaces into one, trim trailing/leading spaces
+
+    >>> squash_whitespace(' some\t   text  with a    lot of   spaces ')
+    'some text with a lot of spaces'
+    """
     return re.sub('\s+', ' ', text.strip())
 
 
@@ -331,6 +344,21 @@ def parse_url(text):
 
 
 def parse_length(text):
+    """ Parses a file length
+
+    >>> parse_length(None)
+    -1
+
+    >>> parse_length('0')
+    -1
+
+    >>> parse_length('unknown')
+    -1
+
+    >>> parse_length('100')
+    100L
+    """
+
     if text is None:
         return -1
 
@@ -341,6 +369,21 @@ def parse_length(text):
 
 
 def parse_type(text):
+    """ "normalize" a mime type
+
+    >>> parse_type('text/plain')
+    'text/plain'
+
+    >>> parse_type('text')
+    'application/octet-stream'
+
+    >>> parse_type('')
+    'application/octet-stream'
+
+    >>> parse_type(None)
+    'application/octet-stream'
+    """
+
     if not text or '/' not in text:
         # Maemo bug 10036
         return 'application/octet-stream'

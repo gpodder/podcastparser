@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+     xmlns:psc="http://podlove.org/simple-chapters"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:fh="http://purl.org/syndication/history/1.0"
+     xmlns:feedburner="http://rssnamespace.org/feedburner/ext/1.0"
+     version="2.0">
+
+    <channel>
+        <title>Podcast Title</title>
+        <link>http://example.com</link>
+        <description>Some description</description>
+        <lastBuildDate>Wed, 23 Oct 2013 18:40:25 +0000</lastBuildDate>
+
+        <atom:link rel="alternate" type="application/rss+xml" title="Podcast Title (MP3 Audio)" href="http://example.com/feed/mp3/" />
+        <atom:link rel="next" href="http://example.com/feed/ogg/?paged=2" />
+        <atom:link rel="first" href="http://example.com/feed/ogg/" />
+        <atom:link rel="last" href="http://example.com/feed/ogg/?paged=10" />
+        <language>de-DE</language>
+        <atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=123&amp;url=http%3A%2F%2Fexample.com%2F&amp;language=de_DE&amp;category=audio&amp;title=Podcast&amp;description=A+Podcast&amp;tags=podcast" type="text/html" />
+        <generator>Podcast generator deluxe enterprise edition</generator>
+        <itunes:author>An author</itunes:author>
+        <itunes:summary>A short summary</itunes:summary>
+        <itunes:category text="Technology" />
+        <itunes:owner>
+            <itunes:name>A author</itunes:name>
+            <itunes:email>author@example.com</itunes:email>
+        </itunes:owner>
+        <itunes:image href="http://example.com/image.png" />
+        <itunes:subtitle>A subtitle</itunes:subtitle>
+        <itunes:keywords />
+        <itunes:block>no</itunes:block>
+        <itunes:explicit>no</itunes:explicit>
+        <atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="self" type="application/rss+xml" href="http://example.com/feed/ogg" />
+        <feedburner:info uri="example-podcast" />
+        <atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="hub" href="http://pubsubhubbub.appspot.com/" />
+
+        <item>
+            <title>Podcast Episode</title>
+            <link>http://example.com/episode/1/</link>
+            <pubDate>Fri, 16 Aug 2013 14:19:30 +0000</pubDate>
+            <guid isPermaLink="false">example-episode-12345</guid>
+            <description><![CDATA[A description of the episode.]]></description>
+            <atom:link rel="payment"
+                       title="Flattr this!"
+                       href="https://flattr.com/submit/auto?user_id=123&amp;url=http%3A%2F%2Fexample.com%2Fepisode-1&amp;language=de_DE&amp;category=audio&amp;title=An+episode&amp;description=An+episode+description&amp;tags=podcast"
+                       type="text/html" />
+            <psc:chapters version="1.2">
+                <psc:chapter start="00:00:00.000" title="Intro" />
+                <psc:chapter start="00:01:10.125" title="Show" />
+                <psc:chapter start="00:50:25.200" title="Outro" />
+            </psc:chapters>
+
+            <atom:link rel="http://podlove.org/deep-link" href="http://example.com/episode/1" />
+            <itunes:duration>02:16:00</itunes:duration>
+            <itunes:author>An author</itunes:author>
+            <itunes:subtitle>An episode subtitle</itunes:subtitle>
+            <itunes:summary>An episode summary.</itunes:summary>
+            <itunes:image href="http://example.com/image.png" />
+            <content:encoded><![CDATA[<p>An <em>HTML</em> formatted <strong>summary</strong>.</p>]]></content:encoded>
+            <feedburner:origLink>http://example.com/episode/1</feedburner:origLink>
+            <enclosure url="http://example.com/episode/1.ogg" length="50914623" type="audio/ogg" />
+            <feedburner:origEnclosureLink>http://example.com/episode/1.ogg</feedburner:origEnclosureLink>
+        </item>
+    </channel>
+</rss>
