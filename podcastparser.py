@@ -121,7 +121,7 @@ class EpisodeGuid(EpisodeAttr):
     def end(self, handler, text):
         def filter_func(guid):
             guid = guid.strip()
-            if handler.base is not None:
+            if handler.base and handler.get_episode_attr('_guid_is_permalink'):
                 return urlparse.urljoin(handler.base, guid)
             return guid
 
@@ -459,6 +459,9 @@ class PodcastHandler(sax.handler.ContentHandler):
 
     def set_episode_attr(self, key, value):
         self.episodes[-1][key] = value
+
+    def get_episode_attr(self, key, default=None):
+        return self.episodes[-1].get(key, default)
 
     def add_episode(self):
         self.episodes.append({
