@@ -68,11 +68,34 @@
             <feedburner:origEnclosureLink>http://example.com/episode/1.ogg</feedburner:origEnclosureLink>
         </item>
 
+
         <item>
-            <title>Podcast Episode 2</title>
-            <link>http://example.com/episode/2/</link>
+
+            <!-- this episode does not have a title, so the basename of the
+                 enclosure is used as a title -->
+
             <pubDate>Fri, 16 Aug 2013 14:19:30 +0000</pubDate>
             <guid isPermaLink="true">episode/2/</guid>
+
+            <!-- this episode does not have a link, but a GUID which is a
+                 perma-link; so the GUID should be used as the link -->
+
+            <!-- this must be the only enclosure so that the above
+                 special-cases work -->
+            <enclosure url="http://example.com/episode/episode-2.ogg" length="50914623" type="audio/ogg" />
+
         </item>
+
+
+        <item>
+
+            <!-- this episode does not have a GUID, but a link which is a; so
+                 the link should be used as the GUID -->
+            <link>http://example.com/episode/3/</link>
+
+            <enclosure url="http://example.com/episode/episode-3.ogg" length="50914623" type="audio/ogg" />
+
+        </item>
+
     </channel>
 </rss>

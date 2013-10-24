@@ -23,7 +23,7 @@ class ParseFeedTest(unittest.TestCase):
                          result.get('cover_url'))
         self.assertEqual('http://example.com', result.get('link'))
 
-        self.assertEqual(2, len(result.get('episodes', [])))
+        self.assertEqual(3, len(result.get('episodes', [])))
 
         # Episode 1
         episode = result.get('episodes')[0]
@@ -51,6 +51,21 @@ class ParseFeedTest(unittest.TestCase):
         # Episode 2
         episode = result.get('episodes')[1]
         self.assertEqual('http://example.com/podcast/episode/2/', episode.get('guid'))
+
+        # the GUID is used as the link
+        self.assertEqual(episode.get('link'), episode.get('guid'))
+
+        # the basename of the enclosure is used as a title
+        self.assertEqual('episode-2', episode.get('title'))
+
+
+        # Episode 3
+        episode = result.get('episodes')[2]
+        self.assertEqual('http://example.com/episode/3/', episode.get('link'))
+
+        # the link is used as the GUID
+        self.assertEqual(episode.get('link'), episode.get('guid'))
+
 
 
 suite = unittest.TestSuite()
