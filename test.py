@@ -7,7 +7,7 @@ import podcastparser
 class ParseFeedTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(self):
+    def setUp(self):
         """ Parse example podcast and verify its results """
         URL = 'http://example.com/feed/'
         FILE = 'tests/example-feed.xml'
@@ -76,7 +76,7 @@ class ParseFeedTest(unittest.TestCase):
 class MaxEpisodesTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(self):
+    def setUp(self):
         """ Parse example podcast with an episode limit """
         URL = 'http://example.com/feed/'
         FILE = 'tests/example-feed.xml'
