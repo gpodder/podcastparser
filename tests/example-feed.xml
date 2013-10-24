@@ -62,6 +62,9 @@
             <content:encoded><![CDATA[<p>An <em>HTML</em> formatted <strong>summary</strong>.</p>]]></content:encoded>
             <feedburner:origLink>http://example.com/episode/1</feedburner:origLink>
             <enclosure url="http://example.com/episode/1.ogg" length="50914623" type="audio/ogg" />
+
+            <!-- this include will be skipped because it does not have a URL -->
+            <enclosure type="audio/mp3" />
             <feedburner:origEnclosureLink>http://example.com/episode/1.ogg</feedburner:origEnclosureLink>
         </item>
 
