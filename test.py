@@ -23,8 +23,9 @@ class ParseFeedTest(unittest.TestCase):
                          result.get('cover_url'))
         self.assertEqual('http://example.com', result.get('link'))
 
-        self.assertEqual(1, len(result.get('episodes', [])))
+        self.assertEqual(2, len(result.get('episodes', [])))
 
+        # Episode 1
         episode = result.get('episodes')[0]
         self.assertEqual(8160, episode.get('total_time'))
         self.assertEqual('https://flattr.com/submit/auto?user_id=123&url='
@@ -45,6 +46,12 @@ class ParseFeedTest(unittest.TestCase):
                          enclosure.get('url'))
         self.assertEqual('audio/ogg', enclosure.get('mime_type'))
         self.assertEqual(50914623, enclosure.get('file_size'))
+
+
+        # Episode 2
+        episode = result.get('episodes')[1]
+        self.assertEqual('http://example.com/podcast/episode/2/', episode.get('guid'))
+
 
 suite = unittest.TestSuite()
 suite.addTest(doctest.DocTestSuite(podcastparser))

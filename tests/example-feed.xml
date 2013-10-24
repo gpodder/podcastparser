@@ -5,6 +5,7 @@
      xmlns:content="http://purl.org/rss/1.0/modules/content/"
      xmlns:fh="http://purl.org/syndication/history/1.0"
      xmlns:feedburner="http://rssnamespace.org/feedburner/ext/1.0"
+     xml:base="http://example.com/podcast/"
      version="2.0">
 
     <channel>
@@ -62,6 +63,13 @@
             <feedburner:origLink>http://example.com/episode/1</feedburner:origLink>
             <enclosure url="http://example.com/episode/1.ogg" length="50914623" type="audio/ogg" />
             <feedburner:origEnclosureLink>http://example.com/episode/1.ogg</feedburner:origEnclosureLink>
+        </item>
+
+        <item>
+            <title>Podcast Episode 2</title>
+            <link>http://example.com/episode/2/</link>
+            <pubDate>Fri, 16 Aug 2013 14:19:30 +0000</pubDate>
+            <guid isPermaLink="true">episode/2/</guid>
         </item>
     </channel>
 </rss>
