@@ -23,7 +23,7 @@ class ParseFeedTest(unittest.TestCase):
                          result.get('cover_url'))
         self.assertEqual('http://example.com', result.get('link'))
 
-        self.assertEqual(3, len(result.get('episodes', [])))
+        self.assertEqual(4, len(result.get('episodes', [])))
 
         # Episode 1
         episode = result.get('episodes')[0]
@@ -66,6 +66,21 @@ class ParseFeedTest(unittest.TestCase):
         # the link is used as the GUID
         self.assertEqual(episode.get('link'), episode.get('guid'))
 
+
+        # Episode 4
+        episode = result.get('episodes')[3]
+        # the enclosure URL is used as the GUID
+        self.assertEqual('http://example.com/episode/episode-4.ogg',
+                         episode.get('guid'))
+
+
+    def test_feed(self):
+        """ Parse example podcast with an episode limit """
+        URL = 'http://example.com/feed/'
+        FILE = 'tests/example-feed.xml'
+        result = podcastparser.parse(URL, open(FILE), max_episodes=2)
+
+        self.assertEqual(2, len(result.get('episodes', [])))
 
 
 suite = unittest.TestSuite()

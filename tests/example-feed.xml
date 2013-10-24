@@ -97,5 +97,31 @@
 
         </item>
 
+
+        <item>
+            <!-- this episode does not have a GUID, but exactly one enclosure;
+                 so the URL of the enclosure should be used as the GUID -->
+            <enclosure url="http://example.com/episode/episode-4.ogg" length="50914623" type="audio/ogg" />
+        </item>
+
+
+        <item>
+            <title>Episode 5</title>
+            <!-- this episode has no GUID, and several enclosures; none will
+                 be picked as a GUID -->
+            <enclosure url="http://example.com/episode/episode-5.ogg" length="50914623" type="audio/ogg" />
+            <enclosure url="http://example.com/episode/episode-5.mp3" length="50914623" type="audio/mp3" />
+        </item>
+
+        <item>
+            <guid>Episode 5</guid>
+            <!-- this episode has no title, and several enclosures; none will
+                 be picked as a GUID -->
+            <enclosure url="http://example.com/episode/episode-5.ogg" length="50914623" type="audio/ogg" />
+            <enclosure url="http://example.com/episode/episode-5.mp3" length="50914623" type="audio/mp3" />
+        </item>
+
+
+
     </channel>
 </rss>
