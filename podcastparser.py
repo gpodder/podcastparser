@@ -317,6 +317,8 @@ def parse_time(value):
     90210
     >>> parse_time('61.08')
     3668
+    >>> parse_time(' ')
+    0
     """
     value = value.strip()
 
@@ -396,7 +398,11 @@ def parse_pubdate(text):
 
     >>> parse_pubdate('Fri, 21 Nov 1997 09:55:06 -0600')
     880127706
+
     >>> parse_pubdate('')
+    0
+
+    >>> parse_pubdate('unknown')
     0
     """
     if not text:
@@ -586,6 +592,16 @@ def normalize_feed_url(url):
 
     >>> normalize_feed_url(' http://example.com/podcast.rss ')
     'http://example.com/podcast.rss'
+
+    Incomplete (too short) URLs are not accepted
+
+    >>> normalize_feed_url('http://') is None
+    True
+
+    Unknown protocols are not accepted
+
+    >>> normalize_feed_url('gopher://gopher.hprc.utoronto.ca/file.txt') is None
+    True
     """
     url = url.strip()
     if not url or len(url) < 8:
