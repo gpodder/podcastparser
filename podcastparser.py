@@ -325,9 +325,6 @@ def parse_time(value):
     if value == '':
         return 0
 
-    if not value:
-        raise ValueError('Invalid value: %s' % (str(value),))
-
     m = re.match(r'(\d+)[:.](\d\d?)[:.](\d\d?)', value)
     if m:
         hours, minutes, seconds = m.groups()
