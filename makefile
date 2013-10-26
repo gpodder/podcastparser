@@ -1,10 +1,28 @@
+PACKAGE := podcastparser
+
+NOSEOPTIONS := --cover-erase --with-coverage --cover-package=$(PACKAGE) --with-doctest
+
+PYTHON ?= python
+FIND ?= find
+NOSETESTS ?= $(PYTHON) -m nose
+
+help:
+	@echo ""
+	@echo "$(MAKE) test ......... Run unit tests"
+	@echo "$(MAKE) clean ........ Clean build directory"
+	@echo "$(MAKE) distclean .... $(MAKE) clean + remove 'dist/'"
+	@echo ""
+
 test:
-	nosetests --cover-erase --with-coverage \
-	 --cover-package=podcastparser test.py
+	$(NOSETESTS) $(NOSEOPTIONS)
 
 clean:
-	find -name '*.pyc' -exec rm '{}' \;
-	rm -f .coverage MANIFEST
-	rm -rf dist __pycache__
+	$(FIND) . -name '*.pyc' -o -name __pycache__ -exec $(RM) -r '{}' +
+	$(RM) -r build
+	$(RM) .coverage MANIFEST
 
-.PHONY: test clean
+distclean: clean
+	$(RM) -r dist
+
+.PHONY: help test clean
+.DEFAULT: help

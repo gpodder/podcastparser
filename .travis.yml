@@ -8,10 +8,10 @@ python:
   - "pypy"
 
 install:
- - pip install -r requirements-test.txt
+ - pip install nose coverage coveralls
 
 script:
- - coverage run --source=podcastparser test.py
+ - make test
 
 after_script:
  - coveralls

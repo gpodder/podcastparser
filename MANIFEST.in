@@ -1,5 +1,5 @@
+include README
 include AUTHORS
 include LICENSE
 include requirements-test.txt
 include makefile
-include README.md
