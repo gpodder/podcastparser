@@ -1,6 +1,6 @@
 PACKAGE := podcastparser
 
-NOSEOPTIONS := --cover-erase --with-coverage --cover-package=$(PACKAGE)
+NOSEOPTIONS := --cover-erase --with-coverage --cover-package=$(PACKAGE) --with-doctest
 
 PYTHON ?= python
 FIND ?= find
@@ -18,6 +18,7 @@ test:
 
 clean:
 	$(FIND) . -name '*.pyc' -o -name __pycache__ -exec $(RM) -r '{}' +
+	$(RM) -r build
 	$(RM) .coverage MANIFEST
 
 distclean: clean

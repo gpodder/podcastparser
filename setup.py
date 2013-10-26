@@ -21,7 +21,7 @@ VERSION = metadata['version']
 WEBSITE = metadata['website']
 LICENSE = metadata['license']
 DESCRIPTION = docstrings[0]
-LONG_DESCRIPTION = open('README.md').read()
+LONG_DESCRIPTION = open('README').read()
 
 # Extract name and e-mail ("Firstname Lastname <mail@example.org>")
 AUTHOR, EMAIL = re.match(r'(.*) <(.*)>', AUTHOR_EMAIL).groups()
