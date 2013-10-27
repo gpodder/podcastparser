@@ -4,7 +4,8 @@ NOSEOPTIONS := --cover-erase --with-coverage --cover-package=$(PACKAGE) --with-d
 
 PYTHON ?= python
 FIND ?= find
-NOSETESTS ?= $(PYTHON) -m nose
+NOSE = $(shell which nosetests)
+NOSETESTS ?= $(PYTHON) $(NOSE)
 
 help:
 	@echo ""
