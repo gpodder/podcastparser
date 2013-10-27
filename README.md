@@ -1,6 +1,5 @@
-podcastparser [![Build Status](https://travis-ci.org/gpodder/podcastparser.png)](https://travis-ci.org/gpodder/podcastparser) [![Coverage Status](https://coveralls.io/repos/gpodder/podcastparser/badge.png?branch=master)](https://coveralls.io/r/gpodder/podcastparser?branch=master)
-=============
+podcastparser: Simple, fast and efficient podcast parser
+========================================================
 
-A simple and fast podcast feed parser in Python.
-
-Documentation: https://podcastparser.rtfd.org/
+The podcast parser project is a library from the gPodder project to provide an
+easy and reliable way of parsing RSS-based podcast feeds in Python.
