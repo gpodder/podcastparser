@@ -1,0 +1,8 @@
+<rss>
+    <channel>
+        <item>
+            <link>http://example.com/episode/1</link>
+            <enclosure url="http://example.com/test.ogg" type="audio/ogg" length="3000000"/>
+        </item>
+    </channel>
+</rss>

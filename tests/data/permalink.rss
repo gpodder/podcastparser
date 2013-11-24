@@ -1,0 +1,10 @@
+<rss xml:base="http://example.com/podcast/">
+    <channel>
+    <title>Podcast</title>
+    <item>
+        <title>Episode</title>
+        <guid isPermaLink="true">episode/1/</guid>
+        <enclosure url="http://example.org/example.mp3"/>
+    </item>
+    </channel>
+</rss>

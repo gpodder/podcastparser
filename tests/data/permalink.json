@@ -1,0 +1,21 @@
+{
+    "title": "Podcast",
+    "episodes": [
+        {
+            "title": "Episode",
+            "description": "",
+            "published": 0,
+            "guid": "http://example.com/podcast/episode/1/",
+            "link": "http://example.com/podcast/episode/1/",
+            "total_time": 0,
+            "payment_url": null,
+            "enclosures": [
+                {
+                    "file_size": -1,
+                    "url": "http://example.org/example.mp3",
+                    "mime_type": "application/octet-stream"
+                }
+            ]
+        }
+    ]
+}

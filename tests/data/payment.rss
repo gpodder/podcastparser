@@ -1,0 +1,11 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+    <title>Podcast</title>
+    <atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/podcast" type="text/html" />
+    <item>
+        <title>Episode</title>
+        <enclosure url="http://example.org/example.mp3"/>
+        <atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/episode" type="text/html" />
+    </item>
+    </channel>
+</rss>
