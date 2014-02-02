@@ -158,6 +158,33 @@ class Enclosure(Target):
 
         handler.add_enclosure(url, file_size, mime_type)
 
+class AtomLink(Target):
+    def start(self, handler, attrs):
+        rel = attrs.get('rel', 'alternate')
+        url = parse_url(urlparse.urljoin(handler.url, attrs.get('href')))
+        mime_type = parse_type(attrs.get('type'))
+        file_size = parse_length(attrs.get('length', '0'))
+
+        if rel == 'enclosure':
+            handler.add_enclosure(url, file_size, mime_type)
+        elif mime_type == 'text/html':
+            if rel in ('self', 'alternate'):
+                if not handler.get_episode_attr('link'):
+                    handler.set_episode_attr('link', url)
+
+class AtomContent(Target):
+    WANT_TEXT = True
+
+    def __init__(self):
+        self._want_content = False
+
+    def start(self, handler, attrs):
+        mime_type = attrs.get('type', 'text')
+        self._want_content = (mime_type in ('text', 'html'))
+
+    def end(self, handler, text):
+        if self._want_content:
+            handler.set_episode_attr('description', squash_whitespace(text))
 
 class Namespace():
     # Mapping of XML namespaces to prefixes as used in MAPPING below
@@ -409,6 +436,14 @@ def parse_pubdate(text):
     if parsed is not None:
         return int(mktime_tz(parsed))
 
+    # TODO: Fully RFC 3339-compliant parsing (w/ timezone)
+    try:
+        parsed = time.strptime(text[:19], '%Y-%m-%dT%H:%M:%S')
+        if parsed is not None:
+            return int(time.mktime(parsed))
+    except Exception:
+        pass
+
     logger.error('Cannot parse date: %s', repr(text))
     return 0
 
@@ -437,6 +472,19 @@ MAPPING = {
 
     'rss/channel/item/media:content': Enclosure('fileSize'),
     'rss/channel/item/enclosure': Enclosure('length'),
+
+    # Basic support for Atom feeds
+    'atom:feed': PodcastItem(),
+    'atom:feed/atom:title': PodcastAttr('title', squash_whitespace),
+    'atom:feed/atom:subtitle': PodcastAttr('description', squash_whitespace),
+    'atom:feed/atom:icon': PodcastAttr('cover_url'),
+    'atom:feed/atom:link': PodcastAttrFromHref('link'),
+    'atom:feed/atom:entry': EpisodeItem(),
+    'atom:feed/atom:entry/atom:id': EpisodeAttr('guid'),
+    'atom:feed/atom:entry/atom:title': EpisodeAttr('title', squash_whitespace),
+    'atom:feed/atom:entry/atom:link': AtomLink(),
+    'atom:feed/atom:entry/atom:content': AtomContent(),
+    'atom:feed/atom:entry/atom:published': EpisodeAttr('published', parse_pubdate),
 }
 
 
