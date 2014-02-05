@@ -3,3 +3,6 @@ include LICENSE
 include requirements-test.txt
 include makefile
 include README.md
+include test_podcastparser.py
+recursive-include tests/data *.rss *.json
+recursive-include doc *
