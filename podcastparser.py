@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Podcastparser: A simple, fast and efficient podcast parser
-# Copyright (c) 2012, 2013, Thomas Perl <m@thp.io>
+# Copyright (c) 2012, 2013, 2014, Thomas Perl <m@thp.io>
 #
 # Permission to use, copy, modify, and/or distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -20,8 +20,8 @@
 
 # Will be parsed by setup.py to determine package metadata
 __author__ = 'Thomas Perl <m@thp.io>'
-__version__ = '0.2.0'
-__website__ = 'https://github.com/gpodder/podcastparser'
+__version__ = '0.2.1'
+__website__ = 'http://gpodder.org/podcastparser/'
 __license__ = 'ISC License'
 
 from xml import sax

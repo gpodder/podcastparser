@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # test_podcastparser: Test Runner for the podcastparser (2012-12-29)
-# Copyright (c) 2012, 2013, Thomas Perl <m@thp.io>
+# Copyright (c) 2012, 2013, 2014, Thomas Perl <m@thp.io>
 # Copyright (c) 2013, Stefan Kögl <stefan@skoegl.net>
 #
 # Permission to use, copy, modify, and/or distribute this software for any
