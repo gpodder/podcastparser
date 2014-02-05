@@ -444,6 +444,8 @@ def parse_pubdate(text):
     return 0
 
 
+# If you modify the mapping, don't forget to also update the documentation
+# section "Supported XML Elements and Attributes" in doc/index.rst
 MAPPING = {
     'rss': RSS(),
     'rss/channel': PodcastItem(),
@@ -602,9 +604,8 @@ def parse(url, stream, max_episodes=0):
 
 def normalize_feed_url(url):
     """
-    Converts any URL to http:// or ftp:// so that it can be
-    used with "wget". If the URL cannot be converted (invalid
-    or unknown scheme), "None" is returned.
+    Normalize and convert a URL. If the URL cannot be converted
+    (invalid or unknown scheme), None is returned.
 
     This will also normalize feed:// and itpc:// to http://.
 
