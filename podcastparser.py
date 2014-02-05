@@ -136,12 +136,6 @@ class EpisodeAttrFromHref(Target):
             handler.set_episode_attr(self.key, self.filter_func(value))
 
 
-class EpisodeAttrFromPaymentHref(EpisodeAttrFromHref):
-    def start(self, handler, attrs):
-        if attrs.get('rel') == 'payment':
-            EpisodeAttrFromHref.start(self, handler, attrs)
-
-
 class Enclosure(Target):
     def __init__(self, file_size_attribute):
         Target.__init__(self)
@@ -167,6 +161,8 @@ class AtomLink(Target):
 
         if rel == 'enclosure':
             handler.add_enclosure(url, file_size, mime_type)
+        elif rel == 'payment':
+            handler.set_episode_attr('payment_url', url)
         elif mime_type == 'text/html':
             if rel in ('self', 'alternate'):
                 if not handler.get_episode_attr('link'):
@@ -468,7 +464,7 @@ MAPPING = {
     # content:encoded
     'rss/channel/item/itunes:duration': EpisodeAttr('total_time', parse_time),
     'rss/channel/item/pubDate': EpisodeAttr('published', parse_pubdate),
-    'rss/channel/item/atom:link': EpisodeAttrFromPaymentHref('payment_url'),
+    'rss/channel/item/atom:link': AtomLink(),
 
     'rss/channel/item/media:content': Enclosure('fileSize'),
     'rss/channel/item/enclosure': Enclosure('length'),
