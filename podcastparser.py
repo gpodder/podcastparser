@@ -280,7 +280,7 @@ class Namespace():
             prefix = self.NAMESPACES.get(namespace_uri)
             if prefix is None and namespace:
                 # Proper use of namespaces, but unknown namespace
-                logger.warn('Unknown namespace: %s', namespace_uri)
+                #logger.warn('Unknown namespace: %s', namespace_uri)
                 # We prefix the tag name here to make sure that it does not
                 # match any other tag below if we can't recognize the namespace
                 name = '!%s:%s' % (namespace, name)
