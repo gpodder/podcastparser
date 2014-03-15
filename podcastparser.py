@@ -462,8 +462,9 @@ MAPPING = {
     'rss/channel/item/link': EpisodeAttr('link'),
     'rss/channel/item/description': EpisodeAttr('description',
                                                 squash_whitespace),
-    # Alternatives for description: itunes:summary, itunes:subtitle,
-    # content:encoded
+    'rss/channel/item/itunes:summary': EpisodeAttr('description',
+                                                squash_whitespace),
+    # Alternatives for description: itunes:subtitle, content:encoded
     'rss/channel/item/itunes:duration': EpisodeAttr('total_time', parse_time),
     'rss/channel/item/pubDate': EpisodeAttr('published', parse_pubdate),
     'rss/channel/item/atom:link': AtomLink(),
