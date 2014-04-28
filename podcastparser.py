@@ -90,12 +90,6 @@ class PodcastAttrFromHref(Target):
             handler.set_podcast_attr(self.key, self.filter_func(value))
 
 
-class PodcastAttrFromPaymentHref(PodcastAttrFromHref):
-    def start(self, handler, attrs):
-        if attrs.get('rel') == 'payment':
-            PodcastAttrFromHref.start(self, handler, attrs)
-
-
 class EpisodeItem(Target):
     def start(self, handler, attrs):
         handler.add_episode()
@@ -167,6 +161,25 @@ class AtomLink(Target):
             if rel in ('self', 'alternate'):
                 if not handler.get_episode_attr('link'):
                     handler.set_episode_attr('link', url)
+
+
+class PodcastAtomLink(AtomLink):
+    def start(self, handler, attrs):
+        rel = attrs.get('rel', 'alternate')
+        url = parse_url(urlparse.urljoin(handler.url, attrs.get('href')))
+        mime_type = parse_type(attrs.get('type'))
+
+        # RFC 5005 (http://podlove.org/paged-feeds/)
+        if rel == 'first':
+            handler.set_podcast_attr('paged_feed_first', url)
+        elif rel == 'next':
+            handler.set_podcast_attr('paged_feed_next', url)
+        elif rel == 'payment':
+            handler.set_podcast_attr('payment_url', url)
+        elif mime_type == 'text/html':
+            if rel in ('self', 'alternate'):
+                handler.set_podcast_attr('link', url)
+
 
 class AtomContent(Target):
     WANT_TEXT = True
@@ -454,7 +467,7 @@ MAPPING = {
     'rss/channel/description': PodcastAttr('description', squash_whitespace),
     'rss/channel/image/url': PodcastAttr('cover_url'),
     'rss/channel/itunes:image': PodcastAttrFromHref('cover_url'),
-    'rss/channel/atom:link': PodcastAttrFromPaymentHref('payment_url'),
+    'rss/channel/atom:link': PodcastAtomLink(),
 
     'rss/channel/item': EpisodeItem(),
     'rss/channel/item/guid': EpisodeGuid('guid'),
@@ -477,7 +490,7 @@ MAPPING = {
     'atom:feed/atom:title': PodcastAttr('title', squash_whitespace),
     'atom:feed/atom:subtitle': PodcastAttr('description', squash_whitespace),
     'atom:feed/atom:icon': PodcastAttr('cover_url'),
-    'atom:feed/atom:link': PodcastAttrFromHref('link'),
+    'atom:feed/atom:link': PodcastAtomLink(),
     'atom:feed/atom:entry': EpisodeItem(),
     'atom:feed/atom:entry/atom:id': EpisodeAttr('guid'),
     'atom:feed/atom:entry/atom:title': EpisodeAttr('title', squash_whitespace),

@@ -15,6 +15,10 @@ The following feed types are supported:
 * Really Simple Syndication (`RSS 2.0`_)
 * Atom Syndication Format (`RFC 4287`_)
 
+The following specifications are supported:
+
+* `Paged Feeds`_ (`RFC 5005`_)
+
 These formats only specify the possible markup elements and attributes. We
 recommend that you also read the `Podcast Feed Best Practice`_ guide if you
 want to optimize your feeds for best display in podcast clients.
@@ -24,6 +28,8 @@ want to optimize your feeds for best display in podcast clients.
 .. _RSS 2.0: http://www.rssboard.org/rss-specification
 .. _RFC 4287: https://tools.ietf.org/html/rfc4287
 .. _Podcast Feed Best Practice: https://github.com/gpodder/podcast-feed-best-practice/blob/master/podcast-feed-best-practice.md
+.. _Paged Feeds: http://podlove.org/paged-feeds/
+.. _RFC 5005: https://tools.ietf.org/html/rfc5005
 
 Example
 =======

@@ -1,0 +1,7 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+    <title>Paged Feed Example</title>
+    <atom:link rel="first" href="http://example.com/feed" />
+    <atom:link rel="next" href="http://example.com/feed/page2" />
+    </channel>
+</rss>

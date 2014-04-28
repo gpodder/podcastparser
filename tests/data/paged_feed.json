@@ -1,0 +1,6 @@
+{
+    "title": "Paged Feed Example",
+    "episodes": [],
+    "paged_feed_first": "http://example.com/feed",
+    "paged_feed_next": "http://example.com/feed/page2"
+}
