@@ -23,6 +23,9 @@ These formats only specify the possible markup elements and attributes. We
 recommend that you also read the `Podcast Feed Best Practice`_ guide if you
 want to optimize your feeds for best display in podcast clients.
 
+Where times and durations are used, the values are expected to be formatted
+either as seconds or as `RFC 2326`_ Normal Play Time (NPT).
+
 .. _gPodder Podcast Client: http://gpodder.org/
 .. _gpodder.net web service: http://gpodder.net/
 .. _RSS 2.0: http://www.rssboard.org/rss-specification
@@ -30,6 +33,7 @@ want to optimize your feeds for best display in podcast clients.
 .. _Podcast Feed Best Practice: https://github.com/gpodder/podcast-feed-best-practice/blob/master/podcast-feed-best-practice.md
 .. _Paged Feeds: http://podlove.org/paged-feeds/
 .. _RFC 5005: https://tools.ietf.org/html/rfc5005
+.. _RFC 2326: https://tools.ietf.org/html/rfc2326
 
 Example
 =======

@@ -329,6 +329,8 @@ def squash_whitespace(text):
 def parse_time(value):
     """Parse a time string into seconds
 
+    See RFC2326, 3.6 "Normal Play Time" (HH:MM:SS.FRACT)
+
     >>> parse_time('0')
     0
     >>> parse_time('128')
@@ -352,7 +354,9 @@ def parse_time(value):
     >>> parse_time('25:3:30')
     90210
     >>> parse_time('61.08')
-    3668
+    61
+    >>> parse_time('01:02:03.500')
+    3723
     >>> parse_time(' ')
     0
     """
@@ -361,17 +365,31 @@ def parse_time(value):
     if value == '':
         return 0
 
-    m = re.match(r'(\d+)[:.](\d\d?)[:.](\d\d?)', value)
-    if m:
-        hours, minutes, seconds = m.groups()
-        return (int(hours) * 60 + int(minutes)) * 60 + int(seconds)
+    hours = minutes = seconds = fraction = 0
+    parsed = False
 
-    m = re.match(r'(\d+)[:.](\d\d?)', value)
-    if m:
-        minutes, seconds = m.groups()
-        return int(minutes) * 60 + int(seconds)
+    m = re.match(r'(\d+)[:](\d\d?)[:](\d\d?)([.]\d+)?$', value)
+    if not parsed and m:
+        hours, minutes, seconds, fraction = m.groups()
+        fraction = float(fraction or 0.0)
+        parsed = True
 
-    return int(value)
+    m = re.match(r'(\d+)[:](\d\d?)([.]\d+)?$', value)
+    if not parsed and m:
+        minutes, seconds, fraction = m.groups()
+        fraction = float(fraction or 0.0)
+        parsed = True
+
+    m = re.match(r'(\d\d?)([.]\d+)?$', value)
+    if not parsed and m:
+        seconds, fraction = m.groups()
+        fraction = float(fraction or 0.0)
+        parsed = True
+
+    if not parsed:
+        seconds = int(value)
+
+    return (int(hours) * 60 + int(minutes)) * 60 + int(seconds)
 
 
 def parse_url(text):
