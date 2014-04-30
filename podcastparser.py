@@ -195,6 +195,34 @@ class AtomContent(Target):
         if self._want_content:
             handler.set_episode_attr('description', squash_whitespace(text))
 
+class PodloveChapters(Target):
+    SUPPORTED_VERSIONS = ('1.1', '1.2')
+
+    def start(self, handler, attrs):
+        version = attrs.get('version', '1.1')
+        if version not in PodloveChapters.SUPPORTED_VERSIONS:
+            logger.warn('Possible incompatible chapters version: %s', version)
+
+
+class PodloveChapter(Target):
+    def start(self, handler, attrs):
+        # Both the start and title attributes are mandatory
+        if attrs.get('start') is None or attrs.get('title') is None:
+            logger.warn('Invalid chapter (missing start and/or and title)')
+            return
+
+        chapter = {
+            'start': parse_time(attrs.get('start')),
+            'title': attrs.get('title'),
+        }
+
+        for optional in ('href', 'image'):
+            value = attrs.get(optional)
+            if value:
+                chapter[optional] = value
+
+        handler.get_episode_attr('chapters').append(chapter)
+
 class Namespace():
     # Mapping of XML namespaces to prefixes as used in MAPPING below
     NAMESPACES = {
@@ -213,6 +241,10 @@ class Namespace():
         #   "Note: There is a trailing slash in the namespace, although
         #    there has been confusion around this in earlier versions."
         'http://search.yahoo.com/mrss': 'media',
+
+        # Podlove Simple Chapters, http://podlove.org/simple-chapters
+        'http://podlove.org/simple-chapters': 'psc',
+        'http://podlove.org/simple-chapters/': 'psc',
     }
 
     def __init__(self, attrs, parent=None):
@@ -502,6 +534,8 @@ MAPPING = {
 
     'rss/channel/item/media:content': Enclosure('fileSize'),
     'rss/channel/item/enclosure': Enclosure('length'),
+    'rss/channel/item/psc:chapters': PodloveChapters(),
+    'rss/channel/item/psc:chapters/psc:chapter': PodloveChapter(),
 
     # Basic support for Atom feeds
     'atom:feed': PodcastItem(),
@@ -515,6 +549,8 @@ MAPPING = {
     'atom:feed/atom:entry/atom:link': AtomLink(),
     'atom:feed/atom:entry/atom:content': AtomContent(),
     'atom:feed/atom:entry/atom:published': EpisodeAttr('published', parse_pubdate),
+    'atom:feed/atom:entry/psc:chapters': PodloveChapters(),
+    'atom:feed/atom:entry/psc:chapters/psc:chapter': PodloveChapter(),
 }
 
 
@@ -556,10 +592,14 @@ class PodcastHandler(sax.handler.ContentHandler):
             'payment_url': None,
             'enclosures': [],
             '_guid_is_permalink': False,
+            'chapters': [],
         })
 
     def validate_episode(self):
         entry = self.episodes[-1]
+
+        if len(entry['chapters']) == 0:
+            del entry['chapters']
 
         if 'guid' not in entry:
             if entry.get('link'):

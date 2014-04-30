@@ -18,6 +18,7 @@ The following feed types are supported:
 The following specifications are supported:
 
 * `Paged Feeds`_ (`RFC 5005`_)
+* `Podlove Simple Chapters`_
 
 These formats only specify the possible markup elements and attributes. We
 recommend that you also read the `Podcast Feed Best Practice`_ guide if you
@@ -34,6 +35,7 @@ either as seconds or as `RFC 2326`_ Normal Play Time (NPT).
 .. _Paged Feeds: http://podlove.org/paged-feeds/
 .. _RFC 5005: https://tools.ietf.org/html/rfc5005
 .. _RFC 2326: https://tools.ietf.org/html/rfc2326
+.. _Podlove Simple Chapters: http://podlove.org/simple-chapters/
 
 Example
 =======
@@ -120,6 +122,13 @@ RSS
 **rss/channel/item/enclosure**
     File download URL (@url), size (@length) and mime type (@type).
 
+**rss/channel/item/psc:chapters**
+    Podlove Simple Chapters, version 1.1 and 1.2.
+
+**rss/channel/item/psc:chapters/psc:chapter**
+    Chapter entry (@start, @title, @href and @image).
+
+
 Atom
 ----
 
@@ -164,6 +173,12 @@ attributes:
 
 **atom:feed/atom:entry/atom:published**
     Episode publication date.
+
+**atom:feed/atom:entry/psc:chapters**
+    Podlove Simple Chapters, version 1.1 and 1.2.
+
+**atom:feed/atom:entry/psc:chapters/psc:chapter**
+    Chapter entry (@start, @title, @href and @image).
 
 The ``podcastparser`` module
 ============================

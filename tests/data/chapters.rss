@@ -1,0 +1,17 @@
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:psc="http://podlove.org/simple-chapters">
+  <channel>
+    <title>Chapters Example</title>
+    <item>
+      <title>Episode</title>
+      <itunes:duration>01:00:00</itunes:duration>
+      <guid>episode</guid>
+      <psc:chapters version="1.2">
+        <psc:chapter start="0" title="Introduction" />
+        <psc:chapter start="01" title="Chapter II" />
+        <psc:chapter start="01:02" title="Chapter with Link" href="http://example.com/" />
+        <psc:chapter start="01:02:03" title="Chapter with Image" image="http://example.org/image.png" />
+        <psc:chapter start="01:02:03.400" title="Chapter with Everything" href="http://example.net/psc" image="http://example.net/image2.png" />
+      </psc:chapters>
+    </item>
+  </channel>
+</rss>

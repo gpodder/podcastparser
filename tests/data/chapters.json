@@ -1,0 +1,22 @@
+{
+    "title": "Chapters Example",
+    "episodes": [
+        {
+            "title": "Episode",
+            "total_time": 3600,
+            "guid": "episode",
+            "enclosures": [],
+            "payment_url": null,
+            "link": "episode",
+            "published": 0,
+            "description": "",
+            "chapters": [
+                {"start": 0, "title": "Introduction"},
+                {"start": 1, "title": "Chapter II"},
+                {"start": 62, "title": "Chapter with Link", "href": "http://example.com/"},
+                {"start": 3723, "title": "Chapter with Image", "image": "http://example.org/image.png"},
+                {"start": 3723, "title": "Chapter with Everything", "href": "http://example.net/psc", "image": "http://example.net/image2.png"}
+            ]
+        }
+    ]
+}
