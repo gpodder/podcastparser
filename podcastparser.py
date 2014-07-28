@@ -412,14 +412,18 @@ def parse_time(value):
         fraction = float(fraction or 0.0)
         parsed = True
 
-    m = re.match(r'(\d\d?)([.]\d+)?$', value)
+    m = re.match(r'(\d+)([.]\d+)?$', value)
     if not parsed and m:
         seconds, fraction = m.groups()
         fraction = float(fraction or 0.0)
         parsed = True
 
     if not parsed:
-        seconds = int(value)
+        try:
+            seconds = int(value)
+        except ValueError:
+            logger.warn('Could not parse time value: "%s"', value)
+            return 0
 
     return (int(hours) * 60 + int(minutes)) * 60 + int(seconds)
 
