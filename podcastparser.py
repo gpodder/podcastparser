@@ -48,7 +48,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class Target:
+class Target(object):
     WANT_TEXT = False
 
     def __init__(self, key=None, filter_func=lambda x: x.strip()):
