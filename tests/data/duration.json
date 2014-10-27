@@ -4,10 +4,10 @@
         {
             "title": "Episode",
             "total_time": 3600,
-            "guid": "episode",
+            "guid": "file://tests/data/episode",
             "enclosures": [],
             "payment_url": null,
-            "link": "episode",
+            "link": "file://tests/data/episode",
             "published": 0,
             "description": ""
         }

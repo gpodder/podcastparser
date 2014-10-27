@@ -64,7 +64,8 @@ class Target:
 
 class RSS(Target):
     def start(self, handler, attrs):
-        handler.set_base(attrs.get('xml:base'))
+        if 'xml:base' in attrs:
+            handler.set_base(attrs.get('xml:base'))
 
 
 class PodcastItem(Target):
@@ -83,10 +84,17 @@ class PodcastAttr(Target):
         handler.set_podcast_attr(self.key, self.filter_func(text))
 
 
+class PodcastAttrRelativeLink(PodcastAttr):
+    def end(self, handler, text):
+        text = urlparse.urljoin(handler.base, text)
+        super(PodcastAttrRelativeLink, self).end(handler, text)
+
+
 class PodcastAttrFromHref(Target):
     def start(self, handler, attrs):
         value = attrs.get('href')
         if value:
+            value = urlparse.urljoin(handler.base, value)
             handler.set_podcast_attr(self.key, self.filter_func(value))
 
 
@@ -105,6 +113,12 @@ class EpisodeAttr(Target):
         handler.set_episode_attr(self.key, self.filter_func(text))
 
 
+class EpisodeAttrRelativeLink(EpisodeAttr):
+    def end(self, handler, text):
+        text = urlparse.urljoin(handler.base, text)
+        super(EpisodeAttrRelativeLink, self).end(handler, text)
+
+
 class EpisodeGuid(EpisodeAttr):
     def start(self, handler, attrs):
         if attrs.get('isPermaLink', 'true').lower() == 'true':
@@ -115,7 +129,7 @@ class EpisodeGuid(EpisodeAttr):
     def end(self, handler, text):
         def filter_func(guid):
             guid = guid.strip()
-            if handler.base and handler.get_episode_attr('_guid_is_permalink'):
+            if handler.get_episode_attr('_guid_is_permalink'):
                 return urlparse.urljoin(handler.base, guid)
             return guid
 
@@ -127,6 +141,7 @@ class EpisodeAttrFromHref(Target):
     def start(self, handler, attrs):
         value = attrs.get('href')
         if value:
+            value = urlparse.urljoin(handler.base, value)
             handler.set_episode_attr(self.key, self.filter_func(value))
 
 
@@ -140,7 +155,7 @@ class Enclosure(Target):
         if url is None:
             return
 
-        url = parse_url(urlparse.urljoin(handler.url, url))
+        url = parse_url(urlparse.urljoin(handler.base, url))
         file_size = parse_length(attrs.get(self.file_size_attribute))
         mime_type = parse_type(attrs.get('type'))
 
@@ -149,7 +164,7 @@ class Enclosure(Target):
 class AtomLink(Target):
     def start(self, handler, attrs):
         rel = attrs.get('rel', 'alternate')
-        url = parse_url(urlparse.urljoin(handler.url, attrs.get('href')))
+        url = parse_url(urlparse.urljoin(handler.base, attrs.get('href')))
         mime_type = parse_type(attrs.get('type'))
         file_size = parse_length(attrs.get('length', '0'))
 
@@ -166,7 +181,7 @@ class AtomLink(Target):
 class PodcastAtomLink(AtomLink):
     def start(self, handler, attrs):
         rel = attrs.get('rel', 'alternate')
-        url = parse_url(urlparse.urljoin(handler.url, attrs.get('href')))
+        url = parse_url(urlparse.urljoin(handler.base, attrs.get('href')))
         mime_type = parse_type(attrs.get('type'))
 
         # RFC 5005 (http://podlove.org/paged-feeds/)
@@ -517,16 +532,16 @@ MAPPING = {
     'rss': RSS(),
     'rss/channel': PodcastItem(),
     'rss/channel/title': PodcastAttr('title', squash_whitespace),
-    'rss/channel/link': PodcastAttr('link'),
+    'rss/channel/link': PodcastAttrRelativeLink('link'),
     'rss/channel/description': PodcastAttr('description', squash_whitespace),
-    'rss/channel/image/url': PodcastAttr('cover_url'),
+    'rss/channel/image/url': PodcastAttrRelativeLink('cover_url'),
     'rss/channel/itunes:image': PodcastAttrFromHref('cover_url'),
     'rss/channel/atom:link': PodcastAtomLink(),
 
     'rss/channel/item': EpisodeItem(),
     'rss/channel/item/guid': EpisodeGuid('guid'),
     'rss/channel/item/title': EpisodeAttr('title', squash_whitespace),
-    'rss/channel/item/link': EpisodeAttr('link'),
+    'rss/channel/item/link': EpisodeAttrRelativeLink('link'),
     'rss/channel/item/description': EpisodeAttr('description',
                                                 squash_whitespace),
     'rss/channel/item/itunes:summary': EpisodeAttr('description',
@@ -562,7 +577,7 @@ class PodcastHandler(sax.handler.ContentHandler):
     def __init__(self, url, max_episodes):
         self.url = url
         self.max_episodes = max_episodes
-        self.base = None
+        self.base = url
         self.text = None
         self.episodes = []
         self.data = {
