@@ -32,6 +32,16 @@ import time
 
 try:
     # Python 2
+    from htmlentitydefs import entitydefs
+    entitydefs = dict((key, value.decode('latin-1'))
+            for key, value in entitydefs.iteritems())
+    chr = unichr
+except ImportError:
+    # Python 3
+    from html.entities import entitydefs
+
+try:
+    # Python 2
     import urlparse
 except ImportError:
     # Python 3
@@ -203,11 +213,12 @@ class AtomContent(Target):
         self._want_content = False
 
     def start(self, handler, attrs):
-        mime_type = attrs.get('type', 'text')
-        self._want_content = (mime_type in ('text', 'html'))
+        self._mime_type = attrs.get('type', 'text')
 
     def end(self, handler, text):
-        if self._want_content:
+        if self._mime_type == 'html':
+            handler.set_episode_attr('description_html', text)
+        elif self._mime_type == 'text':
             handler.set_episode_attr('description', squash_whitespace(text))
 
 class PodloveChapters(Target):
@@ -260,6 +271,9 @@ class Namespace():
         # Podlove Simple Chapters, http://podlove.org/simple-chapters
         'http://podlove.org/simple-chapters': 'psc',
         'http://podlove.org/simple-chapters/': 'psc',
+
+        # Purl RSS Content module
+        'http://purl.org/rss/1.0/modules/content/': 'content',
     }
 
     def __init__(self, attrs, parent=None):
@@ -546,7 +560,9 @@ MAPPING = {
                                                 squash_whitespace),
     'rss/channel/item/itunes:summary': EpisodeAttr('description',
                                                 squash_whitespace),
-    # Alternatives for description: itunes:subtitle, content:encoded
+    'rss/channel/item/itunes:subtitle': EpisodeAttr('subtitle',
+                                                squash_whitespace),
+    'rss/channel/item/content:encoded': EpisodeAttr('description_html'),
     'rss/channel/item/itunes:duration': EpisodeAttr('total_time', parse_time),
     'rss/channel/item/pubDate': EpisodeAttr('published', parse_pubdate),
     'rss/channel/item/atom:link': AtomLink(),
@@ -619,6 +635,9 @@ class PodcastHandler(sax.handler.ContentHandler):
 
         if len(entry['chapters']) == 0:
             del entry['chapters']
+
+        if 'description_html' in entry and not entry['description']:
+            entry['description'] = remove_html_tags(entry['description_html'])
 
         if 'guid' not in entry:
             if entry.get('link'):
@@ -762,3 +781,41 @@ def normalize_feed_url(url):
 
     # urlunsplit might return "a slighty different, but equivalent URL"
     return urlparse.urlunsplit((scheme, netloc, path, query, fragment))
+
+
+def remove_html_tags(html):
+    """
+    Remove HTML tags from a string and replace numeric and
+    named entities with the corresponding character, so the
+    HTML text can be displayed in a simple text view.
+    """
+    if html is None:
+        return None
+
+    # If we would want more speed, we could make these global
+    re_strip_tags = re.compile('<[^>]*>')
+    re_unicode_entities = re.compile('&#(\d{2,4});')
+    re_html_entities = re.compile('&(.{2,8});')
+    re_newline_tags = re.compile('(<br[^>]*>|<[/]?ul[^>]*>|</li>)', re.I)
+    re_listing_tags = re.compile('<li[^>]*>', re.I)
+
+    result = html
+
+    # Convert common HTML elements to their text equivalent
+    result = re_newline_tags.sub('\n', result)
+    result = re_listing_tags.sub('\n * ', result)
+    result = re.sub('<[Pp]>', '\n\n', result)
+
+    # Remove all HTML/XML tags from the string
+    result = re_strip_tags.sub('', result)
+
+    # Convert numeric XML entities to their unicode character
+    result = re_unicode_entities.sub(lambda x: chr(int(x.group(1))), result)
+
+    # Convert named HTML entities to their unicode character
+    result = re_html_entities.sub(lambda x: entitydefs.get(x.group(1), ''), result)
+
+    # Convert more than two newlines to two newlines
+    result = re.sub('([\r\n]{2})([\r\n])+', '\\1', result)
+
+    return result.strip()

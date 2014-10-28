@@ -1,0 +1,17 @@
+{
+  "title": "itunes_subtitle",
+  "episodes": [
+    {
+      "guid": "file://tests/data/a",
+      "title": "Namespace Test",
+      "enclosures": [],
+      "payment_url": null,
+      "total_time": 0,
+      "link": "file://tests/data/a",
+      "published": 0,
+      "description": "Longer",
+      "subtitle": "Short",
+      "description_html": "<p>Full</p>"
+    }
+  ]
+}

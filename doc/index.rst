@@ -104,6 +104,12 @@ RSS
 **rss/channel/item/description**
     Episode description (whitespace is squashed).
 
+**rss/channel/item/itunes:subtitle**
+    Episode subtitled / one-line description (whitespace is squashed).
+
+**rss/channel/item/content:encoded**
+    Episode description in HTML.
+
 **rss/channel/item/itunes:duration**
     Episode duration.
 
@@ -169,7 +175,7 @@ attributes:
     Episode payment URL (e.g. Flattr).
 
 **atom:feed/atom:entry/atom:content**
-    Episode description.
+    Episode description (in HTML or plaintext).
 
 **atom:feed/atom:entry/atom:published**
     Episode publication date.

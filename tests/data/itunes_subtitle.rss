@@ -1,0 +1,11 @@
+<rss>
+  <channel>
+    <item xmlns:i="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:c="http://purl.org/rss/1.0/modules/content/">
+      <title>Namespace Test</title>
+      <guid>a</guid>
+      <i:subtitle>Short</i:subtitle>
+      <i:summary>Longer</i:summary>
+      <c:encoded><![CDATA[<p>Full</p>]]></c:encoded>
+    </item>
+  </channel>
+</rss>
