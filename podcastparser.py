@@ -33,8 +33,7 @@ import time
 try:
     # Python 2
     from htmlentitydefs import entitydefs
-    entitydefs = dict((key, value.decode('latin-1'))
-            for key, value in entitydefs.iteritems())
+    entitydefs = dict((key, value.decode('latin-1')) for key, value in entitydefs.iteritems())
     chr = unichr
 except ImportError:
     # Python 3
@@ -171,6 +170,7 @@ class Enclosure(Target):
 
         handler.add_enclosure(url, file_size, mime_type)
 
+
 class AtomLink(Target):
     def start(self, handler, attrs):
         rel = attrs.get('rel', 'alternate')
@@ -221,6 +221,7 @@ class AtomContent(Target):
         elif self._mime_type == 'text':
             handler.set_episode_attr('description', squash_whitespace(text))
 
+
 class PodloveChapters(Target):
     SUPPORTED_VERSIONS = ('1.1', '1.2')
 
@@ -248,6 +249,7 @@ class PodloveChapter(Target):
                 chapter[optional] = value
 
         handler.get_episode_attr('chapters').append(chapter)
+
 
 class Namespace():
     # Mapping of XML namespaces to prefixes as used in MAPPING below
@@ -354,7 +356,7 @@ class Namespace():
             prefix = self.NAMESPACES.get(namespace_uri)
             if prefix is None and namespace:
                 # Proper use of namespaces, but unknown namespace
-                #logger.warn('Unknown namespace: %s', namespace_uri)
+                # logger.warn('Unknown namespace: %s', namespace_uri)
                 # We prefix the tag name here to make sure that it does not
                 # match any other tag below if we can't recognize the namespace
                 name = '!%s:%s' % (namespace, name)
@@ -556,12 +558,9 @@ MAPPING = {
     'rss/channel/item/guid': EpisodeGuid('guid'),
     'rss/channel/item/title': EpisodeAttr('title', squash_whitespace),
     'rss/channel/item/link': EpisodeAttrRelativeLink('link'),
-    'rss/channel/item/description': EpisodeAttr('description',
-                                                squash_whitespace),
-    'rss/channel/item/itunes:summary': EpisodeAttr('description',
-                                                squash_whitespace),
-    'rss/channel/item/itunes:subtitle': EpisodeAttr('subtitle',
-                                                squash_whitespace),
+    'rss/channel/item/description': EpisodeAttr('description', squash_whitespace),
+    'rss/channel/item/itunes:summary': EpisodeAttr('description', squash_whitespace),
+    'rss/channel/item/itunes:subtitle': EpisodeAttr('subtitle', squash_whitespace),
     'rss/channel/item/content:encoded': EpisodeAttr('description_html'),
     'rss/channel/item/itunes:duration': EpisodeAttr('total_time', parse_time),
     'rss/channel/item/pubDate': EpisodeAttr('published', parse_pubdate),
@@ -760,7 +759,7 @@ def normalize_feed_url(url):
         return None
 
     # Assume HTTP for URLs without scheme
-    if not '://' in url:
+    if '://' not in url:
         url = 'http://' + url
 
     scheme, netloc, path, query, fragment = urlparse.urlsplit(url)

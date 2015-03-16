@@ -1,11 +1,8 @@
 PACKAGE := podcastparser
 
-NOSEOPTIONS := --cover-erase --with-coverage --cover-package=$(PACKAGE) --with-doctest
-
 PYTHON ?= python
 FIND ?= find
-NOSE = $(shell which nosetests)
-NOSETESTS ?= $(PYTHON) $(NOSE)
+NOSETESTS ?= $(PYTHON) -m nose
 
 help:
 	@echo ""
@@ -15,7 +12,7 @@ help:
 	@echo ""
 
 test:
-	$(NOSETESTS) $(NOSEOPTIONS)
+	$(NOSETESTS)
 
 clean:
 	$(FIND) . -name '*.pyc' -o -name __pycache__ -exec $(RM) -r '{}' +

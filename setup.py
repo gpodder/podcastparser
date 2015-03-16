@@ -13,7 +13,7 @@ docstrings = re.findall('"""(.*)"""', src)
 PACKAGE = 'podcastparser'
 
 MODULES = (
-        'podcastparser',
+    'podcastparser',
 )
 
 AUTHOR_EMAIL = metadata['author']
@@ -34,5 +34,4 @@ setup(name=PACKAGE,
       author_email=EMAIL,
       license=LICENSE,
       url=WEBSITE,
-      py_modules=MODULES,
-)
+      py_modules=MODULES)

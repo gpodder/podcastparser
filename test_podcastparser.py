@@ -26,6 +26,7 @@ from nose.tools import assert_equal
 
 import podcastparser
 
+
 def test_rss_parsing():
     def test_parse_rss(rss_filename):
         basename, _ = os.path.splitext(rss_filename)
