@@ -1,0 +1,27 @@
+{
+  "title": "Foo",
+  "link": "http://www.example.com",
+  "episodes": [
+    {
+      "total_time": 0,
+      "link": "",
+      "description": "Description",
+      "published": 1303887600,
+      "guid": "http://cdn.example.org/foo.mp3",
+      "title": "Bar",
+      "payment_url": null,
+      "enclosures": [
+        {
+          "url": "http://cdn.example.org/foo.mp3",
+          "mime_type": "audio/mpeg",
+          "file_size": 28413787
+        },
+        {
+          "url": "http://cdn.example.org/foo.mp3",
+          "mime_type": "audio/mpeg",
+          "file_size": 28413787
+        }
+      ]
+    }
+  ]
+}

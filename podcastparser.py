@@ -643,8 +643,8 @@ class PodcastHandler(sax.handler.ContentHandler):
                 # Link element can serve as GUID
                 entry['guid'] = entry['link']
             else:
-                if len(entry['enclosures']) != 1:
-                    # Multi-enclosure feeds MUST have a GUID
+                if len(set(enclosure['url'] for enclosure in entry['enclosures'])) != 1:
+                    # Multi-enclosure feeds MUST have a GUID or the same URL for all enclosures
                     self.episodes.pop()
                     return
 
