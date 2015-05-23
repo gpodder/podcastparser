@@ -175,7 +175,7 @@ class AtomLink(Target):
     def start(self, handler, attrs):
         rel = attrs.get('rel', 'alternate')
         url = parse_url(urlparse.urljoin(handler.base, attrs.get('href')))
-        mime_type = parse_type(attrs.get('type'))
+        mime_type = parse_type(attrs.get('type', 'text/html'))
         file_size = parse_length(attrs.get('length', '0'))
 
         if rel == 'enclosure':

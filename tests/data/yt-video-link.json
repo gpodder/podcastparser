@@ -1,0 +1,13 @@
+{
+    "title": "YouTube",
+    "episodes": [{
+        "title": "Foo",
+        "description": "",
+        "enclosures": [],
+        "guid": "yt:video:2T9w1rdPMl0",
+        "link": "http://www.youtube.com/watch?v=2T9w1rdPMl0",
+        "payment_url": null,
+        "published": 0,
+        "total_time": 0
+    }]
+}

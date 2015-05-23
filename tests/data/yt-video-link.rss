@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+ <title>YouTube</title>
+ <published>2015-01-01T00:00:00+00:00</published>
+ <entry>
+  <id>yt:video:2T9w1rdPMl0</id>
+  <title>Foo</title>
+  <link rel="alternate" href="http://www.youtube.com/watch?v=2T9w1rdPMl0"/>
+ </entry>
+</feed>
