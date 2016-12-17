@@ -73,7 +73,7 @@ class Target(object):
 
 class RSS(Target):
     def start(self, handler, attrs):
-        if 'xml:base' in attrs:
+        if 'xml:base' in attrs.keys():
             handler.set_base(attrs.get('xml:base'))
 
 
