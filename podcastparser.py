@@ -560,6 +560,7 @@ MAPPING = {
     'rss/channel/item/link': EpisodeAttrRelativeLink('link'),
     'rss/channel/item/description': EpisodeAttr('description', squash_whitespace),
     'rss/channel/item/itunes:summary': EpisodeAttr('description', squash_whitespace),
+    'rss/channel/item/media:description': EpisodeAttr('description', squash_whitespace),
     'rss/channel/item/itunes:subtitle': EpisodeAttr('subtitle', squash_whitespace),
     'rss/channel/item/content:encoded': EpisodeAttr('description_html'),
     'rss/channel/item/itunes:duration': EpisodeAttr('total_time', parse_time),
@@ -583,6 +584,7 @@ MAPPING = {
     'atom:feed/atom:entry/atom:link': AtomLink(),
     'atom:feed/atom:entry/atom:content': AtomContent(),
     'atom:feed/atom:entry/atom:published': EpisodeAttr('published', parse_pubdate),
+    'atom:feed/atom:entry/media:group/media:description': EpisodeAttr('description', squash_whitespace),
     'atom:feed/atom:entry/psc:chapters': PodloveChapters(),
     'atom:feed/atom:entry/psc:chapters/psc:chapter': PodloveChapter(),
 }
