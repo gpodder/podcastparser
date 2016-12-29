@@ -584,6 +584,7 @@ MAPPING = {
     'atom:feed/atom:entry/atom:link': AtomLink(),
     'atom:feed/atom:entry/atom:content': AtomContent(),
     'atom:feed/atom:entry/atom:published': EpisodeAttr('published', parse_pubdate),
+    'atom:feed/atom:entry/atom:updated': EpisodeAttr('published', parse_pubdate),
     'atom:feed/atom:entry/media:group/media:description': EpisodeAttr('description', squash_whitespace),
     'atom:feed/atom:entry/psc:chapters': PodloveChapters(),
     'atom:feed/atom:entry/psc:chapters/psc:chapter': PodloveChapter(),
