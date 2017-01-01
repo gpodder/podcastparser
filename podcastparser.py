@@ -517,6 +517,12 @@ def parse_pubdate(text):
     >>> parse_pubdate('Fri, 21 Nov 1997 09:55:06 -0600')
     880127706
 
+    >>> parse_pubdate('2003-12-13T00:00:00+02:00')
+    1071266400
+
+    >>> parse_pubdate('2003-12-13T18:30:02Z')
+    1071340202
+
     >>> parse_pubdate('')
     0
 
@@ -530,11 +536,22 @@ def parse_pubdate(text):
     if parsed is not None:
         return int(mktime_tz(parsed))
 
-    # TODO: Fully RFC 3339-compliant parsing (w/ timezone)
     try:
         parsed = time.strptime(text[:19], '%Y-%m-%dT%H:%M:%S')
         if parsed is not None:
-            return int(time.mktime(parsed))
+            m = re.match(r'^(?:Z|([+-])([0-9]{2})[:]([0-9]{2}))$', text[19:])
+            if m:
+                parsed = list(iter(parsed))
+                if m.group(1):
+                    offset = 3600 * int(m.group(2)) + 60 * int(m.group(3))
+                    if m.group(1) == '-':
+                        offset = 0 - offset
+                else:
+                    offset = 0
+                parsed.append(offset)
+                return int(mktime_tz(tuple(parsed)))
+            else:
+                return int(time.mktime(parsed))
     except Exception:
         pass
 
@@ -584,6 +601,7 @@ MAPPING = {
     'atom:feed/atom:entry/atom:link': AtomLink(),
     'atom:feed/atom:entry/atom:content': AtomContent(),
     'atom:feed/atom:entry/atom:published': EpisodeAttr('published', parse_pubdate),
+    'atom:feed/atom:entry/atom:updated': EpisodeAttr('published', parse_pubdate),
     'atom:feed/atom:entry/media:group/media:description': EpisodeAttr('description', squash_whitespace),
     'atom:feed/atom:entry/psc:chapters': PodloveChapters(),
     'atom:feed/atom:entry/psc:chapters/psc:chapter': PodloveChapter(),
