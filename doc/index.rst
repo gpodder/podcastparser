@@ -192,6 +192,49 @@ The ``podcastparser`` module
 .. automodule:: podcastparser
    :members:
 
+Unsupported Namespaces
+======================
+
+This is a list of podcast-related XML namespaces that are not yet
+supported by podcastparser, but might be in the future.
+
+Chapter Marks
+-------------
+
+- `rawvoice RSS`_: Rating, Frequency, Poster, WebM, MP4, Metamark (kind of chapter-like markers)
+- `IGOR`_: Chapter Marks
+
+.. _rawvoice RSS: http://www.rawvoice.com/rawvoiceRssModule/
+.. _IGOR: http://emonk.net/IGOR
+
+Others
+------
+
+- `libSYN RSS Extensions`_: contactPhone, contactEmail, contactTwitter, contactWebsite, wallpaper, pdf, background
+- `Comment API`_: Comments to a given item (readable via RSS)
+- `MVCB`_: Error Reports To Field (usually a mailto: link)
+- `Syndication Module`_: Update period, frequency and base (for skipping updates)
+- `Creative Commons RSS`_: Creative commons license for the content
+- `Pheedo`_: Original link to website and original link to enclosure (without going through pheedo redirect)
+- `WGS84`_: Geo-Coordinates per item
+- `Conversations Network`_: Intro duration in milliseconds (for skipping the intro), ratings
+- `purl DC Elements`_: dc:creator (author / creator of the podcast, possibly with e-mail address)
+- `Tristana`_: tristana:self (canonical URL to feed)
+- `Blip`_: Show name, show page, picture, username, language, rating, thumbnail_src, license
+
+.. _libSYN RSS Extensions: http://libsyn.com/rss-extension
+.. _Comment API: http://www.wellformedweb.org/CommentAPI/
+.. _MVCB: http://webns.net/mvcb/
+.. _Syndication Module: http://web.resource.org/rss/1.0/modules/syndication/
+.. _Creative Commons RSS: http://backend.userland.com/creativeCommonsRssModule
+.. _Pheedo: http://www.pheedo.com/namespace/pheedo
+.. _WGS84: http://www.w3.org/2003/01/geo/wgs84_pos#
+.. _Conversations Network: http://conversationsnetwork.org/rssNamespace-1.0/
+.. _purl DC Elements: http://purl.org/dc/elements/1.1/
+.. _Tristana: http://www.tristana.org
+.. _Blip: http://blip.tv/dtd/blip/1.0
+
+
 Indices and tables
 ==================
 
