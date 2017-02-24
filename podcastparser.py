@@ -523,6 +523,9 @@ def parse_pubdate(text):
     >>> parse_pubdate('2003-12-13T18:30:02Z')
     1071340202
 
+    >>> parse_pubdate('Mon, 02 May 1960 09:05:01 +0100')
+    -305049299
+
     >>> parse_pubdate('')
     0
 
