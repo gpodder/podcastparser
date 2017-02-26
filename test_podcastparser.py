@@ -39,7 +39,10 @@ def test_rss_parsing():
             params = json.load(open(param_filename))
 
         expected = json.load(open(json_filename))
-        parsed = podcastparser.parse('file://' + rss_filename,
+        normalized_rss_filename = rss_filename
+        if os.sep == '\\':
+            normalized_rss_filename = normalized_rss_filename.replace(os.sep, '/')
+        parsed = podcastparser.parse('file://' + normalized_rss_filename,
                                      open(rss_filename), **params)
 
         assert_equal.__self__.maxDiff = None
