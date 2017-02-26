@@ -537,8 +537,13 @@ def parse_pubdate(text):
 
     parsed = parsedate_tz(text)
     if parsed is not None:
-        return int(mktime_tz(parsed))
-
+        try:
+            pubtimeseconds = int(mktime_tz(parsed))
+            return pubtimeseconds
+        except(OverflowError,ValueError):
+            logger.warn('bad pubdate %s is before epoch or after end of time (2038)',parsed)
+            return 0
+        
     try:
         parsed = time.strptime(text[:19], '%Y-%m-%dT%H:%M:%S')
         if parsed is not None:
