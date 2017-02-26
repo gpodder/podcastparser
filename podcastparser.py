@@ -48,7 +48,17 @@ except ImportError:
 
 try:
     # Python 2
-    from rfc822 import mktime_tz, parsedate_tz
+    from rfc822 import parsedate_tz
+    import calendar
+    # This is taken from Python 3's email._parseaddr, since it handles
+    # pre-epoch dates better than what Python 2 does (time.mktime())
+    def mktime_tz(data):
+        if data[9] is None:
+            # No zone info, so localtime is better assumption than GMT
+            return time.mktime(data[:8] + (-1,))
+        else:
+            t = calendar.timegm(data)
+            return t - data[9]
 except ImportError:
     # Python 3
     from email.utils import mktime_tz, parsedate_tz
