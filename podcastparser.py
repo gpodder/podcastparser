@@ -736,6 +736,16 @@ class PodcastHandler(sax.handler.ContentHandler):
         self.path_stack.pop()
 
 
+class FeedParseError(sax.SAXParseException, ValueError):
+    """
+    Exception raised when asked to parse an invalid feed
+    
+    This exception allows users of this library to catch exceptions
+    without having to import the XML parsing library themselves.
+    """
+    pass
+
+
 def parse(url, stream, max_episodes=0):
     """Parse a podcast feed from the given URL and stream
 
@@ -746,7 +756,10 @@ def parse(url, stream, max_episodes=0):
     :returns: a dict with the parsed contents of the feed
     """
     handler = PodcastHandler(url, max_episodes)
-    sax.parse(stream, handler)
+    try:
+        sax.parse(stream, handler)
+    except sax.SAXParseException as e:
+        raise FeedParseError(e.message, e._exception, e._locator)
     return handler.data
 
 
