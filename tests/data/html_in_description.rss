@@ -1,0 +1,12 @@
+<rss>
+    <channel>
+    <title>HTML Podcast</title>
+    <item>
+        <title>Ep 1</title>
+        <enclosure url="http://example.org/example.opus"/>
+        <description>
+            <![CDATA[ <h1>This is a <em>test</em></h1> ]]>
+        </description>
+    </item>
+    </channel>
+</rss>
