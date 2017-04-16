@@ -674,19 +674,6 @@ class PodcastHandler(sax.handler.ContentHandler):
         if len(entry['chapters']) == 0:
             del entry['chapters']
 
-        # Ensures `description` and `description_html` are plain text and html if provided
-        if 'description' in entry and is_html(entry['description']):
-            if 'description_html' in entry:
-                if entry['description'] == entry['description_html']:
-                    entry['description'] = ''
-                else:
-                    logger.warning(
-                        'The description appears to be HTML, ' +
-                        'but a different HTML description was also provided.')
-            else:
-                entry['description_html'] = entry['description']
-                entry['description'] = ''
-
         if 'guid' not in entry:
             if entry.get('link'):
                 # Link element can serve as GUID
@@ -707,6 +694,20 @@ class PodcastHandler(sax.handler.ContentHandler):
 
             entry['title'] = file_basename_no_extension(
                 entry['enclosures'][0]['url'])
+
+        # Ensures `description` and `description_html` are plain text and html if provided
+        if 'description' in entry and is_html(entry['description']):
+            if 'description_html' in entry:
+                if entry['description'] == entry['description_html']:
+                    entry['description'] = ''
+                else:
+                    logger.warning(
+                        'The description appears to be HTML, ' +
+                        'but a different HTML description was also provided. ' +
+                        'Feed: ' + self.base + '. Episode: ' + entry.get('title'))
+            else:
+                entry['description_html'] = entry['description']
+                entry['description'] = ''
 
         if not entry.get('link') and entry.get('_guid_is_permalink'):
             entry['link'] = entry['guid']
