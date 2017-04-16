@@ -674,6 +674,13 @@ class PodcastHandler(sax.handler.ContentHandler):
         if len(entry['chapters']) == 0:
             del entry['chapters']
 
+        # Ensures `description` does not contain HTML
+        if 'description' in entry and is_html(entry['description']):
+            if 'description_html' not in entry:
+                entry['description_html'] = entry['description']
+            entry['description'] = ''
+
+        # Sets `description` to stripped `description_html` when absent
         if 'description_html' in entry and not entry['description']:
             entry['description'] = remove_html_tags(entry['description_html'])
 
@@ -833,6 +840,12 @@ def normalize_feed_url(url):
     # urlunsplit might return "a slighty different, but equivalent URL"
     return urlparse.urlunsplit((scheme, netloc, path, query, fragment))
 
+def is_html(text):
+    """
+    Tests whether the given string contains HTML encoded data
+    """
+    html_test = re.compile(r'<[a-z][\s\S]*>', re.IGNORECASE)
+    return bool(html_test.search(text))
 
 def remove_html_tags(html):
     """

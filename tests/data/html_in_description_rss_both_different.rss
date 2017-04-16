@@ -1,0 +1,13 @@
+<rss>
+    <channel>
+    <title>HTML Podcast with Text Description</title>
+    <item>
+        <title>Ep 1</title>
+        <enclosure url="http://example.org/example.opus"/>
+        <content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/">
+            <![CDATA[ <h1>This is also a <em>test</em></h1> ]]>
+        </content:encoded>
+        <description><![CDATA[ <h1>This text will be discarded</h1> ]]></description>
+    </item>
+    </channel>
+</rss>
