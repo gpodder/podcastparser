@@ -769,7 +769,7 @@ def parse(url, stream, max_episodes=0):
     try:
         sax.parse(stream, handler)
     except sax.SAXParseException as e:
-        raise FeedParseError(e.message, e._exception, e._locator)
+        raise FeedParseError(e.getMessage(), e.getException(), e._locator)
     return handler.data
 
 
