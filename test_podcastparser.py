@@ -21,8 +21,11 @@
 import os
 import glob
 import json
+from StringIO import StringIO
+
 
 from nose.tools import assert_equal
+from nose.tools import assert_raises
 
 import podcastparser
 
@@ -50,3 +53,16 @@ def test_rss_parsing():
 
     for rss_filename in glob.glob(os.path.join('tests', 'data', '*.rss')):
         yield test_parse_rss, rss_filename
+
+def test_invalid_roots():
+    def test_fail_parse(feed):
+        with assert_raises(podcastparser.FeedParseError):
+            podcastparser.parse('file://example.com/feed.xml', StringIO(feed))
+
+    feeds = [
+        '<foo><bar/></foo>',
+        '<foo xmlns="http://example.com/foo.xml"><bar/></foo>',
+        '<baz:foo xmlns:baz="http://example.com/baz.xml"><baz:bar/></baz:foo>',
+    ]
+    for feed in feeds:
+        yield test_fail_parse, feed
