@@ -627,6 +627,16 @@ MAPPING = {
 }
 
 
+class FeedParseError(sax.SAXParseException, ValueError):
+    """
+    Exception raised when asked to parse an invalid feed
+    
+    This exception allows users of this library to catch exceptions
+    without having to import the XML parsing library themselves.
+    """
+    pass
+
+
 class PodcastHandler(sax.handler.ContentHandler):
     def __init__(self, url, max_episodes):
         self.url = url
@@ -734,16 +744,6 @@ class PodcastHandler(sax.handler.ContentHandler):
         if self.namespace is not None:
             self.namespace = self.namespace.parent
         self.path_stack.pop()
-
-
-class FeedParseError(sax.SAXParseException, ValueError):
-    """
-    Exception raised when asked to parse an invalid feed
-    
-    This exception allows users of this library to catch exceptions
-    without having to import the XML parsing library themselves.
-    """
-    pass
 
 
 def parse(url, stream, max_episodes=0):
