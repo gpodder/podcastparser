@@ -65,7 +65,7 @@ def test_invalid_roots():
             podcastparser.parse('file://example.com/feed.xml', StringIO(feed))
 
     feeds = [
-        '<foo><bar/></foo>',
+        '<html><body/></html>',
         '<foo xmlns="http://example.com/foo.xml"><bar/></foo>',
         '<baz:foo xmlns:baz="http://example.com/baz.xml"><baz:bar/></baz:foo>',
     ]
