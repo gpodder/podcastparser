@@ -687,9 +687,6 @@ class PodcastHandler(sax.handler.ContentHandler):
         if len(entry['chapters']) == 0:
             del entry['chapters']
 
-        if 'description_html' in entry and not entry['description']:
-            entry['description'] = remove_html_tags(entry['description_html'])
-
         if 'guid' not in entry:
             if entry.get('link'):
                 # Link element can serve as GUID
@@ -710,6 +707,20 @@ class PodcastHandler(sax.handler.ContentHandler):
 
             entry['title'] = file_basename_no_extension(
                 entry['enclosures'][0]['url'])
+
+        # Ensures `description` and `description_html` are plain text and html if provided
+        if 'description' in entry and is_html(entry['description']):
+            if 'description_html' in entry:
+                if entry['description'] == entry['description_html']:
+                    entry['description'] = ''
+                else:
+                    logger.warning(
+                        'The description appears to be HTML, ' +
+                        'but a different HTML description was also provided. ' +
+                        'Feed: ' + self.base + '. Episode: ' + entry.get('title'))
+            else:
+                entry['description_html'] = entry['description']
+                entry['description'] = ''
 
         if not entry.get('link') and entry.get('_guid_is_permalink'):
             entry['link'] = entry['guid']
@@ -843,6 +854,12 @@ def normalize_feed_url(url):
     # urlunsplit might return "a slighty different, but equivalent URL"
     return urlparse.urlunsplit((scheme, netloc, path, query, fragment))
 
+def is_html(text):
+    """
+    Tests whether the given string contains HTML encoded data
+    """
+    html_test = re.compile(r'<[a-z][\s\S]*>', re.IGNORECASE)
+    return bool(html_test.search(text))
 
 def remove_html_tags(html):
     """
