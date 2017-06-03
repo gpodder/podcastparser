@@ -626,6 +626,19 @@ MAPPING = {
     'atom:feed/atom:entry/psc:chapters/psc:chapter': PodloveChapter(),
 }
 
+# Derive valid root elements from the supported MAPPINGs
+VALID_ROOTS = set(path.split('/')[0] for path in MAPPING.keys())
+
+
+class FeedParseError(sax.SAXParseException, ValueError):
+    """
+    Exception raised when asked to parse an invalid feed
+    
+    This exception allows users of this library to catch exceptions
+    without having to import the XML parsing library themselves.
+    """
+    pass
+
 
 class PodcastHandler(sax.handler.ContentHandler):
     def __init__(self, url, max_episodes):
@@ -712,7 +725,14 @@ class PodcastHandler(sax.handler.ContentHandler):
 
     def startElement(self, name, attrs):
         self.namespace = Namespace(attrs, self.namespace)
-        self.path_stack.append(self.namespace.map(name))
+        name = self.namespace.map(name)
+        if not self.path_stack and name not in VALID_ROOTS:
+            raise FeedParseError(
+                msg='Unsupported feed type: {}'.format(name),
+                exception=None,
+                locator=self._locator,
+            )
+        self.path_stack.append(name)
 
         target = MAPPING.get('/'.join(self.path_stack))
         if target is not None:
@@ -736,16 +756,6 @@ class PodcastHandler(sax.handler.ContentHandler):
         self.path_stack.pop()
 
 
-class FeedParseError(sax.SAXParseException, ValueError):
-    """
-    Exception raised when asked to parse an invalid feed
-    
-    This exception allows users of this library to catch exceptions
-    without having to import the XML parsing library themselves.
-    """
-    pass
-
-
 def parse(url, stream, max_episodes=0):
     """Parse a podcast feed from the given URL and stream
 
@@ -759,7 +769,7 @@ def parse(url, stream, max_episodes=0):
     try:
         sax.parse(stream, handler)
     except sax.SAXParseException as e:
-        raise FeedParseError(e.message, e._exception, e._locator)
+        raise FeedParseError(e.getMessage(), e.getException(), e._locator)
     return handler.data
 
 
