@@ -1,0 +1,22 @@
+{
+    "title": "HTML Podcast",
+    "episodes": [
+        {
+            "title": "Ep 1",
+            "description": "This is a test",
+            "description_html": "<h1>This is a <em>test</em></h1>",
+            "published": 0,
+            "guid": "http://example.org/example.opus",
+            "link": "",
+            "total_time": 0,
+            "payment_url": null,
+            "enclosures": [
+                {
+                    "file_size": -1,
+                    "url": "http://example.org/example.opus",
+                    "mime_type": "application/octet-stream"
+                }
+            ]
+        }
+    ]
+}
