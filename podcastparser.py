@@ -174,7 +174,7 @@ class Enclosure(Target):
         if url is None:
             return
 
-        url = parse_url(urlparse.urljoin(handler.base, url))
+        url = parse_url(urlparse.urljoin(handler.base, url.lstrip()))
         file_size = parse_length(attrs.get(self.file_size_attribute))
         mime_type = parse_type(attrs.get('type'))
 

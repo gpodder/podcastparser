@@ -1,0 +1,8 @@
+<rss>
+    <channel>
+    <item>
+        <title>Episode</title>
+        <enclosure url=" http://example.com/example.mp3"/>
+    </item>
+    </channel>
+</rss>
