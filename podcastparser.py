@@ -70,9 +70,10 @@ logger = logging.getLogger(__name__)
 class Target(object):
     WANT_TEXT = False
 
-    def __init__(self, key=None, filter_func=lambda x: x.strip()):
+    def __init__(self, key=None, filter_func=lambda x: x.strip(), overwrite=True):
         self.key = key
         self.filter_func = filter_func
+        self.overwrite = overwrite
 
     def start(self, handler, attrs):
         pass
@@ -129,6 +130,8 @@ class EpisodeAttr(Target):
     WANT_TEXT = True
 
     def end(self, handler, text):
+        if not self.overwrite and handler.get_episode_attr(self.key):
+            return
         handler.set_episode_attr(self.key, self.filter_func(text))
 
 
@@ -620,7 +623,7 @@ MAPPING = {
     'atom:feed/atom:entry/atom:content': AtomContent(),
     'atom:feed/atom:entry/content:encoded': EpisodeAttr('description_html'),
     'atom:feed/atom:entry/atom:published': EpisodeAttr('published', parse_pubdate),
-    'atom:feed/atom:entry/atom:updated': EpisodeAttr('published', parse_pubdate),
+    'atom:feed/atom:entry/atom:updated': EpisodeAttr('published', parse_pubdate, overwrite=False),
     'atom:feed/atom:entry/media:group/media:description': EpisodeAttr('description', squash_whitespace),
     'atom:feed/atom:entry/psc:chapters': PodloveChapters(),
     'atom:feed/atom:entry/psc:chapters/psc:chapter': PodloveChapter(),
