@@ -884,8 +884,6 @@ def is_html(text):
     True
     >>> is_html('a < b < c')
     False
-    >>> is_html('x<y>HELLO</h1>')
-    True
     """
     return bool(HTML_TEST.search(text))
 
