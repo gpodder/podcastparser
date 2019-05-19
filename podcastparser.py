@@ -235,6 +235,28 @@ class AtomContent(Target):
             handler.set_episode_attr('description', squash_whitespace(text))
 
 
+class RSSItemDescription(Target):
+    """
+    RSS 2.0 almost encourages to put html content in item/description
+    but content:encoded is the better source of html content and itunes:summary
+    is known to contain the short textual description of the item.
+    So use a heuristic to attribute text to either description or description_html,
+    without overriding existing values.
+    """
+    WANT_TEXT = True
+
+    def __init__(self):
+        self._want_content = False
+
+    def end(self, handler, text):
+        if is_html(text):
+            if not handler.get_episode_attr('description_html'):
+                handler.set_episode_attr('description_html', text.strip())
+        elif not handler.get_episode_attr('description'):
+            # don't overwrite itunes:summary?
+            handler.set_episode_attr('description', squash_whitespace(text))
+
+
 class PodloveChapters(Target):
     SUPPORTED_VERSIONS = ('1.1', '1.2')
 
@@ -596,7 +618,7 @@ MAPPING = {
     'rss/channel/item/guid': EpisodeGuid('guid'),
     'rss/channel/item/title': EpisodeAttr('title', squash_whitespace),
     'rss/channel/item/link': EpisodeAttrRelativeLink('link'),
-    'rss/channel/item/description': EpisodeAttr('description', squash_whitespace),
+    'rss/channel/item/description': RSSItemDescription(),
     'rss/channel/item/itunes:summary': EpisodeAttr('description', squash_whitespace),
     'rss/channel/item/media:description': EpisodeAttr('description', squash_whitespace),
     'rss/channel/item/itunes:subtitle': EpisodeAttr('subtitle', squash_whitespace),
@@ -853,12 +875,17 @@ def normalize_feed_url(url):
     # urlunsplit might return "a slighty different, but equivalent URL"
     return urlparse.urlunsplit((scheme, netloc, path, query, fragment))
 
+HTML_TEST = re.compile('<[a-z][a-z0-9]*(?:\s.*?>|\/?>)', re.IGNORECASE | re.DOTALL)
 def is_html(text):
+    """Heuristically tell if text is HTML
+
+    By looking for an open tag (more or less:)
+    >>> is_html('<h1>HELLO</h1>')
+    True
+    >>> is_html('a < b < c')
+    False
     """
-    Tests whether the given string contains HTML encoded data
-    """
-    html_test = re.compile(r'<[a-z][\s\S]*>', re.IGNORECASE)
-    return bool(html_test.search(text))
+    return bool(HTML_TEST.search(text))
 
 def remove_html_tags(html):
     """

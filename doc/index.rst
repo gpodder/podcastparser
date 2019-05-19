@@ -102,6 +102,12 @@ RSS
     Episode website.
 
 **rss/channel/item/description**
+    Episode description.
+    If it contains html, it's returned as description_html.
+    Otherwise it's returned as description (whitespace is squashed).
+    See Mozilla's article `Why RSS Content Module is Popular`
+
+**rss/channel/item/itunes:summary**
     Episode description (whitespace is squashed).
 
 **rss/channel/item/itunes:subtitle**
@@ -109,6 +115,7 @@ RSS
 
 **rss/channel/item/content:encoded**
     Episode description in HTML.
+    Best source for description_html.
 
 **rss/channel/item/itunes:duration**
     Episode duration.
@@ -134,6 +141,7 @@ RSS
 **rss/channel/item/psc:chapters/psc:chapter**
     Chapter entry (@start, @title, @href and @image).
 
+.. _Why RSS Content Module is Popular: https://developer.mozilla.org/en-US/docs/Web/RSS/Article/Why_RSS_Content_Module_is_Popular_-_Including_HTML_Contents
 
 Atom
 ----
