@@ -263,14 +263,14 @@ class PodloveChapters(Target):
     def start(self, handler, attrs):
         version = attrs.get('version', '1.1')
         if version not in PodloveChapters.SUPPORTED_VERSIONS:
-            logger.warn('Possible incompatible chapters version: %s', version)
+            logger.warning('Possible incompatible chapters version: %s', version)
 
 
 class PodloveChapter(Target):
     def start(self, handler, attrs):
         # Both the start and title attributes are mandatory
         if attrs.get('start') is None or attrs.get('title') is None:
-            logger.warn('Invalid chapter (missing start and/or and title)')
+            logger.warning('Invalid chapter (missing start and/or and title)')
             return
 
         chapter = {
@@ -383,7 +383,7 @@ class Namespace():
             namespace_uri = self.lookup(namespace)
             if namespace_uri is None:
                 # Use of "itunes:duration" without xmlns:itunes="..."
-                logger.warn('No namespace defined for "%s:%s"', namespace,
+                logger.warning('No namespace defined for "%s:%s"', namespace,
                             name)
                 return '%s:%s' % (namespace, name)
 
@@ -391,7 +391,7 @@ class Namespace():
             prefix = self.NAMESPACES.get(namespace_uri)
             if prefix is None and namespace:
                 # Proper use of namespaces, but unknown namespace
-                # logger.warn('Unknown namespace: %s', namespace_uri)
+                # logger.warning('Unknown namespace: %s', namespace_uri)
                 # We prefix the tag name here to make sure that it does not
                 # match any other tag below if we can't recognize the namespace
                 name = '!%s:%s' % (namespace, name)
@@ -488,7 +488,7 @@ def parse_time(value):
         try:
             seconds = int(value)
         except ValueError:
-            logger.warn('Could not parse time value: "%s"', value)
+            logger.warning('Could not parse time value: "%s"', value)
             return 0
 
     return (int(hours) * 60 + int(minutes)) * 60 + int(seconds)
@@ -576,7 +576,7 @@ def parse_pubdate(text):
             pubtimeseconds = int(mktime_tz(parsed))
             return pubtimeseconds
         except(OverflowError,ValueError):
-            logger.warn('bad pubdate %s is before epoch or after end of time (2038)',parsed)
+            logger.warning('bad pubdate %s is before epoch or after end of time (2038)',parsed)
             return 0
         
     try:
