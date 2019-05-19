@@ -713,12 +713,12 @@ class PodcastHandler(sax.handler.ContentHandler):
             del entry['chapters']
 
         # Ensures `description` does not contain HTML
-        if 'description' in entry and is_html(entry['description']):
+        if is_html(entry['description']):
             if 'description_html' not in entry:
                 entry['description_html'] = entry['description']
             entry['description'] = ''
 
-        # Sets `description` to stripped `description_html` when absent
+        # Sets `description` to stripped `description_html` when empty
         if 'description_html' in entry and not entry['description']:
             entry['description'] = remove_html_tags(entry['description_html'])
 
