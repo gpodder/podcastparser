@@ -636,7 +636,7 @@ MAPPING = {
     'atom:feed': PodcastItem(),
     'atom:feed/atom:title': PodcastAttr('title', squash_whitespace),
     'atom:feed/atom:subtitle': PodcastAttr('description', squash_whitespace),
-    'atom:feed/atom:icon': PodcastAttr('cover_url'),
+    'atom:feed/atom:icon': PodcastAttrRelativeLink('cover_url'),
     'atom:feed/atom:link': PodcastAtomLink(),
     'atom:feed/atom:entry': EpisodeItem(),
     'atom:feed/atom:entry/atom:id': EpisodeAttr('guid'),
