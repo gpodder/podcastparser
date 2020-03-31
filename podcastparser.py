@@ -626,6 +626,7 @@ MAPPING = {
     'rss/channel/item/itunes:duration': EpisodeAttr('total_time', parse_time),
     'rss/channel/item/pubDate': EpisodeAttr('published', parse_pubdate),
     'rss/channel/item/atom:link': AtomLink(),
+    'rss/channel/item/itunes:image': EpisodeAttrFromHref('episode_art_url'),
 
     'rss/channel/item/media:content': Enclosure('fileSize'),
     'rss/channel/item/enclosure': Enclosure('length'),
