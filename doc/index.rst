@@ -129,6 +129,9 @@ RSS
 **rss/channel/item/atom:link@rel=enclosure**
     File download URL (@href), size (@length) and mime type (@type).
 
+**rss/channel/item/itunes:image**
+    Episode art URL.
+
 **rss/channel/item/media:content**
     File download URL (@url), size (@fileSize) and mime type (@type).
 

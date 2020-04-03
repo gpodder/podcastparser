@@ -1,0 +1,9 @@
+<rss xmlns:it="http://www.itunes.com/dtds/podcast-1.0.dtd">
+  <channel>
+    <item>
+      <title>Namespace Test</title>
+      <guid>a</guid>
+      <itunes:image href="http://example.com/episode/1.jpg" />
+    </item>
+  </channel>
+</rss>
