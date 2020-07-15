@@ -8,4 +8,4 @@ See docs in [./doc](./doc) or at [Read the Docs](https://podcastparser.readthedo
 
 ## Automated Tests
 
-To run the unit tests you need [`nose`](http://nose.readthedocs.io/en/latest/).  If you have `nose` installed, use the `nosetests` command in the repository's root directory to run the tests.
+To run the unit tests you need [`pytest`](https://docs.pytest.org/).  If you have `pytest` installed, use the `pytest` command in the repository's root directory to run the tests.

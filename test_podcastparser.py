@@ -29,14 +29,14 @@ except ImportError:
     from io import StringIO
 
 
-from nose.tools import assert_equal
-from nose.tools import assert_raises
-
+import pytest
 import podcastparser
 
 
-def test_rss_parsing():
-    def test_parse_rss(rss_filename):
+class TestPodcastparser:
+    # test RSS parsing
+    @pytest.mark.parametrize("rss_filename", glob.glob(os.path.join('tests', 'data', '*.rss')))
+    def test_parse_rss(self, rss_filename):
         basename, _ = os.path.splitext(rss_filename)
         json_filename = basename + '.json'
 
@@ -53,21 +53,16 @@ def test_rss_parsing():
         parsed = podcastparser.parse('file://' + normalized_rss_filename,
                                      open(rss_filename), **params)
 
-        assert_equal.__self__.maxDiff = None
-        assert_equal(expected, parsed)
+        assert expected == parsed
 
-    for rss_filename in glob.glob(os.path.join('tests', 'data', '*.rss')):
-        yield test_parse_rss, rss_filename
-
-def test_invalid_roots():
-    def test_fail_parse(feed):
-        with assert_raises(podcastparser.FeedParseError):
-            podcastparser.parse('file://example.com/feed.xml', StringIO(feed))
-
+    # test invalid roots
     feeds = [
         '<html><body/></html>',
         '<foo xmlns="http://example.com/foo.xml"><bar/></foo>',
         '<baz:foo xmlns:baz="http://example.com/baz.xml"><baz:bar/></baz:foo>',
     ]
-    for feed in feeds:
-        yield test_fail_parse, feed
+    @pytest.mark.parametrize("feed", feeds)
+    def test_fail_parse(self, feed):
+        with pytest.raises(podcastparser.FeedParseError):
+            podcastparser.parse('file://example.com/feed.xml', StringIO(feed))
+
