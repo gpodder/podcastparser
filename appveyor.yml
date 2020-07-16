@@ -21,7 +21,7 @@ environment:
 install:
   # Install dependencies
   - "%PYTHON%\\python.exe -m pip install -r requirements-test.txt"
-  - "%PYTHON%\\python.exe -m pip install nose coverage"
+  - "%PYTHON%\\python.exe -m pip install pytest pytest-cov coverage"
 
 build: off
 
@@ -33,7 +33,7 @@ test_script:
   # Note that you must use the environment variable %PYTHON% to refer to
   # the interpreter you're using - Appveyor does not do anything special
   # to put the Python evrsion you want to use on PATH.
-  - "%PYTHON%\\python.exe -m nose"
+  - "%PYTHON%\\python.exe -m pytest"
 
 after_test:
   # Do coverage report.
