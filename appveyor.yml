@@ -21,7 +21,7 @@ environment:
 install:
   # Install dependencies
   - "%PYTHON%\\python.exe -m pip install -r requirements-test.txt"
-  - "%PYTHON%\\python.exe -m pip install pytest pytest-cov coverage"
+  - "%PYTHON%\\python.exe -m pip install pytest>=4.6 pytest-cov coverage"
 
 build: off
 
