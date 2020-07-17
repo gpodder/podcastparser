@@ -2,7 +2,7 @@ PACKAGE := podcastparser
 
 PYTHON ?= python
 FIND ?= find
-NOSETESTS ?= $(PYTHON) -m nose
+PYTEST ?= $(PYTHON) -m pytest
 
 help:
 	@echo ""
@@ -12,7 +12,7 @@ help:
 	@echo ""
 
 test:
-	$(NOSETESTS)
+	$(PYTEST)
 
 clean:
 	$(FIND) . -name '*.pyc' -o -name __pycache__ -exec $(RM) -r '{}' +
