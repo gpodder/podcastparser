@@ -677,7 +677,6 @@ class PodcastHandler(sax.handler.ContentHandler):
         self.episodes = []
         self.data = {
             'title': file_basename_no_extension(url),
-            'type': 'episodic',
             'episodes': self.episodes
         }
         self.path_stack = []
