@@ -93,7 +93,8 @@ class RSS(Target):
 class PodcastItem(Target):
     def end(self, handler, text):
         by_published = lambda entry: entry.get('published')
-        handler.data['episodes'].sort(key=by_published, reverse=True)
+        order = 'type' not in handler.data or handler.data['type'] != 'serial'
+        handler.data['episodes'].sort(key=by_published, reverse=order)
         if handler.max_episodes:
             episodes = handler.data['episodes'][:handler.max_episodes]
             handler.data['episodes'] = episodes
@@ -580,7 +581,7 @@ def parse_pubdate(text):
         except(OverflowError,ValueError):
             logger.warning('bad pubdate %s is before epoch or after end of time (2038)',parsed)
             return 0
-        
+
     try:
         parsed = time.strptime(text[:19], '%Y-%m-%dT%H:%M:%S')
         if parsed is not None:
@@ -614,6 +615,7 @@ MAPPING = {
     'rss/channel/description': PodcastAttr('description', squash_whitespace),
     'rss/channel/image/url': PodcastAttrRelativeLink('cover_url'),
     'rss/channel/itunes:image': PodcastAttrFromHref('cover_url'),
+    'rss/channel/itunes:type': PodcastAttr('type', squash_whitespace),
     'rss/channel/atom:link': PodcastAtomLink(),
 
     'rss/channel/item': EpisodeItem(),
@@ -661,7 +663,7 @@ VALID_ROOTS = set(path.split('/')[0] for path in MAPPING.keys())
 class FeedParseError(sax.SAXParseException, ValueError):
     """
     Exception raised when asked to parse an invalid feed
-    
+
     This exception allows users of this library to catch exceptions
     without having to import the XML parsing library themselves.
     """
@@ -677,6 +679,7 @@ class PodcastHandler(sax.handler.ContentHandler):
         self.episodes = []
         self.data = {
             'title': file_basename_no_extension(url),
+            'type': 'episodic',
             'episodes': self.episodes
         }
         self.path_stack = []

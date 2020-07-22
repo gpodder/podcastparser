@@ -86,6 +86,9 @@ RSS
 **rss/channel/itunes:image**
     Podcast cover art (alternative).
 
+**rss/channel/itunes:type**
+    Podcast type (whitespace is squashed).  One of 'episodic' or 'serial'.  
+
 **rss/channel/atom:link@rel=payment**
     Podcast payment URL (e.g. Flattr).
 
