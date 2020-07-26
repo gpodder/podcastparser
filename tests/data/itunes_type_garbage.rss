@@ -1,7 +1,7 @@
 <rss>
   <channel>
     <title>HTML Podcast with ITunes type</title>
-    <itunes:type>episodic</itunes:type>
+    <itunes:type>bogus</itunes:type>
     <item>
         <title>Episode 2</title>
         <pubDate>Mon, 13 Jul 2020 04:00:00 -0000</pubDate>

@@ -686,6 +686,8 @@ class PodcastHandler(sax.handler.ContentHandler):
         self.base = base
 
     def set_podcast_attr(self, key, value):
+        if key == 'type' and value not in ['episodic', 'serial']:
+            return
         self.data[key] = value
 
     def set_episode_attr(self, key, value):
