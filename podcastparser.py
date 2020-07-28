@@ -590,7 +590,6 @@ def parse_pubdate(text):
         except(OverflowError,ValueError):
             logger.warning('bad pubdate %s is before epoch or after end of time (2038)',parsed)
             return 0
-
     try:
         parsed = time.strptime(text[:19], '%Y-%m-%dT%H:%M:%S')
         if parsed is not None:
@@ -672,6 +671,7 @@ VALID_ROOTS = set(path.split('/')[0] for path in MAPPING.keys())
 class FeedParseError(sax.SAXParseException, ValueError):
     """
     Exception raised when asked to parse an invalid feed
+
     This exception allows users of this library to catch exceptions
     without having to import the XML parsing library themselves.
     """
