@@ -1,0 +1,15 @@
+<rss>
+  <channel>
+    <title>HTML Podcast with ITunes type missing</title>
+    <item>
+        <title>Episode 2</title>
+        <pubDate>Mon, 13 Jul 2020 04:00:00 -0000</pubDate>
+        <enclosure url="http://example.org/example2.mp3"/>
+    </item>
+    <item>
+        <title>Episode 1</title>
+        <pubDate>Mon, 6 Jul 2020 04:00:00 -0000</pubDate>
+        <enclosure url="http://example.org/example1.mp3"/>
+    </item>
+  </channel>
+</rss>

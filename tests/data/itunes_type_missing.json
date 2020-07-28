@@ -1,0 +1,37 @@
+{
+  "title": "HTML Podcast with ITunes type missing",
+  "episodes": [
+    {
+      "title": "Episode 2",
+      "description": "",
+      "published": 1594612800,
+      "guid": "http://example.org/example2.mp3",
+      "link": "",
+      "total_time": 0,
+      "payment_url": null,
+      "enclosures": [
+        {
+          "file_size": -1,
+          "url": "http://example.org/example2.mp3",
+          "mime_type": "application/octet-stream"
+        }
+      ]
+    },
+    {
+      "title": "Episode 1",
+      "description": "",
+      "published": 1594008000,
+      "guid": "http://example.org/example1.mp3",
+      "link": "",
+      "total_time": 0,
+      "payment_url": null,
+      "enclosures": [
+        {
+          "file_size": -1,
+          "url": "http://example.org/example1.mp3",
+          "mime_type": "application/octet-stream"
+        }
+      ]
+    }
+  ]
+}
