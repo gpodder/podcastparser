@@ -43,11 +43,11 @@ Example
 .. code-block:: python
 
     import podcastparser
-    import urllib
+    import urllib.request
 
     feedurl = 'http://example.com/feed.xml'
 
-    parsed = podcastparser.parse(feedurl, urllib.urlopen(feedurl))
+    parsed = podcastparser.parse(feedurl, urllib.request.urlopen(feedurl))
 
     # parsed is a dict
     import pprint
