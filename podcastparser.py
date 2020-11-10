@@ -22,7 +22,7 @@
 
 # Will be parsed by setup.py to determine package metadata
 __author__ = 'Thomas Perl <m@thp.io>'
-__version__ = '0.6.5'
+__version__ = '0.6.6'
 __website__ = 'http://gpodder.org/podcastparser/'
 __license__ = 'ISC License'
 
