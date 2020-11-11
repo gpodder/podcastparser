@@ -436,6 +436,15 @@ def squash_whitespace(text):
     return re.sub('\s+', ' ', text.strip())
 
 
+def squash_whitespace_not_nl(text):
+    """ Like squash_whitespace, but don't squash linefeeds and carriage returns
+
+    >>> squash_whitespace_not_nl(' linefeeds\\ncarriage\\r  returns')
+    'linefeeds\\ncarriage\\r returns'
+    """
+    return re.sub(r'[^\S\r\n]+', ' ', text.strip())
+
+
 def parse_time(value):
     """Parse a time string into seconds
 
