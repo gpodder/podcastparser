@@ -244,7 +244,7 @@ class AtomContent(Target):
         if self._mime_type == 'html':
             handler.set_episode_attr('description_html', text)
         elif self._mime_type == 'text':
-            handler.set_episode_attr('description', squash_whitespace(text))
+            handler.set_episode_attr('description', squash_whitespace_not_nl(text))
 
 
 class RSSItemDescription(Target):
@@ -266,7 +266,7 @@ class RSSItemDescription(Target):
                 handler.set_episode_attr('description_html', text.strip())
         elif not handler.get_episode_attr('description'):
             # don't overwrite itunes:summary?
-            handler.set_episode_attr('description', squash_whitespace(text))
+            handler.set_episode_attr('description', squash_whitespace_not_nl(text))
 
 
 class PodloveChapters(Target):
@@ -630,7 +630,7 @@ MAPPING = {
     'rss/channel': PodcastItem(),
     'rss/channel/title': PodcastAttr('title', squash_whitespace),
     'rss/channel/link': PodcastAttrRelativeLink('link'),
-    'rss/channel/description': PodcastAttr('description', squash_whitespace),
+    'rss/channel/description': PodcastAttr('description', squash_whitespace_not_nl),
     'rss/channel/image/url': PodcastAttrRelativeLink('cover_url'),
     'rss/channel/itunes:image': PodcastAttrFromHref('cover_url'),
     'rss/channel/itunes:type': PodcastAttrType('type', squash_whitespace),
@@ -641,8 +641,8 @@ MAPPING = {
     'rss/channel/item/title': EpisodeAttr('title', squash_whitespace),
     'rss/channel/item/link': EpisodeAttrRelativeLink('link'),
     'rss/channel/item/description': RSSItemDescription(),
-    'rss/channel/item/itunes:summary': EpisodeAttr('description', squash_whitespace),
-    'rss/channel/item/media:description': EpisodeAttr('description', squash_whitespace),
+    'rss/channel/item/itunes:summary': EpisodeAttr('description', squash_whitespace_not_nl),
+    'rss/channel/item/media:description': EpisodeAttr('description', squash_whitespace_not_nl),
     'rss/channel/item/itunes:subtitle': EpisodeAttr('subtitle', squash_whitespace),
     'rss/channel/item/content:encoded': EpisodeAttr('description_html'),
     'rss/channel/item/itunes:duration': EpisodeAttr('total_time', parse_time),
@@ -658,7 +658,7 @@ MAPPING = {
     # Basic support for Atom feeds
     'atom:feed': PodcastItem(),
     'atom:feed/atom:title': PodcastAttr('title', squash_whitespace),
-    'atom:feed/atom:subtitle': PodcastAttr('description', squash_whitespace),
+    'atom:feed/atom:subtitle': PodcastAttr('description', squash_whitespace_not_nl),
     'atom:feed/atom:icon': PodcastAttrRelativeLink('cover_url'),
     'atom:feed/atom:link': PodcastAtomLink(),
     'atom:feed/atom:entry': EpisodeItem(),
@@ -669,7 +669,7 @@ MAPPING = {
     'atom:feed/atom:entry/content:encoded': EpisodeAttr('description_html'),
     'atom:feed/atom:entry/atom:published': EpisodeAttr('published', parse_pubdate),
     'atom:feed/atom:entry/atom:updated': EpisodeAttr('published', parse_pubdate, overwrite=False),
-    'atom:feed/atom:entry/media:group/media:description': EpisodeAttr('description', squash_whitespace),
+    'atom:feed/atom:entry/media:group/media:description': EpisodeAttr('description', squash_whitespace_not_nl),
     'atom:feed/atom:entry/psc:chapters': PodloveChapters(),
     'atom:feed/atom:entry/psc:chapters/psc:chapter': PodloveChapter(),
 }
