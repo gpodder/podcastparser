@@ -244,7 +244,7 @@ class AtomContent(Target):
         if self._mime_type == 'html':
             handler.set_episode_attr('description_html', text)
         elif self._mime_type == 'text':
-            handler.set_episode_attr('description', squash_whitespace(text))
+            handler.set_episode_attr('description', squash_whitespace_not_nl(text))
 
 
 class RSSItemDescription(Target):
@@ -266,7 +266,7 @@ class RSSItemDescription(Target):
                 handler.set_episode_attr('description_html', text.strip())
         elif not handler.get_episode_attr('description'):
             # don't overwrite itunes:summary?
-            handler.set_episode_attr('description', squash_whitespace(text))
+            handler.set_episode_attr('description', squash_whitespace_not_nl(text))
 
 
 class PodloveChapters(Target):
@@ -433,7 +433,16 @@ def squash_whitespace(text):
     >>> squash_whitespace(' some\t   text  with a    lot of   spaces ')
     'some text with a lot of spaces'
     """
-    return re.sub('\s+', ' ', text.strip())
+    return re.sub(r'\s+', ' ', text.strip())
+
+
+def squash_whitespace_not_nl(text):
+    """ Like squash_whitespace, but don't squash linefeeds and carriage returns
+
+    >>> squash_whitespace_not_nl(' linefeeds\\ncarriage\\r  returns')
+    'linefeeds\\ncarriage\\r returns'
+    """
+    return re.sub(r'[^\S\r\n]+', ' ', text.strip())
 
 
 def parse_time(value):
@@ -621,7 +630,7 @@ MAPPING = {
     'rss/channel': PodcastItem(),
     'rss/channel/title': PodcastAttr('title', squash_whitespace),
     'rss/channel/link': PodcastAttrRelativeLink('link'),
-    'rss/channel/description': PodcastAttr('description', squash_whitespace),
+    'rss/channel/description': PodcastAttr('description', squash_whitespace_not_nl),
     'rss/channel/image/url': PodcastAttrRelativeLink('cover_url'),
     'rss/channel/itunes:image': PodcastAttrFromHref('cover_url'),
     'rss/channel/itunes:type': PodcastAttrType('type', squash_whitespace),
@@ -632,8 +641,8 @@ MAPPING = {
     'rss/channel/item/title': EpisodeAttr('title', squash_whitespace),
     'rss/channel/item/link': EpisodeAttrRelativeLink('link'),
     'rss/channel/item/description': RSSItemDescription(),
-    'rss/channel/item/itunes:summary': EpisodeAttr('description', squash_whitespace),
-    'rss/channel/item/media:description': EpisodeAttr('description', squash_whitespace),
+    'rss/channel/item/itunes:summary': EpisodeAttr('description', squash_whitespace_not_nl),
+    'rss/channel/item/media:description': EpisodeAttr('description', squash_whitespace_not_nl),
     'rss/channel/item/itunes:subtitle': EpisodeAttr('subtitle', squash_whitespace),
     'rss/channel/item/content:encoded': EpisodeAttr('description_html'),
     'rss/channel/item/itunes:duration': EpisodeAttr('total_time', parse_time),
@@ -649,7 +658,7 @@ MAPPING = {
     # Basic support for Atom feeds
     'atom:feed': PodcastItem(),
     'atom:feed/atom:title': PodcastAttr('title', squash_whitespace),
-    'atom:feed/atom:subtitle': PodcastAttr('description', squash_whitespace),
+    'atom:feed/atom:subtitle': PodcastAttr('description', squash_whitespace_not_nl),
     'atom:feed/atom:icon': PodcastAttrRelativeLink('cover_url'),
     'atom:feed/atom:link': PodcastAtomLink(),
     'atom:feed/atom:entry': EpisodeItem(),
@@ -660,7 +669,7 @@ MAPPING = {
     'atom:feed/atom:entry/content:encoded': EpisodeAttr('description_html'),
     'atom:feed/atom:entry/atom:published': EpisodeAttr('published', parse_pubdate),
     'atom:feed/atom:entry/atom:updated': EpisodeAttr('published', parse_pubdate, overwrite=False),
-    'atom:feed/atom:entry/media:group/media:description': EpisodeAttr('description', squash_whitespace),
+    'atom:feed/atom:entry/media:group/media:description': EpisodeAttr('description', squash_whitespace_not_nl),
     'atom:feed/atom:entry/psc:chapters': PodloveChapters(),
     'atom:feed/atom:entry/psc:chapters/psc:chapter': PodloveChapter(),
 }
@@ -889,7 +898,7 @@ def normalize_feed_url(url):
     # urlunsplit might return "a slighty different, but equivalent URL"
     return urlparse.urlunsplit((scheme, netloc, path, query, fragment))
 
-HTML_TEST = re.compile('<[a-z][a-z0-9]*(?:\s.*?>|\/?>)', re.IGNORECASE | re.DOTALL)
+HTML_TEST = re.compile(r'<[a-z][a-z0-9]*(?:\s.*?>|\/?>)', re.IGNORECASE | re.DOTALL)
 def is_html(text):
     """Heuristically tell if text is HTML
 
@@ -911,18 +920,18 @@ def remove_html_tags(html):
         return None
 
     # If we would want more speed, we could make these global
-    re_strip_tags = re.compile('<[^>]*>')
-    re_unicode_entities = re.compile('&#(\d{2,4});')
-    re_html_entities = re.compile('&(.{2,8});')
-    re_newline_tags = re.compile('(<br[^>]*>|<[/]?ul[^>]*>|</li>)', re.I)
-    re_listing_tags = re.compile('<li[^>]*>', re.I)
+    re_strip_tags = re.compile(r'<[^>]*>')
+    re_unicode_entities = re.compile(r'&#(\d{2,4});')
+    re_html_entities = re.compile(r'&(.{2,8});')
+    re_newline_tags = re.compile(r'(<br[^>]*>|<[/]?ul[^>]*>|</li>)', re.I)
+    re_listing_tags = re.compile(r'<li[^>]*>', re.I)
 
     result = html
 
     # Convert common HTML elements to their text equivalent
-    result = re_newline_tags.sub('\n', result)
-    result = re_listing_tags.sub('\n * ', result)
-    result = re.sub('<[Pp]>', '\n\n', result)
+    result = re_newline_tags.sub(r'\n', result)
+    result = re_listing_tags.sub(r'\n * ', result)
+    result = re.sub(r'<[Pp]>', r'\n\n', result)
 
     # Remove all HTML/XML tags from the string
     result = re_strip_tags.sub('', result)
@@ -934,6 +943,6 @@ def remove_html_tags(html):
     result = re_html_entities.sub(lambda x: entitydefs.get(x.group(1), ''), result)
 
     # Convert more than two newlines to two newlines
-    result = re.sub('([\r\n]{2})([\r\n])+', '\\1', result)
+    result = re.sub(r'([\r\n]{2})([\r\n])+', r'\1', result)
 
     return result.strip()
