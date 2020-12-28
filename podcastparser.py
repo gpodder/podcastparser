@@ -118,7 +118,7 @@ class PodcastAttrType(Target):
 
 class PodcastAttrRelativeLink(PodcastAttr):
     def end(self, handler, text):
-        text = urlparse.urljoin(handler.base, text)
+        text = urlparse.urljoin(handler.base, text.strip())
         super(PodcastAttrRelativeLink, self).end(handler, text)
 
 
