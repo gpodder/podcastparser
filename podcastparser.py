@@ -651,6 +651,7 @@ MAPPING = {
     'rss/channel/item/itunes:image': EpisodeAttrFromHref('episode_art_url'),
 
     'rss/channel/item/media:content': Enclosure('fileSize'),
+    'rss/channel/item/media:group/media:content': Enclosure('fileSize'),
     'rss/channel/item/enclosure': Enclosure('length'),
     'rss/channel/item/psc:chapters': PodloveChapters(),
     'rss/channel/item/psc:chapters/psc:chapter': PodloveChapter(),

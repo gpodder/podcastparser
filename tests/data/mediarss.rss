@@ -3,7 +3,11 @@
     <title>Podcast</title>
     <item>
         <title>Episode</title>
+        <guid>http://example.org/example.mp3</guid>
         <media:content url="http://example.org/example.mp3" fileSize="1234" type="audio/mpeg"/>
+        <media:group>
+            <media:content url="http://example.org/example2.mp3" fileSize="2345" type="audio/mpeg"/>
+        </media:group>
     </item>
     </channel>
 </rss>
