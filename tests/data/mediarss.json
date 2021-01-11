@@ -6,13 +6,18 @@
             "description": "",
             "published": 0,
             "guid": "http://example.org/example.mp3",
-            "link": "",
+            "link": "http://example.org/example.mp3",
             "total_time": 0,
             "payment_url": null,
             "enclosures": [
                 {
                     "file_size": 1234,
                     "url": "http://example.org/example.mp3",
+                    "mime_type": "audio/mpeg"
+                },
+                {
+                    "file_size": 2345,
+                    "url": "http://example.org/example2.mp3",
                     "mime_type": "audio/mpeg"
                 }
             ]

@@ -138,6 +138,9 @@ RSS
 **rss/channel/item/media:content**
     File download URL (@url), size (@fileSize) and mime type (@type).
 
+**rss/channel/item/media:group/media:content**
+    File download URL (@url), size (@fileSize) and mime type (@type).
+
 **rss/channel/item/enclosure**
     File download URL (@url), size (@length) and mime type (@type).
 
