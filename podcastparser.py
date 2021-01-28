@@ -444,6 +444,10 @@ def squash_whitespace_not_nl(text):
     """
     return re.sub(r'[^\S\r\n]+', ' ', text.strip())
 
+def maybe_remove_html_tags(text):
+    if is_html(text):
+        text = remove_html_tags(text)
+    return squash_whitespace_not_nl(text)
 
 def parse_time(value):
     """Parse a time string into seconds
@@ -630,7 +634,7 @@ MAPPING = {
     'rss/channel': PodcastItem(),
     'rss/channel/title': PodcastAttr('title', squash_whitespace),
     'rss/channel/link': PodcastAttrRelativeLink('link'),
-    'rss/channel/description': PodcastAttr('description', squash_whitespace_not_nl),
+    'rss/channel/description': PodcastAttr('description', maybe_remove_html_tags),
     'rss/channel/image/url': PodcastAttrRelativeLink('cover_url'),
     'rss/channel/itunes:image': PodcastAttrFromHref('cover_url'),
     'rss/channel/itunes:type': PodcastAttrType('type', squash_whitespace),
@@ -659,7 +663,7 @@ MAPPING = {
     # Basic support for Atom feeds
     'atom:feed': PodcastItem(),
     'atom:feed/atom:title': PodcastAttr('title', squash_whitespace),
-    'atom:feed/atom:subtitle': PodcastAttr('description', squash_whitespace_not_nl),
+    'atom:feed/atom:subtitle': PodcastAttr('description', maybe_remove_html_tags),
     'atom:feed/atom:icon': PodcastAttrRelativeLink('cover_url'),
     'atom:feed/atom:link': PodcastAtomLink(),
     'atom:feed/atom:entry': EpisodeItem(),
