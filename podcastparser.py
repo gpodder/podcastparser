@@ -323,6 +323,9 @@ class Namespace():
 
         # Purl RSS Content module
         'http://purl.org/rss/1.0/modules/content/': 'content',
+
+        # RawVoice RSS Module
+        'http://www.rawvoice.com/rawvoiceRssModule/': 'rawvoice',
     }
 
     def __init__(self, attrs, parent=None):
