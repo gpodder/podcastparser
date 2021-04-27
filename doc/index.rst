@@ -221,7 +221,7 @@ Chapter Marks
 - `rawvoice RSS`_: Rating, Frequency, Poster, WebM, MP4, Metamark (kind of chapter-like markers)
 - `IGOR`_: Chapter Marks
 
-.. _rawvoice RSS: http://www.rawvoice.com/rawvoiceRssModule/
+.. _rawvoice RSS: https://rawvoice.com/services/tools-and-resources/rawvoice-rss-2-0-module-xmlns-namespace-rss2/
 .. _IGOR: http://emonk.net/IGOR
 
 Others
