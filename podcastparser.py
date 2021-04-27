@@ -635,6 +635,7 @@ MAPPING = {
     'rss/channel/link': PodcastAttrRelativeLink('link'),
     'rss/channel/description': PodcastAttr('description', squash_whitespace_not_nl),
     'rss/channel/image/url': PodcastAttrRelativeLink('cover_url'),
+    'rss/channel/itunes:author': PodcastAttr('author', squash_whitespace),
     'rss/channel/itunes:image': PodcastAttrFromHref('cover_url'),
     'rss/channel/itunes:type': PodcastAttrType('type', squash_whitespace),
     'rss/channel/atom:link': PodcastAtomLink(),
