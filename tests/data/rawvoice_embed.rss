@@ -1,0 +1,6 @@
+<rss xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/">
+<channel>
+    <title>Namespace Test</title>
+    <rawvoice:embed><![CDATA[<embed><param /></embed>]]></rawvoice:embed>
+</channel>
+</rss>

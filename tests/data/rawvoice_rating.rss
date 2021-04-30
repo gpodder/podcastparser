@@ -1,0 +1,6 @@
+<rss xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/">
+<channel>
+    <title>Namespace Test</title>
+    <rawvoice:rating tv="TV-PG" movie="PG">TV-PG</rawvoice:rating>
+</channel>
+</rss>

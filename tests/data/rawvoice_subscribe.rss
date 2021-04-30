@@ -1,0 +1,6 @@
+<rss xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/">
+<channel>
+    <title>Namespace Test</title>
+    <rawvoice:subscribe feed="http://example.com/feed/podcast/" itunes="http://itunes.apple.com/podcast/title-of-podcast/id000000000" html="http://example.com/subscribe-to-podcast/"></rawvoice:subscribe>
+</channel>
+</rss>

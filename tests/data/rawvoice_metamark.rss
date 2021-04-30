@@ -1,0 +1,6 @@
+<rss xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/">
+<channel>
+    <title>Namespace Test</title>
+    <rawvoice:metamark type="comment" link="http://www.example.com/path/to/comment/" position="360" duration="60">Tom: Loved how you discuss how to make cookies with a toaster oven.</rawvoice:metamark>
+</channel>
+</rss>
