@@ -203,6 +203,66 @@ attributes:
 **atom:feed/atom:entry/psc:chapters/psc:chapter**
     Chapter entry (@start, @title, @href and @image).
 
+RawVoice
+--------
+
+For RawVoice RSS module, podcastparser will handle the following elements and attributes:
+
+**rss/channel/rawvoice:rating**
+    Specify parental rating (whitespace is squashed).
+
+**rss/channel/rawvoice:liveEmbed**
+    Embed code of a live stream to the media (whitespace is squashed).
+
+**rss/channel/rawvoice:flashLiveStream**
+    Adobe Flash live stream using the Real Time Messaging Protocol (whitespace is squashed).
+
+**rss/channel/rawvoice:httpLiveStream**
+    Apple HTTP Live Stream (HLS) using Hypertext Transfer Protocol (whitespace is squashed).
+
+**rss/channel/rawvoice:shoutcastLiveStream**
+    Shoutcast live stream  using Hypertext Transfer Protocol (whitespace is squashed).
+
+**rss/channel/rawvoice:liveStream**
+    Generic live stream URL (whitespace is squashed).
+
+**rss/channel/rawvoice:location**
+    Readable location of the content (whitespace is squashed).
+
+**rss/channel/rawvoice:frequency**
+    Readable frequency of the media episodes (whitespace is squashed).
+
+**rss/channel/rawvoice:mycast**
+    Currently signed in user’s MyCast subscription (whitespace is squashed).
+
+**rss/channel/rawvoice:poster**
+    Artwork image for the specific media episode (whitespace is squashed).
+
+**rss/channel/rawvoice:isHd**
+    Specify is in High Definition (whitespace is squashed).
+
+**rss/channel/rawvoice:embed**
+    Block of embed HTML markup that corresponds to the item’s media content (whitespace is squashed).
+
+**rss/channel/rawvoice:webm**
+    Alternative ‘WebM’ version of the video specified (whitespace is squashed).
+
+**rss/channel/rawvoice:mp4**
+    Alternative ‘H.264/mp4’ version of the video specified (whitespace is squashed).
+
+**rss/channel/rawvoice:metamark**
+    Additional meta information (whitespace is squashed).
+
+**rss/channel/rawvoice:subscribe**
+    Syndicating subscription information (whitespace is squashed).
+
+**rss/channel/rawvoice:donate**
+    Syndicating a donate page for crowdfunding purposes (whitespace is squashed).
+
+
+    RawVoice RSS Module documentation: https://rawvoice.com/services/tools-and-resources/rawvoice-rss-2-0-module-xmlns-namespace-rss2/
+
+
 The ``podcastparser`` module
 ============================
 
@@ -218,10 +278,8 @@ supported by podcastparser, but might be in the future.
 Chapter Marks
 -------------
 
-- `rawvoice RSS`_: Rating, Frequency, Poster, WebM, MP4, Metamark (kind of chapter-like markers)
 - `IGOR`_: Chapter Marks
 
-.. _rawvoice RSS: https://rawvoice.com/services/tools-and-resources/rawvoice-rss-2-0-module-xmlns-namespace-rss2/
 .. _IGOR: http://emonk.net/IGOR
 
 Others
