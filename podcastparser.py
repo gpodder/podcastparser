@@ -635,6 +635,7 @@ MAPPING = {
     'rss/channel/itunes:image': PodcastAttrFromHref('cover_url'),
     'rss/channel/itunes:type': PodcastAttrType('type', squash_whitespace),
     'rss/channel/atom:link': PodcastAtomLink(),
+    'rss/channel/generator': PodcastAttr('generator', squash_whitespace),
 
     'rss/channel/item': EpisodeItem(),
     'rss/channel/item/guid': EpisodeGuid('guid'),

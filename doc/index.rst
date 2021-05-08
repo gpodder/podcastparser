@@ -92,6 +92,9 @@ RSS
 **rss/channel/atom:link@rel=payment**
     Podcast payment URL (e.g. Flattr).
 
+**rss/channel/generator**
+    A string indicating the program used to generate the channel. (e.g. MightyInHouse Content System v2.3).
+
 **rss/channel/item**
     Episode.
 
