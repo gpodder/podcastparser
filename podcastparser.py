@@ -172,11 +172,17 @@ class EpisodeGuid(EpisodeAttr):
 
 
 class EpisodeAttrFromHref(Target):
+    ATTRIBUTE = 'href'
+
     def start(self, handler, attrs):
-        value = attrs.get('href')
+        value = attrs.get(self.ATTRIBUTE)
         if value:
             value = urlparse.urljoin(handler.base, value)
             handler.set_episode_attr(self.key, self.filter_func(value))
+
+
+class EpisodeAttrFromUrl(EpisodeAttrFromHref):
+    ATTRIBUTE = 'url'
 
 
 class Enclosure(Target):
@@ -649,7 +655,10 @@ MAPPING = {
     'rss/channel/item/itunes:duration': EpisodeAttr('total_time', parse_time),
     'rss/channel/item/pubDate': EpisodeAttr('published', parse_pubdate),
     'rss/channel/item/atom:link': AtomLink(),
+
     'rss/channel/item/itunes:image': EpisodeAttrFromHref('episode_art_url'),
+    'rss/channel/item/media:thumbnail': EpisodeAttrFromUrl('episode_art_url'),
+    'rss/channel/item/media:group/media:thumbnail': EpisodeAttrFromUrl('episode_art_url'),
 
     'rss/channel/item/media:content': Enclosure('fileSize'),
     'rss/channel/item/media:group/media:content': Enclosure('fileSize'),
@@ -672,6 +681,10 @@ MAPPING = {
     'atom:feed/atom:entry/atom:published': EpisodeAttr('published', parse_pubdate),
     'atom:feed/atom:entry/atom:updated': EpisodeAttr('published', parse_pubdate, overwrite=False),
     'atom:feed/atom:entry/media:group/media:description': EpisodeAttr('description', squash_whitespace_not_nl),
+
+    'atom:feed/atom:entry/media:thumbnail': EpisodeAttrFromUrl('episode_art_url'),
+    'atom:feed/atom:entry/media:group/media:thumbnail': EpisodeAttrFromUrl('episode_art_url'),
+
     'atom:feed/atom:entry/psc:chapters': PodloveChapters(),
     'atom:feed/atom:entry/psc:chapters/psc:chapter': PodloveChapter(),
 }
