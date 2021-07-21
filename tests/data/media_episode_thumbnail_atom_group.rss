@@ -1,0 +1,9 @@
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
+  <entry>
+    <title>Namespace Test</title>
+    <id>a</id>
+    <media:group>
+      <media:thumbnail url="http://example.com/episode/1.jpg" />
+    </media:group>
+  </entry>
+</feed>

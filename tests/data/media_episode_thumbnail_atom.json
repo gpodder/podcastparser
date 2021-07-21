@@ -1,0 +1,16 @@
+{
+  "title": "media_episode_thumbnail_atom",
+  "episodes": [
+    {
+      "guid": "a",
+      "title": "Namespace Test",
+      "enclosures": [],
+      "payment_url": null,
+      "episode_art_url": "http://example.com/episode/1.jpg",
+      "link": "",
+      "published": 0,
+      "description": "",
+      "total_time": 0
+    }
+  ]
+}

@@ -138,6 +138,12 @@ RSS
 **rss/channel/item/itunes:image**
     Episode art URL.
 
+**rss/channel/item/media:thumbnail**
+    Episode art URL.
+
+**rss/channel/item/media:group/media:thumbnail**
+    Episode art URL.
+
 **rss/channel/item/media:content**
     File download URL (@url), size (@fileSize) and mime type (@type).
 
@@ -199,6 +205,12 @@ attributes:
 
 **atom:feed/atom:entry/atom:published**
     Episode publication date.
+
+**atom:feed/atom:entry/media:thumbnail**
+    Episode art URL.
+
+**atom:feed/atom:entry/media:group/media:thumbnail**
+    Episode art URL.
 
 **atom:feed/atom:entry/psc:chapters**
     Podlove Simple Chapters, version 1.1 and 1.2.
