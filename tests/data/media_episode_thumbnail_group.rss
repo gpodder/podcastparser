@@ -1,0 +1,11 @@
+<rss xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <item>
+      <title>Namespace Test</title>
+      <guid>a</guid>
+      <media:group>
+        <media:thumbnail url="http://example.com/episode/1.jpg" />
+      </media:group>
+    </item>
+  </channel>
+</rss>

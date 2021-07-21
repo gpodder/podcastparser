@@ -1,0 +1,16 @@
+{
+  "title": "media_episode_thumbnail",
+  "episodes": [
+    {
+      "guid": "file://tests/data/a",
+      "title": "Namespace Test",
+      "enclosures": [],
+      "payment_url": null,
+      "episode_art_url": "http://example.com/episode/1.jpg",
+      "link": "file://tests/data/a",
+      "published": 0,
+      "description": "",
+      "total_time": 0
+    }
+  ]
+}
