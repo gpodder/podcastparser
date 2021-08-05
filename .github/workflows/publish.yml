@@ -2,7 +2,14 @@
 
 name: publish
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+      # tmp: to update build
+      - 'github_actions'
+    tags:
+      - '.*'
 
 jobs:
   distpublish:
