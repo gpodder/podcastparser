@@ -643,6 +643,7 @@ MAPPING = {
     'rss/channel/atom:link': PodcastAtomLink(),
     'rss/channel/generator': PodcastAttr('generator', squash_whitespace),
     'rss/channel/language': PodcastAttr('language', squash_whitespace),
+    'rss/channel/itunes:author': PodcastAttr('itunes_author', squash_whitespace),
 
     'rss/channel/item': EpisodeItem(),
     'rss/channel/item/guid': EpisodeGuid('guid'),
