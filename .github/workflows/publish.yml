@@ -35,8 +35,7 @@ jobs:
     if: >-
       github.event_name == 'push' && (
         startsWith(github.ref, 'refs/tags') ||
-        github.ref == 'refs/heads/master' ||
-        github.ref == 'refs/heads/github_actions')
+        github.ref == 'refs/heads/master')
 
     steps:
       - uses: actions/checkout@v2
