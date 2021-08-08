@@ -304,6 +304,20 @@ class PodloveChapter(Target):
         handler.get_episode_attr('chapters').append(chapter)
 
 
+class ItunesOwnerAttr(Target):
+    WANT_TEXT = True
+
+    def end(self, handler, text):
+        if not self.overwrite and handler.get_episode_attr(self.key):
+            return
+        handler.set_itunes_owner_attr(self.key, self.filter_func(text))
+
+
+class ItunesOwnerItem(Target):
+    def start(self, handler, attrs):
+        handler.add_itunes_owner()
+
+
 class Namespace():
     # Mapping of XML namespaces to prefixes as used in MAPPING below
     NAMESPACES = {
@@ -644,6 +658,10 @@ MAPPING = {
     'rss/channel/generator': PodcastAttr('generator', squash_whitespace),
     'rss/channel/language': PodcastAttr('language', squash_whitespace),
     'rss/channel/itunes:author': PodcastAttr('itunes_author', squash_whitespace),
+    'rss/channel/itunes:owner': ItunesOwnerItem('itunes_owner', squash_whitespace),
+
+    'rss/channel/itunes:owner/itunes:email': ItunesOwnerAttr('email', squash_whitespace),
+    'rss/channel/itunes:owner/itunes:name': ItunesOwnerAttr('name', squash_whitespace),
 
     'rss/channel/item': EpisodeItem(),
     'rss/channel/item/guid': EpisodeGuid('guid'),
@@ -714,7 +732,7 @@ class PodcastHandler(sax.handler.ContentHandler):
         self.episodes = []
         self.data = {
             'title': file_basename_no_extension(url),
-            'episodes': self.episodes
+            'episodes': self.episodes,
         }
         self.path_stack = []
         self.namespace = None
@@ -794,6 +812,12 @@ class PodcastHandler(sax.handler.ContentHandler):
             'file_size': file_size,
             'mime_type': mime_type,
         })
+
+    def add_itunes_owner(self):
+        self.data['itunes_owner'] = {}
+
+    def set_itunes_owner_attr(self, key, value):
+        self.data['itunes_owner'][key] = value
 
     def startElement(self, name, attrs):
         self.namespace = Namespace(attrs, self.namespace)
