@@ -684,6 +684,7 @@ MAPPING = {
     'rss/channel/itunes:author': PodcastAttr('itunes_author', squash_whitespace),
     'rss/channel/itunes:owner': ItunesOwnerItem('itunes_owner', squash_whitespace),
     'rss/channel/itunes:explicit': PodcastAttrExplicit('explicit', squash_whitespace),
+    'rss/channel/itunes:new-feed-url': PodcastAttr('new_feed_url', squash_whitespace),
 
     'rss/channel/itunes:owner/itunes:email': ItunesOwnerAttr('email', squash_whitespace),
     'rss/channel/itunes:owner/itunes:name': ItunesOwnerAttr('name', squash_whitespace),

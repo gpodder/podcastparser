@@ -1,0 +1,6 @@
+<rss>
+    <channel>
+    <title>Podcast</title>
+    <itunes:new-feed-url>http://newlocation.com/example.rss</itunes:new-feed-url>
+    </channel>
+</rss>
