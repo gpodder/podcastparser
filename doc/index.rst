@@ -95,6 +95,22 @@ RSS
 **rss/channel/generator**
     A string indicating the program used to generate the channel. (e.g. MightyInHouse Content System v2.3).
 
+**rss/channel/language**
+    Podcast language.
+
+**rss/channel/itunes:author**
+    The group responsible for creating the show.
+
+**rss/channel/itunes:owner**
+    The podcast owner contact information.
+    The <itunes:owner> tag information is for administrative communication about the podcast and isn't displayed in Apple Podcasts
+
+**rss/channel/itunes:explicit**
+    Indicates whether podcast contains explicit material.
+
+**rss/channel/itunes:new-feed-url**
+    The new podcast RSS Feed URL.
+
 **rss/channel/item**
     Episode.
 
@@ -158,6 +174,12 @@ RSS
 
 **rss/channel/item/psc:chapters/psc:chapter**
     Chapter entry (@start, @title, @href and @image).
+
+**rss/channel/item/itunes:explicit**
+    Indicates whether episode contains explicit material.
+
+**rss/channel/item/itunes:author**
+    The group responsible for creating the episode.
 
 .. _Why RSS Content Module is Popular: https://developer.mozilla.org/en-US/docs/Web/RSS/Article/Why_RSS_Content_Module_is_Popular_-_Including_HTML_Contents
 
