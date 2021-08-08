@@ -318,6 +318,30 @@ class ItunesOwnerItem(Target):
         handler.add_itunes_owner()
 
 
+class PodcastAttrExplicit(Target):
+    WANT_TEXT = True
+    _VALUES_MAPPER = {
+        'yes': True,
+        'explicit': True,
+        'true': True,
+        'no': False,
+        'clean': False,
+        'false': False,
+    }
+
+    def end(self, handler, text):
+        value = self.filter_func(text).lower()
+        if value in self._VALUES_MAPPER:
+            handler.set_podcast_attr(self.key, self._VALUES_MAPPER[value])
+
+
+class EpisodeAttrExplicit(PodcastAttrExplicit):
+    def end(self, handler, text):
+        value = self.filter_func(text).lower()
+        if value in self._VALUES_MAPPER:
+            handler.set_episode_attr(self.key, self._VALUES_MAPPER[value])
+
+
 class Namespace():
     # Mapping of XML namespaces to prefixes as used in MAPPING below
     NAMESPACES = {
@@ -659,6 +683,7 @@ MAPPING = {
     'rss/channel/language': PodcastAttr('language', squash_whitespace),
     'rss/channel/itunes:author': PodcastAttr('itunes_author', squash_whitespace),
     'rss/channel/itunes:owner': ItunesOwnerItem('itunes_owner', squash_whitespace),
+    'rss/channel/itunes:explicit': PodcastAttrExplicit('explicit', squash_whitespace),
 
     'rss/channel/itunes:owner/itunes:email': ItunesOwnerAttr('email', squash_whitespace),
     'rss/channel/itunes:owner/itunes:name': ItunesOwnerAttr('name', squash_whitespace),
@@ -675,6 +700,7 @@ MAPPING = {
     'rss/channel/item/itunes:duration': EpisodeAttr('total_time', parse_time),
     'rss/channel/item/pubDate': EpisodeAttr('published', parse_pubdate),
     'rss/channel/item/atom:link': AtomLink(),
+    'rss/channel/item/itunes:explicit': EpisodeAttrExplicit('explicit', squash_whitespace),
 
     'rss/channel/item/itunes:image': EpisodeAttrFromHref('episode_art_url'),
     'rss/channel/item/media:thumbnail': EpisodeAttrFromUrl('episode_art_url'),
