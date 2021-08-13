@@ -187,6 +187,10 @@ RSS
 **rss/channel/item/itunes:episode**
     An episode number.
 
+**rss/channel/item/itunes:episodeType**
+    The episode type.
+    This flag is used if an episode is a trailer or bonus content.
+
 .. _Why RSS Content Module is Popular: https://developer.mozilla.org/en-US/docs/Web/RSS/Article/Why_RSS_Content_Module_is_Popular_-_Including_HTML_Contents
 
 Atom

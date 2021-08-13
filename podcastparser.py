@@ -195,6 +195,13 @@ class EpisodeAttrNumber(EpisodeAttr):
             handler.set_episode_attr(self.key, episode_num)
 
 
+class EpisodeAttrType(EpisodeAttr):
+    def end(self, handler, text):
+        value = self.filter_func(text)
+        if value.lower() in ('full', 'trailer', 'bonus'):
+            handler.set_episode_attr(self.key, value)
+
+
 class Enclosure(Target):
     def __init__(self, file_size_attribute):
         Target.__init__(self)
@@ -715,6 +722,7 @@ MAPPING = {
     'rss/channel/item/itunes:explicit': EpisodeAttrExplicit('explicit', squash_whitespace),
     'rss/channel/item/itunes:author': EpisodeAttr('itunes_author', squash_whitespace),
     'rss/channel/item/itunes:episode': EpisodeAttrNumber('number', squash_whitespace),
+    'rss/channel/item/itunes:episodeType': EpisodeAttrType('type', squash_whitespace),
 
     'rss/channel/item/itunes:image': EpisodeAttrFromHref('episode_art_url'),
     'rss/channel/item/media:thumbnail': EpisodeAttrFromUrl('episode_art_url'),
