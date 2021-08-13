@@ -185,6 +185,16 @@ class EpisodeAttrFromUrl(EpisodeAttrFromHref):
     ATTRIBUTE = 'url'
 
 
+class EpisodeAttrNumber(EpisodeAttr):
+    def end(self, handler, text):
+        value = self.filter_func(text)
+        if not value.isdigit():
+            return
+        episode_num = int(value)
+        if episode_num > 0:
+            handler.set_episode_attr(self.key, episode_num)
+
+
 class Enclosure(Target):
     def __init__(self, file_size_attribute):
         Target.__init__(self)
@@ -704,6 +714,7 @@ MAPPING = {
     'rss/channel/item/atom:link': AtomLink(),
     'rss/channel/item/itunes:explicit': EpisodeAttrExplicit('explicit', squash_whitespace),
     'rss/channel/item/itunes:author': EpisodeAttr('itunes_author', squash_whitespace),
+    'rss/channel/item/itunes:episode': EpisodeAttrNumber('number', squash_whitespace),
 
     'rss/channel/item/itunes:image': EpisodeAttrFromHref('episode_art_url'),
     'rss/channel/item/media:thumbnail': EpisodeAttrFromUrl('episode_art_url'),

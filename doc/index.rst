@@ -184,6 +184,9 @@ RSS
 **rss/channel/item/itunes:author**
     The group responsible for creating the episode.
 
+**rss/channel/item/itunes:episode**
+    An episode number.
+
 .. _Why RSS Content Module is Popular: https://developer.mozilla.org/en-US/docs/Web/RSS/Article/Why_RSS_Content_Module_is_Popular_-_Including_HTML_Contents
 
 Atom
