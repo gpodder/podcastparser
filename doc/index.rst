@@ -111,6 +111,9 @@ RSS
 **rss/channel/itunes:new-feed-url**
     The new podcast RSS Feed URL.
 
+**rss/redirect/newLocation**
+    The new podcast RSS Feed URL.
+
 **rss/channel/item**
     Episode.
 
