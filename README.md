@@ -14,6 +14,6 @@ To run the unit tests you need [`pytest`](https://docs.pytest.org/).  If you hav
 
 To release, update the version number in podcastparser.py, commit and push.
 
-Then create an (anotated) tag and push it.
+Then create an (annotated) tag and push it.
 
-The travis pipeline will publish on pypi (only the python 2.7 job will succeed).
+The GitHub action will publish on pypi.
