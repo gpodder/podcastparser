@@ -188,17 +188,18 @@ class EpisodeAttrFromUrl(EpisodeAttrFromHref):
 class EpisodeAttrNumber(EpisodeAttr):
     def end(self, handler, text):
         value = self.filter_func(text)
-        if not value.isdigit():
+        try:
+            episode_num = int(value)
+        except ValueError:
             return
-        episode_num = int(value)
         if episode_num > 0:
             handler.set_episode_attr(self.key, episode_num)
 
 
 class EpisodeAttrType(EpisodeAttr):
     def end(self, handler, text):
-        value = self.filter_func(text)
-        if value.lower() in ('full', 'trailer', 'bonus'):
+        value = self.filter_func(text).lower()
+        if value in ('full', 'trailer', 'bonus'):
             handler.set_episode_attr(self.key, value)
 
 
@@ -327,7 +328,7 @@ class ItunesOwnerAttr(Target):
     def end(self, handler, text):
         if not self.overwrite and handler.get_episode_attr(self.key):
             return
-        handler.set_itunes_owner_attr(self.key, self.filter_func(text))
+        handler.append_itunes_owner(self.key, self.filter_func(text))
 
 
 class ItunesOwnerItem(Target):
@@ -864,7 +865,7 @@ class PodcastHandler(sax.handler.ContentHandler):
     def add_itunes_owner(self):
         self.data['itunes_owner'] = {}
 
-    def set_itunes_owner_attr(self, key, value):
+    def append_itunes_owner(self, key, value):
         self.data['itunes_owner'][key] = value
 
     def startElement(self, name, attrs):
