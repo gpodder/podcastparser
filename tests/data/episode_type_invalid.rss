@@ -1,0 +1,10 @@
+<rss>
+    <channel>
+    <title>Podcast</title>
+    <item>
+        <title>Episode</title>
+        <itunes:episodeType>russkie_vpered</itunes:episodeType>
+        <enclosure url="http://example.org/example.mp3"/>
+    </item>
+    </channel>
+</rss>

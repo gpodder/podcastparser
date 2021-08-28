@@ -1,0 +1,9 @@
+<rss>
+    <channel>
+    <item>
+        <title>Episode</title>
+        <enclosure url="http://example.org/example.mp3"/>
+        <itunes:author>John Doe</itunes:author>
+    </item>
+    </channel>
+</rss>

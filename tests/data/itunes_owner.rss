@@ -1,0 +1,8 @@
+<rss>
+    <channel>
+		<itunes:owner>
+			<itunes:name>Charlie Dorsett</itunes:name>
+			<itunes:email>cedorsett@example.com</itunes:email>
+		</itunes:owner>
+    </channel>
+</rss>

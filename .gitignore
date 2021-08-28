@@ -4,3 +4,6 @@
 doc/_build
 dist
 MANIFEST
+htmlcov
+.idea
+podcastparser.egg-info

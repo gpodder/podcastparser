@@ -185,6 +185,24 @@ class EpisodeAttrFromUrl(EpisodeAttrFromHref):
     ATTRIBUTE = 'url'
 
 
+class EpisodeAttrNumber(EpisodeAttr):
+    def end(self, handler, text):
+        value = self.filter_func(text)
+        try:
+            episode_num = int(value)
+        except ValueError:
+            return
+        if episode_num > 0:
+            handler.set_episode_attr(self.key, episode_num)
+
+
+class EpisodeAttrType(EpisodeAttr):
+    def end(self, handler, text):
+        value = self.filter_func(text).lower()
+        if value in ('full', 'trailer', 'bonus'):
+            handler.set_episode_attr(self.key, value)
+
+
 class Enclosure(Target):
     def __init__(self, file_size_attribute):
         Target.__init__(self)
@@ -302,6 +320,44 @@ class PodloveChapter(Target):
                 chapter[optional] = value
 
         handler.get_episode_attr('chapters').append(chapter)
+
+
+class ItunesOwnerAttr(Target):
+    WANT_TEXT = True
+
+    def end(self, handler, text):
+        if not self.overwrite and handler.get_episode_attr(self.key):
+            return
+        handler.append_itunes_owner(self.key, self.filter_func(text))
+
+
+class ItunesOwnerItem(Target):
+    def start(self, handler, attrs):
+        handler.add_itunes_owner()
+
+
+class PodcastAttrExplicit(Target):
+    WANT_TEXT = True
+    _VALUES_MAPPER = {
+        'yes': True,
+        'explicit': True,
+        'true': True,
+        'no': False,
+        'clean': False,
+        'false': False,
+    }
+
+    def end(self, handler, text):
+        value = self.filter_func(text).lower()
+        if value in self._VALUES_MAPPER:
+            handler.set_podcast_attr(self.key, self._VALUES_MAPPER[value])
+
+
+class EpisodeAttrExplicit(PodcastAttrExplicit):
+    def end(self, handler, text):
+        value = self.filter_func(text).lower()
+        if value in self._VALUES_MAPPER:
+            handler.set_episode_attr(self.key, self._VALUES_MAPPER[value])
 
 
 class Namespace():
@@ -642,6 +698,15 @@ MAPPING = {
     'rss/channel/itunes:type': PodcastAttrType('type', squash_whitespace),
     'rss/channel/atom:link': PodcastAtomLink(),
     'rss/channel/generator': PodcastAttr('generator', squash_whitespace),
+    'rss/channel/language': PodcastAttr('language', squash_whitespace),
+    'rss/channel/itunes:author': PodcastAttr('itunes_author', squash_whitespace),
+    'rss/channel/itunes:owner': ItunesOwnerItem('itunes_owner', squash_whitespace),
+    'rss/channel/itunes:explicit': PodcastAttrExplicit('explicit', squash_whitespace),
+    'rss/channel/itunes:new-feed-url': PodcastAttr('new_url', squash_whitespace),
+    'rss/redirect/newLocation': PodcastAttr('new_url', squash_whitespace),
+
+    'rss/channel/itunes:owner/itunes:email': ItunesOwnerAttr('email', squash_whitespace),
+    'rss/channel/itunes:owner/itunes:name': ItunesOwnerAttr('name', squash_whitespace),
 
     'rss/channel/item': EpisodeItem(),
     'rss/channel/item/guid': EpisodeGuid('guid'),
@@ -655,6 +720,10 @@ MAPPING = {
     'rss/channel/item/itunes:duration': EpisodeAttr('total_time', parse_time),
     'rss/channel/item/pubDate': EpisodeAttr('published', parse_pubdate),
     'rss/channel/item/atom:link': AtomLink(),
+    'rss/channel/item/itunes:explicit': EpisodeAttrExplicit('explicit', squash_whitespace),
+    'rss/channel/item/itunes:author': EpisodeAttr('itunes_author', squash_whitespace),
+    'rss/channel/item/itunes:episode': EpisodeAttrNumber('number', squash_whitespace),
+    'rss/channel/item/itunes:episodeType': EpisodeAttrType('type', squash_whitespace),
 
     'rss/channel/item/itunes:image': EpisodeAttrFromHref('episode_art_url'),
     'rss/channel/item/media:thumbnail': EpisodeAttrFromUrl('episode_art_url'),
@@ -712,7 +781,7 @@ class PodcastHandler(sax.handler.ContentHandler):
         self.episodes = []
         self.data = {
             'title': file_basename_no_extension(url),
-            'episodes': self.episodes
+            'episodes': self.episodes,
         }
         self.path_stack = []
         self.namespace = None
@@ -792,6 +861,12 @@ class PodcastHandler(sax.handler.ContentHandler):
             'file_size': file_size,
             'mime_type': mime_type,
         })
+
+    def add_itunes_owner(self):
+        self.data['itunes_owner'] = {}
+
+    def append_itunes_owner(self, key, value):
+        self.data['itunes_owner'][key] = value
 
     def startElement(self, name, attrs):
         self.namespace = Namespace(attrs, self.namespace)
