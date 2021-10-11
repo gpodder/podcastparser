@@ -1,0 +1,6 @@
+<rss xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/">
+<channel>
+    <title>Namespace Test</title>
+    <rawvoice:liveEmbed schedule="Thu, 21 Dec 2000 16:01:07 +0200" duration="235"><![CDATA[<embed><param /></embed> ]]></rawvoice:liveEmbed>
+</channel>
+</rss>

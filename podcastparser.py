@@ -385,6 +385,9 @@ class Namespace():
 
         # Purl RSS Content module
         'http://purl.org/rss/1.0/modules/content/': 'content',
+
+        # RawVoice RSS Module
+        'http://www.rawvoice.com/rawvoiceRssModule/': 'rawvoice',
     }
 
     def __init__(self, attrs, parent=None):
@@ -694,6 +697,7 @@ MAPPING = {
     'rss/channel/link': PodcastAttrRelativeLink('link'),
     'rss/channel/description': PodcastAttr('description', squash_whitespace_not_nl),
     'rss/channel/image/url': PodcastAttrRelativeLink('cover_url'),
+    'rss/channel/itunes:author': PodcastAttr('author', squash_whitespace),
     'rss/channel/itunes:image': PodcastAttrFromHref('cover_url'),
     'rss/channel/itunes:type': PodcastAttrType('type', squash_whitespace),
     'rss/channel/atom:link': PodcastAtomLink(),
@@ -707,6 +711,24 @@ MAPPING = {
 
     'rss/channel/itunes:owner/itunes:email': ItunesOwnerAttr('email', squash_whitespace),
     'rss/channel/itunes:owner/itunes:name': ItunesOwnerAttr('name', squash_whitespace),
+
+    'rss/channel/rawvoice:rating': PodcastAttr('rating', squash_whitespace),
+    'rss/channel/rawvoice:liveEmbed': PodcastAttr('liveEmbed', squash_whitespace),
+    'rss/channel/rawvoice:flashLiveStream': PodcastAttr('flashLiveStream', squash_whitespace),
+    'rss/channel/rawvoice:httpLiveStream': PodcastAttr('httpLiveStream', squash_whitespace),
+    'rss/channel/rawvoice:shoutcastLiveStream': PodcastAttr('shoutcastLiveStream', squash_whitespace),
+    'rss/channel/rawvoice:liveStream': PodcastAttr('liveStream', squash_whitespace),
+    'rss/channel/rawvoice:location': PodcastAttr('location', squash_whitespace),
+    'rss/channel/rawvoice:frequency': PodcastAttr('frequency', squash_whitespace),
+    'rss/channel/rawvoice:mycast': PodcastAttr('mycast', squash_whitespace),
+    'rss/channel/rawvoice:poster': PodcastAttr('poster', squash_whitespace),
+    'rss/channel/rawvoice:isHd': PodcastAttr('isHd', squash_whitespace),
+    'rss/channel/rawvoice:embed': PodcastAttr('embed', squash_whitespace),
+    'rss/channel/rawvoice:webm': PodcastAttr('webm', squash_whitespace),
+    'rss/channel/rawvoice:mp4': PodcastAttr('mp4', squash_whitespace),
+    'rss/channel/rawvoice:metamark': PodcastAttr('metamark', squash_whitespace),
+    'rss/channel/rawvoice:subscribe': PodcastAttr('subscribe', squash_whitespace),
+    'rss/channel/rawvoice:donate': PodcastAttr('donate', squash_whitespace),
 
     'rss/channel/item': EpisodeItem(),
     'rss/channel/item/guid': EpisodeGuid('guid'),

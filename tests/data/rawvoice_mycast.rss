@@ -1,0 +1,6 @@
+<rss xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/">
+<channel>
+    <title>Namespace Test</title>
+    <rawvoice:mycast>yes</rawvoice:mycast>
+</channel>
+</rss>
