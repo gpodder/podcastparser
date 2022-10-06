@@ -331,6 +331,22 @@ class ItunesOwnerAttr(Target):
         handler.append_itunes_owner(self.key, self.filter_func(text))
 
 
+class ItunesCategoryAttr(Target):
+    def start(self, handler, attrs):
+        value = attrs.get('text')
+        if not value:
+            return
+        handler.append_itunes_category(self.key, self.filter_func(value))
+
+
+class ItunesSubCategoryAttr(Target):
+    def start(self, handler, attrs):
+        value = attrs.get('text')
+        if not value:
+            return
+        handler.append_itunes_subcategory(self.key, self.filter_func(value))
+
+
 class ItunesOwnerItem(Target):
     def start(self, handler, attrs):
         handler.add_itunes_owner()
@@ -658,8 +674,8 @@ def parse_pubdate(text):
         try:
             pubtimeseconds = int(mktime_tz(parsed))
             return pubtimeseconds
-        except(OverflowError,ValueError):
-            logger.warning('bad pubdate %s is before epoch or after end of time (2038)',parsed)
+        except(OverflowError, ValueError):
+            logger.warning('bad pubdate %s is before epoch or after end of time (2038)', parsed)
             return 0
 
     try:
@@ -699,6 +715,11 @@ MAPPING = {
     'rss/channel/atom:link': PodcastAtomLink(),
     'rss/channel/generator': PodcastAttr('generator', squash_whitespace),
     'rss/channel/language': PodcastAttr('language', squash_whitespace),
+
+    'rss/channel/itunes:category': ItunesCategoryAttr('itunes_categories'),
+    'rss/channel/itunes:category/itunes:category': ItunesSubCategoryAttr('itunes_categories'),
+    'rss/channel/itunes:category/itunes:category/itunes:category': ItunesSubCategoryAttr('itunes_categories'),
+
     'rss/channel/itunes:author': PodcastAttr('itunes_author', squash_whitespace),
     'rss/channel/itunes:owner': ItunesOwnerItem('itunes_owner', squash_whitespace),
     'rss/channel/itunes:explicit': PodcastAttrExplicit('explicit', squash_whitespace),
@@ -868,6 +889,18 @@ class PodcastHandler(sax.handler.ContentHandler):
     def append_itunes_owner(self, key, value):
         self.data['itunes_owner'][key] = value
 
+    def add_itunes_categories(self):
+        self.data['itunes_categories'] = []
+
+    def append_itunes_category(self, key, value):
+        if self.data.get('itunes_categories', None) is None:
+            self.add_itunes_categories()
+        self.data['itunes_categories'].append([value])
+
+    def append_itunes_subcategory(self, key, value):
+        entry = self.data['itunes_categories'][-1]
+        entry.append(value)
+
     def startElement(self, name, attrs):
         self.namespace = Namespace(attrs, self.namespace)
         name = self.namespace.map(name)
@@ -988,7 +1021,10 @@ def normalize_feed_url(url):
     # urlunsplit might return "a slighty different, but equivalent URL"
     return urlparse.urlunsplit((scheme, netloc, path, query, fragment))
 
+
 HTML_TEST = re.compile(r'<[a-z][a-z0-9]*(?:\s.*?>|\/?>)', re.IGNORECASE | re.DOTALL)
+
+
 def is_html(text):
     """Heuristically tell if text is HTML
 
@@ -999,6 +1035,7 @@ def is_html(text):
     False
     """
     return bool(HTML_TEST.search(text))
+
 
 def remove_html_tags(html):
     """
