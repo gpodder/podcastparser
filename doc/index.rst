@@ -105,6 +105,9 @@ RSS
     The podcast owner contact information.
     The <itunes:owner> tag information is for administrative communication about the podcast and isn't displayed in Apple Podcasts
 
+**rss/channel/itunes:category**
+    The show category information.
+
 **rss/channel/itunes:explicit**
     Indicates whether podcast contains explicit material.
 
