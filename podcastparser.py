@@ -333,9 +333,9 @@ class ItunesOwnerAttr(Target):
 
 class ItunesCategoryAttr(Target):
     def start(self, handler, attrs):
-        value = attrs.get('text')
-        if not value:
-            return
+        # Let's use an empty string as a fallback for first-level categories
+        # in case there is a valid sub-category.
+        value = attrs.get('text', '')
         handler.append_itunes_category(self.key, self.filter_func(value))
 
 
