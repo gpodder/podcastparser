@@ -893,9 +893,7 @@ class PodcastHandler(sax.handler.ContentHandler):
         self.data['itunes_categories'] = []
 
     def append_itunes_category(self, key, value):
-        if self.data.get('itunes_categories', None) is None:
-            self.add_itunes_categories()
-        self.data['itunes_categories'].append([value])
+        self.data.setdefault('itunes_categories', []).append([value])
 
     def append_itunes_subcategory(self, key, value):
         entry = self.data['itunes_categories'][-1]
