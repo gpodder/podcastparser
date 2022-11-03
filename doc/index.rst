@@ -184,6 +184,9 @@ RSS
 **rss/channel/item/itunes:author**
     The group responsible for creating the episode.
 
+**rss/channel/item/itunes:season**
+    The season number of the episode.
+
 **rss/channel/item/itunes:episode**
     An episode number.
 

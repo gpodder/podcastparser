@@ -22,7 +22,7 @@
 
 # Will be parsed by setup.py to determine package metadata
 __author__ = 'Thomas Perl <m@thp.io>'
-__version__ = '0.6.8'
+__version__ = '0.6.9'
 __website__ = 'http://gpodder.org/podcastparser/'
 __license__ = 'ISC License'
 
@@ -183,6 +183,15 @@ class EpisodeAttrFromHref(Target):
 
 class EpisodeAttrFromUrl(EpisodeAttrFromHref):
     ATTRIBUTE = 'url'
+
+
+class EpisodeAttrSeason(EpisodeAttr):
+    def end(self, handler, text):
+        try:
+            episode_season = int(text)
+        except ValueError:
+            episode_season = 0
+        handler.set_episode_attr(self.key, episode_season)
 
 
 class EpisodeAttrNumber(EpisodeAttr):
@@ -722,6 +731,7 @@ MAPPING = {
     'rss/channel/item/atom:link': AtomLink(),
     'rss/channel/item/itunes:explicit': EpisodeAttrExplicit('explicit', squash_whitespace),
     'rss/channel/item/itunes:author': EpisodeAttr('itunes_author', squash_whitespace),
+    'rss/channel/item/itunes:season': EpisodeAttr('season', squash_whitespace),
     'rss/channel/item/itunes:episode': EpisodeAttrNumber('number', squash_whitespace),
     'rss/channel/item/itunes:episodeType': EpisodeAttrType('type', squash_whitespace),
 
