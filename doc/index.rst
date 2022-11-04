@@ -89,6 +89,12 @@ RSS
 **rss/channel/itunes:type**
     Podcast type (whitespace is squashed).  One of 'episodic' or 'serial'.  
 
+**rss/channel/itunes:keywords**
+    Podcast keywords (whitespace is squashed).
+
+**rss/channel/itunes:category**
+    Podcast category (whitespace is squashed).
+
 **rss/channel/atom:link@rel=payment**
     Podcast payment URL (e.g. Flattr).
 

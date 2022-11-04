@@ -22,7 +22,7 @@
 
 # Will be parsed by setup.py to determine package metadata
 __author__ = 'Thomas Perl <m@thp.io>'
-__version__ = '0.6.9'
+__version__ = '0.6.8'
 __website__ = 'http://gpodder.org/podcastparser/'
 __license__ = 'ISC License'
 
@@ -128,6 +128,12 @@ class PodcastAttrFromHref(Target):
         if value:
             value = urlparse.urljoin(handler.base, value)
             handler.set_podcast_attr(self.key, self.filter_func(value))
+
+class PdocastAttrFromText(Target):
+    def start(self, handler, attrs):
+        value = attrs.get('text')
+        if value:
+            handler.add_category(value)
 
 
 class EpisodeItem(Target):
@@ -712,6 +718,9 @@ MAPPING = {
     'rss/channel/itunes:owner': ItunesOwnerItem('itunes_owner', squash_whitespace),
     'rss/channel/itunes:explicit': PodcastAttrExplicit('explicit', squash_whitespace),
     'rss/channel/itunes:new-feed-url': PodcastAttr('new_url', squash_whitespace),
+    'rss/channel/itunes:category': PdocastAttrFromText('itunes_category', squash_whitespace),
+    'rss/channel/itunes:category/itunes:category': PdocastAttrFromText('itunes_category', squash_whitespace),
+    'rss/channel/itunes:keywords': PodcastAttr('itunes_keywords', squash_whitespace),
     'rss/redirect/newLocation': PodcastAttr('new_url', squash_whitespace),
 
     'rss/channel/itunes:owner/itunes:email': ItunesOwnerAttr('email', squash_whitespace),
@@ -874,6 +883,9 @@ class PodcastHandler(sax.handler.ContentHandler):
 
     def add_itunes_owner(self):
         self.data['itunes_owner'] = {}
+    
+    def add_category(self, category):
+        self.data.setdefault('itunes_category', []).append(category)
 
     def append_itunes_owner(self, key, value):
         self.data['itunes_owner'][key] = value
