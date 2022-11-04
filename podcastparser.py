@@ -129,7 +129,7 @@ class PodcastAttrFromHref(Target):
             value = urlparse.urljoin(handler.base, value)
             handler.set_podcast_attr(self.key, self.filter_func(value))
 
-class PdocastAttrFromText(Target):
+class PodcastAttrFromText(Target):
     def start(self, handler, attrs):
         value = attrs.get('text')
         if value:
@@ -718,8 +718,8 @@ MAPPING = {
     'rss/channel/itunes:owner': ItunesOwnerItem('itunes_owner', squash_whitespace),
     'rss/channel/itunes:explicit': PodcastAttrExplicit('explicit', squash_whitespace),
     'rss/channel/itunes:new-feed-url': PodcastAttr('new_url', squash_whitespace),
-    'rss/channel/itunes:category': PdocastAttrFromText('itunes_category', squash_whitespace),
-    'rss/channel/itunes:category/itunes:category': PdocastAttrFromText('itunes_category', squash_whitespace),
+    'rss/channel/itunes:category': PodcastAttrFromText('itunes_category', squash_whitespace),
+    'rss/channel/itunes:category/itunes:category': PodcastAttrFromText('itunes_category', squash_whitespace),
     'rss/channel/itunes:keywords': PodcastAttr('itunes_keywords', squash_whitespace),
     'rss/redirect/newLocation': PodcastAttr('new_url', squash_whitespace),
 
