@@ -129,12 +129,6 @@ class PodcastAttrFromHref(Target):
             value = urlparse.urljoin(handler.base, value)
             handler.set_podcast_attr(self.key, self.filter_func(value))
 
-class PodcastAttrFromText(Target):
-    def start(self, handler, attrs):
-        value = attrs.get('text')
-        if value:
-            handler.add_category(value)
-
 
 class EpisodeItem(Target):
     def start(self, handler, attrs):
@@ -739,8 +733,6 @@ MAPPING = {
     'rss/channel/itunes:owner': ItunesOwnerItem('itunes_owner', squash_whitespace),
     'rss/channel/itunes:explicit': PodcastAttrExplicit('explicit', squash_whitespace),
     'rss/channel/itunes:new-feed-url': PodcastAttr('new_url', squash_whitespace),
-    'rss/channel/itunes:category': PodcastAttrFromText('itunes_category', squash_whitespace),
-    'rss/channel/itunes:category/itunes:category': PodcastAttrFromText('itunes_category', squash_whitespace),
     'rss/channel/itunes:keywords': PodcastAttr('itunes_keywords', squash_whitespace),
     'rss/redirect/newLocation': PodcastAttr('new_url', squash_whitespace),
 
@@ -761,7 +753,7 @@ MAPPING = {
     'rss/channel/item/atom:link': AtomLink(),
     'rss/channel/item/itunes:explicit': EpisodeAttrExplicit('explicit', squash_whitespace),
     'rss/channel/item/itunes:author': EpisodeAttr('itunes_author', squash_whitespace),
-    'rss/channel/item/itunes:season': EpisodeAttr('season', squash_whitespace),
+    'rss/channel/item/itunes:season': EpisodeAttrSeason('season', squash_whitespace),
     'rss/channel/item/itunes:episode': EpisodeAttrNumber('number', squash_whitespace),
     'rss/channel/item/itunes:episodeType': EpisodeAttrType('type', squash_whitespace),
 
@@ -904,9 +896,6 @@ class PodcastHandler(sax.handler.ContentHandler):
 
     def add_itunes_owner(self):
         self.data['itunes_owner'] = {}
-    
-    def add_category(self, category):
-        self.data.setdefault('itunes_category', []).append(category)
 
     def append_itunes_owner(self, key, value):
         self.data['itunes_owner'][key] = value

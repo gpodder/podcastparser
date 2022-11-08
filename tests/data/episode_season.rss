@@ -1,0 +1,9 @@
+<rss>
+    <channel>
+    <item>
+        <title>Episode</title>
+        <enclosure url="http://example.org/example.mp3"/>
+        <itunes:season>1</itunes:season>
+    </item>
+    </channel>
+</rss>
