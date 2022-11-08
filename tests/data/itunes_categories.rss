@@ -1,0 +1,11 @@
+<rss>
+    <channel>
+			<itunes:category text="Business">
+				<itunes:category text="Entrepreneurship">
+					<itunes:category text="Ecommerce" />
+				</itunes:category>
+			</itunes:category>
+			<itunes:category text="Education"/>
+			<itunes:category text="Society &amp; Culture"/>
+    </channel>
+</rss>
