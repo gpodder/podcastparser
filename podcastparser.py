@@ -106,6 +106,12 @@ class PodcastAttr(Target):
     def end(self, handler, text):
         handler.set_podcast_attr(self.key, self.filter_func(text))
 
+class PodcastAttrList(Target):
+    WANT_TEXT = True
+
+    def end(self, handler, text):
+        handler.set_podcast_attr(self.key, self.filter_func(text).split(', '))
+
 
 class PodcastAttrType(Target):
     WANT_TEXT = True
@@ -733,7 +739,7 @@ MAPPING = {
     'rss/channel/itunes:owner': ItunesOwnerItem('itunes_owner', squash_whitespace),
     'rss/channel/itunes:explicit': PodcastAttrExplicit('explicit', squash_whitespace),
     'rss/channel/itunes:new-feed-url': PodcastAttr('new_url', squash_whitespace),
-    'rss/channel/itunes:keywords': PodcastAttr('itunes_keywords', squash_whitespace),
+    'rss/channel/itunes:keywords': PodcastAttrList('itunes_keywords', squash_whitespace),
     'rss/redirect/newLocation': PodcastAttr('new_url', squash_whitespace),
 
     'rss/channel/itunes:owner/itunes:email': ItunesOwnerAttr('email', squash_whitespace),
