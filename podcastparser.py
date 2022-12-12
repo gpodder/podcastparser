@@ -32,38 +32,10 @@ import re
 import os
 import time
 
-try:
-    # Python 2
-    from htmlentitydefs import entitydefs
-    entitydefs = dict((key, value.decode('latin-1')) for key, value in entitydefs.iteritems())
-    chr = unichr
-except ImportError:
-    # Python 3
-    from html.entities import entitydefs
+from html.entities import entitydefs
 
-try:
-    # Python 2
-    import urlparse
-except ImportError:
-    # Python 3
-    from urllib import parse as urlparse
-
-try:
-    # Python 2
-    from rfc822 import parsedate_tz
-    import calendar
-    # This is taken from Python 3's email._parseaddr, since it handles
-    # pre-epoch dates better than what Python 2 does (time.mktime())
-    def mktime_tz(data):
-        if data[9] is None:
-            # No zone info, so localtime is better assumption than GMT
-            return time.mktime(data[:8] + (-1,))
-        else:
-            t = calendar.timegm(data)
-            return t - data[9]
-except ImportError:
-    # Python 3
-    from email.utils import mktime_tz, parsedate_tz
+from urllib import parse as urlparse
+from email.utils import mktime_tz, parsedate_tz
 
 import logging
 logger = logging.getLogger(__name__)
