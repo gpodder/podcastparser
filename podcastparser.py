@@ -78,6 +78,12 @@ class PodcastAttr(Target):
     def end(self, handler, text):
         handler.set_podcast_attr(self.key, self.filter_func(text))
 
+class PodcastAttrList(Target):
+    WANT_TEXT = True
+
+    def end(self, handler, text):
+        handler.set_podcast_attr(self.key, self.filter_func(text).split(', '))
+
 
 class PodcastAttrType(Target):
     WANT_TEXT = True
@@ -155,6 +161,15 @@ class EpisodeAttrFromHref(Target):
 
 class EpisodeAttrFromUrl(EpisodeAttrFromHref):
     ATTRIBUTE = 'url'
+
+
+class EpisodeAttrSeason(EpisodeAttr):
+    def end(self, handler, text):
+        try:
+            episode_season = int(text)
+        except ValueError:
+            episode_season = 0
+        handler.set_episode_attr(self.key, episode_season)
 
 
 class EpisodeAttrNumber(EpisodeAttr):
@@ -696,6 +711,7 @@ MAPPING = {
     'rss/channel/itunes:owner': ItunesOwnerItem('itunes_owner', squash_whitespace),
     'rss/channel/itunes:explicit': PodcastAttrExplicit('explicit', squash_whitespace),
     'rss/channel/itunes:new-feed-url': PodcastAttr('new_url', squash_whitespace),
+    'rss/channel/itunes:keywords': PodcastAttrList('itunes_keywords', squash_whitespace),
     'rss/redirect/newLocation': PodcastAttr('new_url', squash_whitespace),
 
     'rss/channel/itunes:owner/itunes:email': ItunesOwnerAttr('email', squash_whitespace),
@@ -715,6 +731,7 @@ MAPPING = {
     'rss/channel/item/atom:link': AtomLink(),
     'rss/channel/item/itunes:explicit': EpisodeAttrExplicit('explicit', squash_whitespace),
     'rss/channel/item/itunes:author': EpisodeAttr('itunes_author', squash_whitespace),
+    'rss/channel/item/itunes:season': EpisodeAttrSeason('season', squash_whitespace),
     'rss/channel/item/itunes:episode': EpisodeAttrNumber('number', squash_whitespace),
     'rss/channel/item/itunes:episodeType': EpisodeAttrType('type', squash_whitespace),
 
