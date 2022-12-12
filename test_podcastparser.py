@@ -21,12 +21,7 @@
 import os
 import glob
 import json
-try:
-    # Python 2
-    from StringIO import StringIO
-except ImportError:
-    # Python 3
-    from io import StringIO
+import io
 
 
 import pytest
@@ -64,5 +59,5 @@ class TestPodcastparser:
     @pytest.mark.parametrize("feed", feeds)
     def test_fail_parse(self, feed):
         with pytest.raises(podcastparser.FeedParseError):
-            podcastparser.parse('file://example.com/feed.xml', StringIO(feed))
+            podcastparser.parse('file://example.com/feed.xml', io.StringIO(feed))
 
