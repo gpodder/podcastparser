@@ -101,12 +101,18 @@ class PodcastAttrRelativeLink(PodcastAttr):
 
 
 class PodcastAttrFromHref(Target):
+    ATTRIBUTE = 'href'
+    
     def start(self, handler, attrs):
-        value = attrs.get('href')
+        value = attrs.get(self.ATTRIBUTE)
         if value:
             value = urlparse.urljoin(handler.base, value)
             handler.set_podcast_attr(self.key, self.filter_func(value))
 
+
+class PodcastAttrFromUrl(PodcastAttrFromHref):
+    ATTRIBUTE = 'url'
+    
 
 class EpisodeItem(Target):
     def start(self, handler, attrs):
@@ -307,6 +313,31 @@ class PodloveChapter(Target):
                 chapter[optional] = value
 
         handler.get_episode_attr('chapters').append(chapter)
+        
+        
+class EpisodePersonAttr(Target):
+    WANT_TEXT = True
+         
+    def start(self, handler, attrs):
+        if not handler.get_episode_attr("people"):
+            handler.add_episode_people()
+        person = {
+            "name": None,
+            "role": "host",
+            "group": "cast",
+            "href": None,
+            "img": None,
+        }
+        for optional in ["group", "role", "href", "img"]:
+            value = attrs.get(optional)
+            if value:
+                if optional in ["role", "group"]:
+                    value = value.lower()
+                person[optional] = value
+        handler.append_episode_person(person)
+    
+    def end(self, handler, text):
+        handler.get_episode_attr("people")[-1]["name"] = text
 
 
 class ItunesOwnerAttr(Target):
@@ -388,6 +419,11 @@ class Namespace():
 
         # Purl RSS Content module
         'http://purl.org/rss/1.0/modules/content/': 'content',
+        
+        # Podcast Index podcast namespace
+        # https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md
+        'https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md': 'podcast',
+        'https://github.com/podcastindex-org/podcast-namespace/blob/main/docs/1.0.md': 'podcast',
     }
 
     def __init__(self, attrs, parent=None):
@@ -696,6 +732,8 @@ MAPPING = {
     'rss/channel/title': PodcastAttr('title', squash_whitespace),
     'rss/channel/link': PodcastAttrRelativeLink('link'),
     'rss/channel/description': PodcastAttr('description', squash_whitespace_not_nl),
+    'rss/channel/podcast:funding': PodcastAttrFromUrl('funding'),
+    'rss/channel/podcast:locked': PodcastAttrExplicit('locked'),
     'rss/channel/image/url': PodcastAttrRelativeLink('cover_url'),
     'rss/channel/itunes:image': PodcastAttrFromHref('cover_url'),
     'rss/channel/itunes:type': PodcastAttrType('type', squash_whitespace),
@@ -744,6 +782,9 @@ MAPPING = {
     'rss/channel/item/enclosure': Enclosure('length'),
     'rss/channel/item/psc:chapters': PodloveChapters(),
     'rss/channel/item/psc:chapters/psc:chapter': PodloveChapter(),
+    'rss/channel/item/podcast:transcript': EpisodeAttrFromUrl("transcript"),
+    'rss/channel/item/podcast:chapters': EpisodeAttrFromUrl("chapters_json_url"),
+    'rss/channel/item/podcast:person': EpisodePersonAttr(),
 
     # Basic support for Atom feeds
     'atom:feed': PodcastItem(),
@@ -807,6 +848,12 @@ class PodcastHandler(sax.handler.ContentHandler):
 
     def get_episode_attr(self, key, default=None):
         return self.episodes[-1].get(key, default)
+        
+    def add_episode_people(self):
+        self.episodes[-1]['people'] = []
+        
+    def append_episode_person(self, value):
+        self.episodes[-1]['people'].append(value)
 
     def add_episode(self):
         self.episodes.append({
