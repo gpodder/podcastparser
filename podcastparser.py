@@ -319,8 +319,8 @@ class EpisodePersonAttr(Target):
     WANT_TEXT = True
          
     def start(self, handler, attrs):
-        if not handler.get_episode_attr("people"):
-            handler.add_episode_people()
+        if not handler.get_episode_attr("persons"):
+            handler.add_episode_persons()
         person = {
             "name": None,
             "role": "host",
@@ -328,16 +328,16 @@ class EpisodePersonAttr(Target):
             "href": None,
             "img": None,
         }
-        for optional in ["group", "role", "href", "img"]:
+        for optional in ("group", "role", "href", "img"):
             value = attrs.get(optional)
             if value:
-                if optional in ["role", "group"]:
+                if optional in ("role", "group"):
                     value = value.lower()
                 person[optional] = value
         handler.append_episode_person(person)
     
     def end(self, handler, text):
-        handler.get_episode_attr("people")[-1]["name"] = text
+        handler.get_episode_attr("persons")[-1]["name"] = text
 
 
 class ItunesOwnerAttr(Target):
@@ -732,8 +732,8 @@ MAPPING = {
     'rss/channel/title': PodcastAttr('title', squash_whitespace),
     'rss/channel/link': PodcastAttrRelativeLink('link'),
     'rss/channel/description': PodcastAttr('description', squash_whitespace_not_nl),
-    'rss/channel/podcast:funding': PodcastAttrFromUrl('funding'),
-    'rss/channel/podcast:locked': PodcastAttrExplicit('locked'),
+    'rss/channel/podcast:funding': PodcastAttrFromUrl('funding_url'),
+    'rss/channel/podcast:locked': PodcastAttrExplicit('import_prohibited'),
     'rss/channel/image/url': PodcastAttrRelativeLink('cover_url'),
     'rss/channel/itunes:image': PodcastAttrFromHref('cover_url'),
     'rss/channel/itunes:type': PodcastAttrType('type', squash_whitespace),
@@ -782,7 +782,7 @@ MAPPING = {
     'rss/channel/item/enclosure': Enclosure('length'),
     'rss/channel/item/psc:chapters': PodloveChapters(),
     'rss/channel/item/psc:chapters/psc:chapter': PodloveChapter(),
-    'rss/channel/item/podcast:transcript': EpisodeAttrFromUrl("transcript"),
+    'rss/channel/item/podcast:transcript': EpisodeAttrFromUrl("transcript_url"),
     'rss/channel/item/podcast:chapters': EpisodeAttrFromUrl("chapters_json_url"),
     'rss/channel/item/podcast:person': EpisodePersonAttr(),
 
@@ -849,11 +849,11 @@ class PodcastHandler(sax.handler.ContentHandler):
     def get_episode_attr(self, key, default=None):
         return self.episodes[-1].get(key, default)
         
-    def add_episode_people(self):
-        self.episodes[-1]['people'] = []
+    def add_episode_persons(self):
+        self.episodes[-1]['persons'] = []
         
     def append_episode_person(self, value):
-        self.episodes[-1]['people'].append(value)
+        self.episodes[-1]['persons'].append(value)
 
     def add_episode(self):
         self.episodes.append({

@@ -1,5 +1,5 @@
 {
   "title": "podcast_funding",
-  "funding": "https://somecrowdfundingsite.com",
+  "funding_url": "https://somecrowdfundingsite.com",
   "episodes": []
 }

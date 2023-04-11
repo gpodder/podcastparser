@@ -17,7 +17,7 @@
                     "mime_type": "application/octet-stream"
                 }
             ],
-            "transcript": "https://example.com/1/transcript.txt"
+            "transcript_url": "https://example.com/1/transcript.txt"
         }
     ]
 }

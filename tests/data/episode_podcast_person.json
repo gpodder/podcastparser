@@ -17,7 +17,7 @@
                     "mime_type": "application/octet-stream"
                 }
             ],
-            "people": [
+            "persons": [
                 {
                     "name": "John Doe",
                     "role": "host",
