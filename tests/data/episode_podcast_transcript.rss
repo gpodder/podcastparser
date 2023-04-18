@@ -1,0 +1,11 @@
+<rss>
+    <channel>
+    <title>Podcast</title>
+    <item>
+        <title>Episode</title>
+        <itunes:episodeType>trailer</itunes:episodeType>
+        <enclosure url="http://example.org/example.mp3"/>
+        <podcast:transcript type="text/plain" url="https://example.com/1/transcript.txt"/>
+    </item>
+    </channel>
+</rss>

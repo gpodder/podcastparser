@@ -19,6 +19,7 @@ The following specifications are supported:
 
 * `Paged Feeds`_ (`RFC 5005`_)
 * `Podlove Simple Chapters`_
+* `Podcast Index Podcast Namespace`_
 
 These formats only specify the possible markup elements and attributes. We
 recommend that you also read the `Podcast Feed Best Practice`_ guide if you
@@ -36,6 +37,7 @@ either as seconds or as `RFC 2326`_ Normal Play Time (NPT).
 .. _RFC 5005: https://tools.ietf.org/html/rfc5005
 .. _RFC 2326: https://tools.ietf.org/html/rfc2326
 .. _Podlove Simple Chapters: http://podlove.org/simple-chapters/
+.. _Podcast Index Podcast Namespace: https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md
 
 Example
 =======
@@ -116,6 +118,12 @@ RSS
 
 **rss/channel/itunes:new-feed-url**
     The new podcast RSS Feed URL.
+    
+**rss/channel/podcast:locked**
+    If the podcast is currently locked from being transferred.
+    
+**rss/channel/podcast:funding**
+    Funding link for podcast.
 
 **rss/redirect/newLocation**
     The new podcast RSS Feed URL.
@@ -199,6 +207,19 @@ RSS
 **rss/channel/item/itunes:episodeType**
     The episode type.
     This flag is used if an episode is a trailer or bonus content.
+    
+**rss/channel/item/podcast:chapters**
+    The url to a JSON file describing the chapters.
+    Only the url is added to the data as fetching an external URL would
+    be unsafe.
+    
+**rss/channel/item/podcast:person**
+    A person involved in the episode, e.g. host, or guest.
+    
+**rss/channel/item/podcast:transcript**
+    The url for the transcript file associated with this episode.
+    
+
 
 .. _Why RSS Content Module is Popular: https://developer.mozilla.org/en-US/docs/Web/RSS/Article/Why_RSS_Content_Module_is_Popular_-_Including_HTML_Contents
 

@@ -1,0 +1,5 @@
+<rss>
+    <channel>
+        <podcast:funding url="https://somecrowdfundingsite.com">Support the show!</podcast:funding>
+    </channel>
+</rss>

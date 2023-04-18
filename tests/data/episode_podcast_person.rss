@@ -1,0 +1,12 @@
+<rss>
+    <channel>
+    <title>Podcast</title>
+    <item>
+        <title>Episode</title>
+        <itunes:episodeType>trailer</itunes:episodeType>
+        <enclosure url="http://example.org/example.mp3"/>
+        <podcast:person role="host" href="http://www.example.com" img="http://www.example.com/avatar.jpg" group="Cast">John Doe</podcast:person>
+        <podcast:person role="guest" href="http://amazingsite.com">Stephanie Smith</podcast:person>
+    </item>
+    </channel>
+</rss>
