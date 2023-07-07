@@ -42,6 +42,8 @@ either as seconds or as `RFC 2326`_ Normal Play Time (NPT).
 Example
 =======
 
+Using the built-in ``urllib.request`` module from Python 3:
+
 .. code-block:: python
 
     import podcastparser
@@ -56,6 +58,27 @@ Example
     pprint.pprint(parsed)
 
 .. TODO: Show example dict for a parsed feed with all fields
+
+
+Using `Requests`_:
+
+.. code-block:: python
+
+    import podcastparser
+    import requests
+
+    url = 'https://example.net/podcast.atom'
+
+    with requests.get(url, stream=True) as response:
+        response.raw.decode_content = True
+        parsed = podcastparser.parse(url, response.raw)
+
+    # parsed is a dict
+    import pprint
+    pprint.pprint(parsed)
+
+.. _Requests: https://requests.readthedocs.io
+
 
 Supported XML Elements and Attributes
 =====================================
