@@ -128,7 +128,9 @@ class EpisodeAttr(Target):
     def end(self, handler, text):
         if not self.overwrite and handler.get_episode_attr(self.key):
             return
-        handler.set_episode_attr(self.key, self.filter_func(text))
+        text = self.filter_func(text)
+        if text != '' or handler.get_episode_attr(self.key) is None:
+            handler.set_episode_attr(self.key, text)
 
 
 class EpisodeAttrRelativeLink(EpisodeAttr):
