@@ -740,6 +740,7 @@ MAPPING = {
     'rss/channel/title': PodcastAttr('title', squash_whitespace),
     'rss/channel/link': PodcastAttrRelativeLink('link'),
     'rss/channel/description': PodcastAttr('description', squash_whitespace_not_nl),
+    'rss/channel/itunes:summary': PodcastAttr('description', squash_whitespace_not_nl, overwrite=False),
     'rss/channel/podcast:funding': PodcastAttrFromUrl('funding_url'),
     'rss/channel/podcast:locked': PodcastAttrExplicit('import_prohibited'),
     'rss/channel/image/url': PodcastAttrRelativeLink('cover_url'),
