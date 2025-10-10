@@ -105,6 +105,9 @@ RSS
 **rss/channel/description**
     Podcast description (whitespace is squashed).
 
+**rss/channel/itunes:summary**
+    Podcast description (whitespace is squashed).
+
 **rss/channel/image/url**
     Podcast cover art.
 

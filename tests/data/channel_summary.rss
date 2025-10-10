@@ -1,0 +1,6 @@
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
+    <channel>
+        <title>Example Feed</title>
+        <itunes:summary>A podcast with a summary field</itunes:summary>
+    </channel>
+</rss>
