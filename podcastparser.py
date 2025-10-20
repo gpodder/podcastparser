@@ -76,12 +76,16 @@ class PodcastAttr(Target):
     WANT_TEXT = True
 
     def end(self, handler, text):
+        if not self.overwrite and handler.get_podcast_attr(self.key):
+            return
         handler.set_podcast_attr(self.key, self.filter_func(text))
 
 class PodcastAttrList(Target):
     WANT_TEXT = True
 
     def end(self, handler, text):
+        if not self.overwrite and handler.get_podcast_attr(self.key):
+            return
         handler.set_podcast_attr(self.key, self.filter_func(text).split(', '))
 
 
@@ -89,6 +93,8 @@ class PodcastAttrType(Target):
     WANT_TEXT = True
 
     def end(self, handler, text):
+        if not self.overwrite and handler.get_podcast_attr(self.key):
+            return
         value = self.filter_func(text)
         if value in ('episodic', 'serial'):
             handler.set_podcast_attr(self.key, value)
@@ -104,6 +110,8 @@ class PodcastAttrFromHref(Target):
     ATTRIBUTE = 'href'
     
     def start(self, handler, attrs):
+        if not self.overwrite and handler.get_podcast_attr(self.key):
+            return
         value = attrs.get(self.ATTRIBUTE)
         if value:
             value = urlparse.urljoin(handler.base, value)
@@ -734,6 +742,7 @@ MAPPING = {
     'rss/channel/title': PodcastAttr('title', squash_whitespace),
     'rss/channel/link': PodcastAttrRelativeLink('link'),
     'rss/channel/description': PodcastAttr('description', squash_whitespace_not_nl),
+    'rss/channel/itunes:summary': PodcastAttr('description', squash_whitespace_not_nl, overwrite=False),
     'rss/channel/podcast:funding': PodcastAttrFromUrl('funding_url'),
     'rss/channel/podcast:locked': PodcastAttrExplicit('import_prohibited'),
     'rss/channel/image/url': PodcastAttrRelativeLink('cover_url'),
@@ -844,6 +853,9 @@ class PodcastHandler(sax.handler.ContentHandler):
 
     def set_podcast_attr(self, key, value):
         self.data[key] = value
+
+    def get_podcast_attr(self, key, default=None):
+        return self.data.get(key, default)
 
     def set_episode_attr(self, key, value):
         self.episodes[-1][key] = value
